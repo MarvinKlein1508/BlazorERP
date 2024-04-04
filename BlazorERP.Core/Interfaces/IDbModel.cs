@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
 
-namespace BlazorERP.Core.Interfaces
+namespace BlazorERP.Core.Interfaces;
+
+public interface IDbModel
 {
-    public interface IDbModel
-    {
-        int Id { get; }
-    }
+    int GetId();
+}
+
+public interface IDbModelWithName : IDbModel
+{
+    string GetName();
 }

@@ -1,6 +1,6 @@
 ﻿using BlazorERP.Core.Interfaces;
 namespace BlazorERP.Core.Models;
-public class User
+public class User : IDbModelWithName
 {
     public int UserId { get; set; }
     public string Username { get; set; } = string.Empty;
@@ -14,4 +14,6 @@ public class User
     public bool IsAdmin { get; set; }
     public bool IsActive { get; set; }
 
+    public int GetId() => UserId;
+    public string GetName() => $"{FirstName} {LastName}".Trim();
 }
