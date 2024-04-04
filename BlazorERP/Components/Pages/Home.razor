@@ -5,3 +5,9 @@
 <h1>Hello, world!</h1>
 
 Welcome to your new Fluent Blazor app.
+
+<AuthorizeView>
+    <Authorized Context="user">
+        @user.User.Claims.First().Value
+    </Authorized>
+</AuthorizeView>

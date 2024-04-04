@@ -1,7 +1,66 @@
 ﻿@page "/Account/Login"
+@layout EmptyLayout
+@inject IHttpContextAccessor contextAccessor
+@inject NavigationManager navigationManager
+@using Microsoft.AspNetCore.Authentication
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Authentication.Cookies
 
 <h3>Login</h3>
 
-@code {
+<EditForm FormName="login" method="post" Model="Input" OnValidSubmit="LoginAsync">
+    <div>
+        <label>Username</label>
+        <InputText @bind-Value="Input.Username" />
+    </div>
+    <div>
+        <label>Password</label>
+        <InputText @bind-Value="Input.Password" type="password" />
+    </div>
 
+    <button type="submit">Login</button>
+
+</EditForm>
+
+@code {
+    [SupplyParameterFromForm] public LoginModel Input { get; set; } = new();
+
+    private HttpClient _client = default!;
+
+    protected override Task OnInitializedAsync()
+    {
+
+        return base.OnInitializedAsync();
+    }
+
+    private async Task LoginAsync()
+    {
+        if (Input.Username == "test" && Input.Password == "test")
+        {
+            var claims = new List<Claim>
+            {
+                new("userId", "test"),
+
+            };
+
+
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var authProperties = new AuthenticationProperties
+                {
+                    IsPersistent = Input.RememberMe
+                };
+
+
+            await contextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+            navigationManager.NavigateTo("/", true);
+        }
+    }
+
+    public sealed class LoginModel
+    {
+        public string Username { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+        public bool RememberMe { get; set; }
+    }
 }
