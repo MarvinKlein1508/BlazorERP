@@ -40,7 +40,7 @@ public class AuthService
 
             dbController ??= new FbController();
 
-            User? result = null;//await _userService.GetAsync(userId, dbController);
+            User? result = await _userService.GetAsync(userId, dbController);
 
             if (shouldDispose)
             {
