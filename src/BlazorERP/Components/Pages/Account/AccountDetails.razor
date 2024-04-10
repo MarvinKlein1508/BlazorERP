@@ -2,15 +2,19 @@
 @inject AuthService authService
 
 <h3>AccountDetails</h3>
-@if(_user is null)
-{
-    <p>Loading...</p>
-}
-else
-{
-    <p>Username: @_user.GetName()</p>
 
+@if (_user is null)
+{
+    return;
 }
+
+<FluentCard Width="100%">
+    <FluentStack Orientation="Orientation.Vertical">
+        <div class="demopanel">Username: @_user.Username</div>
+        <div class="demopanel">Herkunft: @_user.Origin</div>
+    </FluentStack>
+</FluentCard>
+
 @code {
     private User? _user;
     protected override async Task OnInitializedAsync()
