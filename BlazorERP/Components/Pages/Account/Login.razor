@@ -10,7 +10,10 @@
 @using Microsoft.AspNetCore.Identity
 
 <h3>Login</h3>
-
+@if (_displayLoginError)
+{
+    <p>Username or Password wrong!</p>
+}
 <EditForm FormName="login" method="post" Model="Input" OnValidSubmit="LoginAsync">
     <div>
         <label>Username</label>
@@ -27,6 +30,8 @@
 
 @code {
     [SupplyParameterFromForm] public LoginModel Input { get; set; } = new();
+
+    private bool _displayLoginError;
 
     protected override Task OnInitializedAsync()
     {
@@ -73,6 +78,11 @@
 
             await contextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
             navigationManager.NavigateTo("/", true);
+        }
+        else
+        {
+            Input = new();
+            _displayLoginError = true;
         }
     }
 
