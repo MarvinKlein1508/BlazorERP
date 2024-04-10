@@ -1,0 +1,20 @@
+﻿@page "/Account/Details"
+@inject AuthService authService
+
+<h3>AccountDetails</h3>
+@if(_user is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <p>Username: @_user.GetName()</p>
+
+}
+@code {
+    private User? _user;
+    protected override async Task OnInitializedAsync()
+    {
+        _user = await authService.GetUserAsync();
+    }
+}
