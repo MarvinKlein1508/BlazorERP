@@ -1,12 +1,16 @@
 ﻿using BlazorERP.Core.Interfaces;
 using Dapper;
 using FirebirdSql.Data.FirebirdClient;
+using FirebirdSql.Data.Services;
+using Microsoft.Extensions.Configuration;
 using System.Data;
 
 namespace BlazorERP.Core.Utilities;
 
 public sealed class FbController : IDisposable, IDbController
 {
+    private static string _connectionString = string.Empty;
+
     private bool _disposedValue;
     /// <inheritdoc />
     public IDbConnection Connection { get; }
@@ -18,12 +22,21 @@ public sealed class FbController : IDisposable, IDbController
     /// Creates a new <see cref="FbController"/> with the given ConnectionString and opens the connection.
     /// </summary>
     /// <param name="connectionString"></param>
-    public FbController(string connectionString)
+    public FbController(string? connectionString = null)
     {
+        if (connectionString is null)
+        {
+            connectionString = _connectionString;
+        }
+
         Connection = new FbConnection(connectionString);
         Connection.Open();
     }
 
+    public static void Initialize(IConfiguration configuration)
+    {
+        _connectionString = configuration.GetConnectionString("Default") ?? string.Empty;
+    }
     #endregion
     #region SQL-Methods
     /// <inheritdoc />

@@ -40,7 +40,7 @@
 
     private async Task LoginAsync()
     {
-        using IDbController dbController = new FbController(config.GetConnectionString("Default"));
+        using IDbController dbController = new FbController();
 
 
         User? user = await userService.GetByUsernameAsync(Input.Username, dbController);

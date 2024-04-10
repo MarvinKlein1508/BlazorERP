@@ -1,6 +1,7 @@
 using BlazorERP.Components;
 using BlazorERP.Core.Models;
 using BlazorERP.Core.Services;
+using BlazorERP.Core.Utilities;
 using Dapper;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
@@ -24,6 +25,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
 
 builder.Services.AddScoped<UserService>();
+
+
+FbController.Initialize(builder.Configuration);
 
 var app = builder.Build();
 
