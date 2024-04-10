@@ -8,6 +8,6 @@ Welcome to your new Fluent Blazor app.
 
 <AuthorizeView>
     <Authorized Context="user">
-        @user.User.Claims.First().Value
+        @user.User.Identity.Name
     </Authorized>
 </AuthorizeView>
