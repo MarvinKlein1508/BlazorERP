@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorERP", "BlazorERP\BlazorERP.csproj", "{481E5BA7-02E6-415D-9CDF-5B912DF20D52}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorERP", "BlazorERP\BlazorERP.csproj", "{481E5BA7-02E6-415D-9CDF-5B912DF20D52}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorERP.Core", "BlazorERP.Core\BlazorERP.Core.csproj", "{BFBA1C5C-E05B-4A89-AF8C-66818FEE81BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorERP.Core", "BlazorERP.Core\BlazorERP.Core.csproj", "{BFBA1C5C-E05B-4A89-AF8C-66818FEE81BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorERP.Components", "BlazorERP.Components\BlazorERP.Components.csproj", "{4B964B94-AD2F-4DDC-82AB-F2BE1221DD94}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorERP.Components", "BlazorERP.Components\BlazorERP.Components.csproj", "{4B964B94-AD2F-4DDC-82AB-F2BE1221DD94}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
