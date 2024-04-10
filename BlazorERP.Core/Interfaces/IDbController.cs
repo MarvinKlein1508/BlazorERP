@@ -8,6 +8,8 @@ namespace BlazorERP.Core.Interfaces;
 /// </summary>
 public interface IDbController : IDisposable
 {
+    IDbConnection Connection { get; }
+    IDbTransaction? Transaction { get; }
     /// <summary>
     /// Executes SQL and returns the first specified object found.
     /// </summary>
@@ -34,21 +36,7 @@ public interface IDbController : IDisposable
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task QueryAsync(string sql, object? param = null, CancellationToken cancellationToken = default);
-    /// <summary>
-    /// Starts a new transaction for this IDbController instance.
-    /// </summary>
-    /// <returns></returns>
-    Task StartTransactionAsync();
-    /// <summary>
-    /// Commits and write all changes of the current transaction to the database.
-    /// </summary>
-    /// <returns></returns>
-    Task CommitAsync();
-    /// <summary>
-    /// Rollsback all changes of the current transaction
-    /// </summary>
-    /// <returns></returns>
-    Task RollbackAsync();
+
     /// <summary>
     /// Executes the provided procedure.
     /// </summary>
@@ -59,8 +47,3 @@ public interface IDbController : IDisposable
     Task<DynamicParameters?> ExecuteProcedureAsync(string procedureName, DynamicParameters? param = null, CancellationToken cancellationToken = default);
 }
 
-public interface IDbController<TConnection, TTransaction> : IDbController where TConnection : IDbConnection where TTransaction : IDbTransaction
-{
-    TConnection Connection { get; init; }
-    TTransaction? Transaction { get; }
-}

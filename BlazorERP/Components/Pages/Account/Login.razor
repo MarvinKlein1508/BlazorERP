@@ -2,9 +2,12 @@
 @layout EmptyLayout
 @inject IHttpContextAccessor contextAccessor
 @inject NavigationManager navigationManager
+@inject UserService userService
+@inject IConfiguration config
 @using Microsoft.AspNetCore.Authentication
 @using System.Security.Claims
 @using Microsoft.AspNetCore.Authentication.Cookies
+@using Microsoft.AspNetCore.Identity
 
 <h3>Login</h3>
 
@@ -25,25 +28,41 @@
 @code {
     [SupplyParameterFromForm] public LoginModel Input { get; set; } = new();
 
-    private HttpClient _client = default!;
-
     protected override Task OnInitializedAsync()
     {
-
         return base.OnInitializedAsync();
     }
 
     private async Task LoginAsync()
     {
-        if (Input.Username == "test" && Input.Password == "test")
+        using IDbController dbController = new FbController(config.GetConnectionString("Default"));
+
+
+        User? user = await userService.GetByUsernameAsync(Input.Username, dbController);
+
+        if (user is not null)
+        {
+            PasswordHasher<User> hasher = new();
+
+            string passwordHashed = hasher.HashPassword(user, Input.Password + user.Salt);
+
+            PasswordVerificationResult result = hasher.VerifyHashedPassword(user, user.Password, Input.Password + user.Salt);
+            // We handle login whenever we have a user object. So when it fails we need to set it to null
+            if (result is PasswordVerificationResult.Failed)
+            {
+                user = null;
+            }
+        }
+
+        // TODO: Try LDAP login
+
+        if (user is not null)
         {
             var claims = new List<Claim>
             {
-                new("userId", "test"),
+                new("userId", user.UserId.ToString()),
 
             };
-
-
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var authProperties = new AuthenticationProperties

@@ -1,8 +1,19 @@
 using BlazorERP.Components;
+using BlazorERP.Core.Models;
+using BlazorERP.Core.Services;
+using Dapper;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.FluentUI.AspNetCore.Components;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// will allow dapper to parse columns like user_id to UserId
+DefaultTypeMap.MatchNamesWithUnderscores = true;
+
+
+
+
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
@@ -11,6 +22,8 @@ builder.Services.AddFluentUIComponents();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
+
+builder.Services.AddScoped<UserService>();
 
 var app = builder.Build();
 

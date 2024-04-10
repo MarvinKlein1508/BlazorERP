@@ -1,13 +1,11 @@
-﻿using System.Data;
+﻿namespace BlazorERP.Core.Interfaces;
 
-namespace BlazorERP.Core.Interfaces;
-
-public interface IDbModel
+public interface IDbModel<T>
 {
-    int GetId();
+    T GetIdentifier();
 }
 
-public interface IDbModelWithName : IDbModel
+public interface IDbModelWithName<T> : IDbModel<T>
 {
     string GetName();
 }
