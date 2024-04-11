@@ -42,10 +42,17 @@
             {
 
 
+
                 @foreach (var item in Data)
                 {
                     <FluentCard>
-                        @item.Username
+                        @item.GetName()
+
+                        <FluentStack Wrap="true">
+                            <FluentStack Orientation="Orientation.Vertical">
+                                <FluentTextField @bind-Value="item.Username" Disabled="true" Label="Username" />
+                            </FluentStack>
+                        </FluentStack>
                     </FluentCard>
 
 
@@ -56,7 +63,7 @@
 
     </FluentGridItem>
     <FluentGridItem xs="12" sm="3">
-        <FluentCard>
+        <FluentCard Height="auto">
             <h4>Filter</h4>
 
             <EditForm Model="Filter" OnValidSubmit="async () => await LoadAsync()">
@@ -93,6 +100,22 @@
         return new FbController();
     }
 
+
+    protected override async Task LoadAsync()
+    {
+        await base.LoadAsync();
+
+        var item = Data.FirstOrDefault();
+
+        if(item is not null)
+        {
+            for(var i = 0; i < 30; i++)
+            {
+                Data.Add(item);
+            }
+        }
+
+    }
 
 
 }
