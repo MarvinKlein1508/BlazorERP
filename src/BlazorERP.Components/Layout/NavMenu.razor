@@ -1,4 +1,10 @@
-﻿<div class="navmenu">
+﻿@inject AuthService authService
+@if(_user is null)
+{
+    return;
+}
+
+<div class="navmenu">
     <input type="checkbox" title="Menu expand/collapse toggle" id="navmenu-toggle" class="navmenu-icon" />
     <label for="navmenu-toggle" class="navmenu-icon"><FluentIcon Value="@(new Icons.Regular.Size20.Navigation())" Color="Color.Fill" /></label>
     <nav class="sitenav" aria-labelledby="main-menu" onclick="document.getElementById('navmenu-toggle').click();">
@@ -6,6 +12,21 @@
             <FluentNavLink Href="/" Match="NavLinkMatch.All" Icon="@(new Icons.Regular.Size20.Home())" IconColor="Color.Accent">Home</FluentNavLink>
             <FluentNavLink Href="counter" Icon="@(new Icons.Regular.Size20.NumberSymbolSquare())" IconColor="Color.Accent">Counter</FluentNavLink>
             <FluentNavLink Href="weather" Icon="@(new Icons.Regular.Size20.WeatherPartlyCloudyDay())" IconColor="Color.Accent">Weather</FluentNavLink>
+
+            @if(_user.IsAdmin)
+            {
+                <FluentNavGroup Title="Administration" Icon="@(new Icons.Regular.Size20.Settings())">
+                    <ChildContent>
+                        <FluentNavGroup Title="Benutzer" Icon="@(new Icons.Regular.Size20.Person())">
+                            <ChildContent>
+                                <FluentNavLink Href="/Admin/Users" Icon="@(new Icons.Regular.Size20.PeopleList())">Benutzerliste</FluentNavLink>
+                                <FluentNavLink Href="/Admin/Groups" Icon="@(new Icons.Regular.Size20.Group())">Nutzergruppen</FluentNavLink>
+                            </ChildContent>
+                        </FluentNavGroup>
+                    </ChildContent>
+                </FluentNavGroup>
+            }
+
             <FluentNavGroup Title="Account" Icon="@(new Icons.Regular.Size20.Person())">
                 <ChildContent>
                     <FluentNavLink Href="/Account/Details" Icon="@(new Icons.Regular.Size20.ContactCard())">Details</FluentNavLink>
@@ -20,4 +41,9 @@
 
 @code {
     private bool expanded = true;
+    private User? _user;
+    protected override async Task OnInitializedAsync()
+    {
+        _user = await authService.GetUserAsync();
+    }
 }

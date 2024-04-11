@@ -22,4 +22,8 @@
 		<Folder Include="wwwroot\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\BlazorERP.Core\BlazorERP.Core.csproj" />
+	</ItemGroup>
+
 </Project>
