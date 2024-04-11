@@ -1,0 +1,98 @@
+﻿@page "/Admin/Users"
+@inject AuthService authService
+@inherits SearchPageBase<User, UserService, UserFilter>
+@rendermode InteractiveServer
+<PageTitle>Benutzerverwaltung</PageTitle>
+
+
+<FluentBreadcrumb>
+    <FluentBreadcrumbItem Href="/">
+        Start
+    </FluentBreadcrumbItem>
+    <FluentBreadcrumbItem>
+        Administration
+    </FluentBreadcrumbItem>
+    <FluentBreadcrumbItem>
+        Benutzer
+    </FluentBreadcrumbItem>
+    <FluentBreadcrumbItem>Benutzerliste</FluentBreadcrumbItem>
+</FluentBreadcrumb>
+
+
+<h3>Benutzerverwaltung</h3>
+
+
+
+<FluentGrid Width="100%">
+    <FluentGridItem xs="12">
+        <FluentStack HorizontalAlignment="HorizontalAlignment.End">
+            <FluentButton IconStart="@(new Icons.Regular.Size20.PersonAdd())"
+                          Appearance="Appearance.Accent">
+                Neuer Benutzer
+            </FluentButton>
+        </FluentStack>
+    </FluentGridItem>
+    <FluentGridItem xs="12" sm="9">
+        <FluentStack Orientation="Orientation.Vertical">
+            @if (_isLoading)
+            {
+                <FluentProgressRing />
+            }
+            else
+            {
+
+
+                @foreach (var item in Data)
+                {
+                    <FluentCard>
+                        @item.Username
+                    </FluentCard>
+
+
+                }
+            }
+
+        </FluentStack>
+
+    </FluentGridItem>
+    <FluentGridItem xs="12" sm="3">
+        <FluentCard>
+            <h4>Filter</h4>
+
+            <EditForm Model="Filter" OnValidSubmit="async () => await LoadAsync()">
+                <FluentStack Orientation="Orientation.Vertical">
+                    <FluentTextField @bind-Value="Filter.SearchPhrase" Label="Suchbegriff" />
+
+                    <FluentButton Type="ButtonType.Submit" IconStart="@(new Icons.Regular.Size20.Search())"
+                                  Appearance="Appearance.Accent">
+                        Suchen
+                    </FluentButton>
+                </FluentStack>
+
+            </EditForm>
+        </FluentCard>
+    </FluentGridItem>
+</FluentGrid>
+
+
+
+
+
+
+
+
+
+
+
+
+@code {
+    protected override bool InternalNavigation => false;
+
+    protected override IDbController GetDbController()
+    {
+        return new FbController();
+    }
+
+
+
+}
