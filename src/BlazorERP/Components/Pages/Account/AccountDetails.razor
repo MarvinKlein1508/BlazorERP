@@ -1,19 +1,57 @@
 ﻿@page "/Account/Details"
 @inject AuthService authService
 
-<h3>AccountDetails</h3>
+<h3>Accountdetails</h3>
 
 @if (_user is null)
 {
     return;
 }
 
-<FluentCard Width="100%">
-    <FluentStack Orientation="Orientation.Vertical">
-        <div class="demopanel">Username: @_user.Username</div>
-        <div class="demopanel">Herkunft: @_user.Origin</div>
-    </FluentStack>
-</FluentCard>
+<FluentGrid>
+    <FluentGridItem xs="12" sm="6">
+        <FluentStack Orientation="Orientation.Vertical">
+            <div class="property">
+                <div class="property-icon"><FluentIcon Value="@(new Icons.Regular.Size20.NumberSymbol())" /></div>
+                <div class="property-title">UserId:</div>
+                <div class="property-content">@_user.UserId</div>
+            </div>
+
+            <div class="property">
+                <div class="property-icon"><FluentIcon Value="@(new Icons.Regular.Size20.Person())" /></div>
+                <div class="property-title">Username:</div>
+                <div class="property-content">@_user.Username</div>
+            </div>
+
+            <div class="property">
+                <div class="property-icon"><FluentIcon Value="@(new Icons.Regular.Size20.PersonNote())" /></div>
+                <div class="property-title">Anzeigename:</div>
+                <div class="property-content">@_user.GetName()</div>
+            </div>
+
+            <div class="property">
+                <div class="property-icon"><FluentIcon Value="@(new Icons.Regular.Size20.GlobeDesktop())" /></div>
+                <div class="property-title">Kontotyp:</div>
+                <div class="property-content">@(_user.Origin is "ad" ? "Active Directory" : "Lokales Benutzerkonto")</div>
+            </div>
+
+            <div class="property">
+                <div class="property-icon"><FluentIcon Value="@(new Icons.Regular.Size20.Mail())" /></div>
+                <div class="property-title">E-Mail:</div>
+                <div class="property-content">@_user.Email</div>
+            </div>
+
+            <div class="property">
+                <div class="property-icon"><FluentIcon Value="@(new Icons.Regular.Size20.Key())" /></div>
+                <div class="property-title">Administrator:</div>
+                <div class="property-content">@(_user.IsAdmin ? "Ja" : "Nein")</div>
+            </div>
+        </FluentStack>
+    </FluentGridItem>
+</FluentGrid>
+
+
+
 
 @code {
     private User? _user;

@@ -1,0 +1,25 @@
+﻿.property {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    width: 100%;
+}
+
+    .property .property-icon {
+        font-size: 24px;
+        color: #007bff;
+    }
+
+    .property .property-title {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .property .property-content {
+        flex-grow: 1;
+        color: #666;
+    }
