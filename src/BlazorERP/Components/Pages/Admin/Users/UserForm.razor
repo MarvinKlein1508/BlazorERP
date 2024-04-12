@@ -25,7 +25,16 @@
                           IconStart="@(new Icons.Regular.Size20.ArrowReply())">
                 Zurück
             </FluentAnchor>
-            <FluentMenuButton Text="Optionen" Items="@items" OnMenuChanged="HandleOnMenuChanged" ButtonAppearance="Appearance.Outline" />
+          
+            <FluentButton id="btnOpen1" Appearance="Appearance.Accent" @onclick="@(() => _showOptionsMenu = !_showOptionsMenu)">
+                Optionen
+            </FluentButton>
+
+            <FluentMenu Anchor="btnOpen1" @bind-Open="_showOptionsMenu" VerticalThreshold="170">
+                <FluentMenuItem>Passwort ändern</FluentMenuItem>
+                <FluentMenuItem>Benutzer löschen</FluentMenuItem>
+            </FluentMenu>
+
             <FluentButton IconStart="@(new Icons.Regular.Size20.Save())"
                           Appearance="Appearance.Accent">
 
@@ -114,29 +123,13 @@
     <FluentGridItem md="4" HiddenWhen="GridItemHidden.MdAndDown"></FluentGridItem>
 </FluentGrid>
 
-
-
-
-
-
 @code {
 
     protected override string BaseUrl => "/Admin/Users/";
 
+    private bool _showOptionsMenu;
 
-    private Dictionary<string, string> items = new Dictionary<string, string>()
-    {
-        { "change-password", "Passwort ändern" },
-        { "delete-user", "Benutzer löschen" },
-    };
 
-    private async Task HandleOnMenuChanged(MenuChangeEventArgs args)
-    {
-        if (args.Id == "delete-user")
-        {
-            await DialogService.ShowConfirmationAsync($"Möchten Sie den Benutzer \"{Input.GetName()}\" wirklich löschen?", "Ja", "Nein", "Benutzer löschen?");
-        }
-    }
 
 
     [Parameter, SupplyParameterFromQuery(Name = "userId")]
