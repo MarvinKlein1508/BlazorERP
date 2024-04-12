@@ -25,7 +25,7 @@
                           IconStart="@(new Icons.Regular.Size20.ArrowReply())">
                 Zurück
             </FluentAnchor>
-            <FluentMenuButton @ref=menubutton Text="Optionen" Items="@items" OnMenuChanged="HandleOnMenuChanged" ButtonAppearance="Appearance.Outline" />
+            <FluentMenuButton Text="Optionen" Items="@items" OnMenuChanged="HandleOnMenuChanged" ButtonAppearance="Appearance.Outline" />
             <FluentButton IconStart="@(new Icons.Regular.Size20.Save())"
                           Appearance="Appearance.Accent">
 
@@ -95,21 +95,13 @@
 
 
 @code {
-    private FluentDialog _deleteUserDialog;
-    private bool _showDeleteModal;
+
     protected override string BaseUrl => "/Admin/Users/";
-    private FluentMenuButton menubutton = new();
 
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-        var result = await DialogService.ShowConfirmationAsync($"Möchten Sie den Benutzer \"TEST\" wirklich löschen?", "Ja", "Nein", "Benutzer löschen?");
-
-    }
 
     private Dictionary<string, string> items = new Dictionary<string, string>()
     {
-        { "0078D4", "Passwort ändern" },
+        { "change-password", "Passwort ändern" },
         { "delete-user", "Benutzer löschen" },
     };
 
@@ -117,7 +109,6 @@
     {
         if(args.Id == "delete-user")
         {
-
             await DialogService.ShowConfirmationAsync($"Möchten Sie den Benutzer \"{Input.GetName()}\" wirklich löschen?", "Ja", "Nein", "Benutzer löschen?");
         }
     }
