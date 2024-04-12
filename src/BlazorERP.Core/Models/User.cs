@@ -19,4 +19,9 @@ public class User : IDbModelWithName<int?>
 
     public int? GetIdentifier() => UserId;
     public string GetName() => $"{FirstName} {LastName}".Trim();
+
+    /// <summary>
+    /// This property is only to compare passwords during administration processes.
+    /// </summary>
+    public string PasswordConfirm { get; set; } = string.Empty;
 }

@@ -38,51 +38,76 @@
 
         <FluentCard>
 
-            @if (ActiveDirectoryMode)
-            {
-                <FluentMessageBar Title="Hinweis:" Intent="@MessageIntent.Warning" AllowDismiss="false" Class="mb-1">
-                    Dieses Konto ist mit dem Active Directory verknüpft. Sie können daher nicht alle Eigenschaften bearbeiten.
-                </FluentMessageBar>
-            }
+
 
             <EditForm Model="Input">
-                @if (Input.UserId > 0)
-                {
-                    <FluentNumberField @bind-Value="Input.UserId" Label="UserId" Disabled />
-                }
-
-                @if (ActiveDirectoryMode)
-                {
-                    <FluentTextField Value="@(Input.ActiveDirectoryGuid?.ToString() ?? string.Empty)" Label="Active Directory Guid" Disabled />
-                }
-
-                <FluentSelect @bind-SelectedOption="Input.AccountType" TOption="AccountType" Label="Kontotyp" Disabled>
-                    @foreach (var item in Enum.GetValues<AccountType>())
+                <FluentGrid Spacing="1">
+                    @if (ActiveDirectoryMode)
                     {
-                        <FluentOption Value="@item.ToString()" Selected=@(Input.AccountType == item)>@item.ToText()</FluentOption>
+                        <FluentGridItem xs="12">
+                            <FluentMessageBar Title="Hinweis:" Intent="@MessageIntent.Warning" AllowDismiss="false" Class="mb-1">
+                                Dieses Konto ist mit dem Active Directory verknüpft. Sie können daher nicht alle Eigenschaften bearbeiten.
+                            </FluentMessageBar>
+                        </FluentGridItem>
                     }
-                </FluentSelect>
+                    @if (Input.UserId > 0)
+                    {
+                        <FluentGridItem xs="12">
+                            <FluentNumberField @bind-Value="Input.UserId" Label="UserId" Disabled />
+                        </FluentGridItem>
+                    }
 
-                <FluentGrid>
+                    @if (ActiveDirectoryMode)
+                    {
+                        <FluentGridItem xs="12">
+                            <FluentTextField Value="@(Input.ActiveDirectoryGuid?.ToString() ?? string.Empty)" Label="Active Directory Guid" Disabled />
+                        </FluentGridItem>
+                    }
+
+                    <FluentGridItem xs="12">
+                        <FluentSelect @bind-SelectedOption="Input.AccountType" TOption="AccountType" Label="Kontotyp" Disabled>
+                            @foreach (var item in Enum.GetValues<AccountType>())
+                            {
+                                <FluentOption Value="@item.ToString()" Selected=@(Input.AccountType == item)>@item.ToText()</FluentOption>
+                            }
+                        </FluentSelect>
+                    </FluentGridItem>
+
                     <FluentGridItem xs="12" md="6">
                         <FluentTextField @bind-Value="Input.FirstName" Label="Vorname" Disabled="ActiveDirectoryMode" />
                     </FluentGridItem>
                     <FluentGridItem xs="12" md="6">
                         <FluentTextField @bind-Value="Input.LastName" Label="Nachname" Disabled="ActiveDirectoryMode" />
                     </FluentGridItem>
+
+                    @if (Modus is EditMode.Create)
+                    {
+                        <FluentGridItem xs="12" md="6">
+                            <FluentTextField @bind-Value="Input.Password" Label="Passwort" TextFieldType="TextFieldType.Password" />
+                        </FluentGridItem>
+                        <FluentGridItem xs="12" md="6">
+                            <FluentTextField @bind-Value="Input.PasswordConfirm" Label="Passwort wiederholen" TextFieldType="TextFieldType.Password" />
+                        </FluentGridItem>
+                    }
+
+                    <FluentGridItem xs="12">
+                        <FluentTextField @bind-Value="Input.Email" Label="E-Mail" Disabled="ActiveDirectoryMode" />
+                    </FluentGridItem>
+
+                    <FluentGridItem xs="12">
+                        <FluentSwitch @bind-Value="Input.IsActive" Label="Status">
+                            <span slot="checked-message">Aktiv</span>
+                            <span slot="unchecked-message">Inaktiv</span>
+                        </FluentSwitch>
+                    </FluentGridItem>
+
+                    <FluentGridItem xs="12">
+                        <FluentSwitch @bind-Value="Input.IsAdmin" Label="Administrator">
+                            <span slot="checked-message">Ja</span>
+                            <span slot="unchecked-message">Nein</span>
+                        </FluentSwitch>
+                    </FluentGridItem>
                 </FluentGrid>
-                <FluentTextField @bind-Value="Input.Email" Label="E-Mail" Disabled="ActiveDirectoryMode" />
-
-                <FluentSwitch @bind-Value="Input.IsActive" Label="Status" Class="d-flex mb-1 mt-1">
-                    <span slot="checked-message">Aktiv</span>
-                    <span slot="unchecked-message">Inaktiv</span>
-                </FluentSwitch>
-
-                <FluentSwitch @bind-Value="Input.IsAdmin" Label="Administrator" Class="d-flex mb-1">
-                    <span slot="checked-message">Ja</span>
-                    <span slot="unchecked-message">Nein</span>
-                </FluentSwitch>
-
             </EditForm>
         </FluentCard>
     </FluentGridItem>
@@ -107,7 +132,7 @@
 
     private async Task HandleOnMenuChanged(MenuChangeEventArgs args)
     {
-        if(args.Id == "delete-user")
+        if (args.Id == "delete-user")
         {
             await DialogService.ShowConfirmationAsync($"Möchten Sie den Benutzer \"{Input.GetName()}\" wirklich löschen?", "Ja", "Nein", "Benutzer löschen?");
         }
