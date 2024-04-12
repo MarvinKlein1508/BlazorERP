@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BlazorERP.Core.Services;
 
-public class UserService : IModelService<User, int, UserFilter>
+public class UserService : IModelService<User, int?, UserFilter>
 {
     public Task CreateAsync(User input, IDbController dbController, CancellationToken cancellationToken = default)
     {
@@ -17,8 +17,13 @@ public class UserService : IModelService<User, int, UserFilter>
         throw new NotImplementedException();
     }
 
-    public Task<User?> GetAsync(int userId, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task<User?> GetAsync(int? userId, IDbController dbController, CancellationToken cancellationToken = default)
     {
+        if (userId is null)
+        {
+            return Task.FromResult<User?>(null);
+        }
+
         string sql = "SELECT * FROM USERS WHERE USER_ID = @USER_ID";
 
         return dbController.GetFirstAsync<User>(sql,
@@ -81,7 +86,7 @@ public class UserService : IModelService<User, int, UserFilter>
             WHERE 1 = 1
             {GetFilterWhere(filter)}
             """;
-        
+
 
         return dbController.GetFirstAsync<int>(sql, GetFilterParameter(filter), cancellationToken);
     }
@@ -100,7 +105,7 @@ public class UserService : IModelService<User, int, UserFilter>
 )");
         }
 
- 
+
 
         string sql = sb.ToString();
         return sql;

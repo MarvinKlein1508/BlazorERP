@@ -32,7 +32,7 @@
             <div class="property">
                 <div class="property-icon"><FluentIcon Value="@(new Icons.Regular.Size20.GlobeDesktop())" /></div>
                 <div class="property-title">Kontotyp:</div>
-                <div class="property-content">@(_user.Origin is "ad" ? "Active Directory" : "Lokales Benutzerkonto")</div>
+                <div class="property-content">@_user.AccountType.ToText()</div>
             </div>
 
             <div class="property">

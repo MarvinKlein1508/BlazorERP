@@ -13,6 +13,7 @@
                 <NavMenu @rendermode="InteractiveServer" />
                 <FluentBodyContent Class="body-content">
                     <div class="content">
+                        <FluentMessageBarProvider Section="MESSAGES_TOP" />
                         @Body
                     </div>
                 </FluentBodyContent>
@@ -25,9 +26,11 @@
                     <a href="https://learn.microsoft.com/en-us/aspnet/core/blazor" target="_blank">About Blazor</a>
                 </div>
             </FluentFooter>
+
         </FluentLayout>
     </Authorized>
 </AuthorizeView>
+
 
 <div id="blazor-error-ui">
     An unhandled error has occurred.

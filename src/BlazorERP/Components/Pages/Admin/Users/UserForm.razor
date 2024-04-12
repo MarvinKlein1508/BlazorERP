@@ -1,6 +1,8 @@
 ﻿@page "/Admin/Users/Edit"
 @inject AuthService authService
-@inherits EditPageBase<int, User, UserService>
+@inherits EditPageBase<int?, User, UserService>
+@inject IMessageService messageService
+@inject IDialogService DialogService
 @rendermode InteractiveServer
 <PageTitle>@FinalBreadcrumbItemName</PageTitle>
 
@@ -12,22 +14,80 @@
     <FluentBreadcrumbItem Href="/Admin/Users">Benutzerliste</FluentBreadcrumbItem>
     <FluentBreadcrumbItem>@FinalBreadcrumbItemName</FluentBreadcrumbItem>
 </FluentBreadcrumb>
-
-
-<h3>@FinalBreadcrumbItemName</h3>
-
-
-@if (Input is not null)
+@if (Input is null)
 {
-    <EditForm Model="Input">
-        <FluentTextField @bind-Value="Input.FirstName" />
-    </EditForm>
-
+    return;
 }
+<FluentGrid>
+    <FluentGridItem xs="12">
+        <FluentStack HorizontalAlignment="HorizontalAlignment.End">
+            <FluentAnchor Href="/Admin/Users"
+                          IconStart="@(new Icons.Regular.Size20.ArrowReply())">
+                Zurück
+            </FluentAnchor>
+            <FluentMenuButton @ref=menubutton Text="Optionen" Items="@items" OnMenuChanged="HandleOnMenuChanged" ButtonAppearance="Appearance.Outline" />
+            <FluentButton IconStart="@(new Icons.Regular.Size20.Save())"
+                          Appearance="Appearance.Accent">
 
+                Speichern
+            </FluentButton>
+        </FluentStack>
+    </FluentGridItem>
+    <FluentGridItem md="4" HiddenWhen="GridItemHidden.MdAndDown"></FluentGridItem>
+    <FluentGridItem xs="12" md="4">
 
+        <FluentCard>
 
+            @if (ActiveDirectoryMode)
+            {
+                <FluentMessageBar Title="Hinweis:" Intent="@MessageIntent.Warning" AllowDismiss="false" Class="mb-1">
+                    Dieses Konto ist mit dem Active Directory verknüpft. Sie können daher nicht alle Eigenschaften bearbeiten.
+                </FluentMessageBar>
+            }
 
+            <EditForm Model="Input">
+                @if (Input.UserId > 0)
+                {
+                    <FluentNumberField @bind-Value="Input.UserId" Label="UserId" Disabled />
+                }
+
+                @if (ActiveDirectoryMode)
+                {
+                    <FluentTextField Value="@(Input.ActiveDirectoryGuid?.ToString() ?? string.Empty)" Label="Active Directory Guid" Disabled />
+                }
+
+                <FluentSelect @bind-SelectedOption="Input.AccountType" TOption="AccountType" Label="Kontotyp" Disabled>
+                    @foreach (var item in Enum.GetValues<AccountType>())
+                    {
+                        <FluentOption Value="@item.ToString()" Selected=@(Input.AccountType == item)>@item.ToText()</FluentOption>
+                    }
+                </FluentSelect>
+
+                <FluentGrid>
+                    <FluentGridItem xs="12" md="6">
+                        <FluentTextField @bind-Value="Input.FirstName" Label="Vorname" Disabled="ActiveDirectoryMode" />
+                    </FluentGridItem>
+                    <FluentGridItem xs="12" md="6">
+                        <FluentTextField @bind-Value="Input.LastName" Label="Nachname" Disabled="ActiveDirectoryMode" />
+                    </FluentGridItem>
+                </FluentGrid>
+                <FluentTextField @bind-Value="Input.Email" Label="E-Mail" Disabled="ActiveDirectoryMode" />
+
+                <FluentSwitch @bind-Value="Input.IsActive" Label="Status" Class="d-flex mb-1 mt-1">
+                    <span slot="checked-message">Aktiv</span>
+                    <span slot="unchecked-message">Inaktiv</span>
+                </FluentSwitch>
+
+                <FluentSwitch @bind-Value="Input.IsAdmin" Label="Administrator" Class="d-flex mb-1">
+                    <span slot="checked-message">Ja</span>
+                    <span slot="unchecked-message">Nein</span>
+                </FluentSwitch>
+
+            </EditForm>
+        </FluentCard>
+    </FluentGridItem>
+    <FluentGridItem md="4" HiddenWhen="GridItemHidden.MdAndDown"></FluentGridItem>
+</FluentGrid>
 
 
 
@@ -35,8 +95,49 @@
 
 
 @code {
+    private FluentDialog _deleteUserDialog;
+    private bool _showDeleteModal;
     protected override string BaseUrl => "/Admin/Users/";
+    private FluentMenuButton menubutton = new();
 
-    [Parameter,SupplyParameterFromQuery(Name = "userId")]
-    public override int Identifier { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        var result = await DialogService.ShowConfirmationAsync($"Möchten Sie den Benutzer \"TEST\" wirklich löschen?", "Ja", "Nein", "Benutzer löschen?");
+
+    }
+
+    private Dictionary<string, string> items = new Dictionary<string, string>()
+    {
+        { "0078D4", "Passwort ändern" },
+        { "delete-user", "Benutzer löschen" },
+    };
+
+    private async Task HandleOnMenuChanged(MenuChangeEventArgs args)
+    {
+        if(args.Id == "delete-user")
+        {
+
+            await DialogService.ShowConfirmationAsync($"Möchten Sie den Benutzer \"{Input.GetName()}\" wirklich löschen?", "Ja", "Nein", "Benutzer löschen?");
+        }
+    }
+
+
+    [Parameter, SupplyParameterFromQuery(Name = "userId")]
+    public override int? Identifier { get; set; }
+
+    public bool ActiveDirectoryMode => Input?.AccountType is AccountType.ActiveDirectory;
+
+    protected override async Task InitializeModelAsync(bool newEntry, IDbController dbController)
+    {
+        if (Input is null)
+        {
+            return;
+        }
+
+        Input.AccountType = Core.Enums.AccountType.ActiveDirectory;
+        Input.ActiveDirectoryGuid = Guid.NewGuid();
+
+
+    }
 }

@@ -93,3 +93,8 @@
         display: none;
     }
 }
+
+
+fluent-text-field, fluent-number-field, fluent-select{
+    width: 100%;
+}

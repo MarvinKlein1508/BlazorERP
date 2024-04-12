@@ -2,37 +2,27 @@
 @inject AuthService authService
 @inherits SearchPageBase<User, UserService, UserFilter>
 @rendermode InteractiveServer
-<PageTitle>Benutzerverwaltung</PageTitle>
+<PageTitle>Benutzerliste</PageTitle>
 
 
 <FluentBreadcrumb>
-    <FluentBreadcrumbItem Href="/">
-        Start
-    </FluentBreadcrumbItem>
-    <FluentBreadcrumbItem>
-        Administration
-    </FluentBreadcrumbItem>
-    <FluentBreadcrumbItem>
-        Benutzer
-    </FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="/">Start</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem>Administration</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem>Benutzer</FluentBreadcrumbItem>
     <FluentBreadcrumbItem>Benutzerliste</FluentBreadcrumbItem>
 </FluentBreadcrumb>
 
-
-<h3>Benutzerverwaltung</h3>
 
 
 
 <FluentGrid Width="100%">
     <FluentGridItem xs="12">
         <FluentStack HorizontalAlignment="HorizontalAlignment.End">
-            <a href="/Admin/Users/Edit">
-                <FluentButton IconStart="@(new Icons.Regular.Size20.PersonAdd())"
-                              Appearance="Appearance.Accent">
-
-                    Neuer Benutzer
-                </FluentButton>
-            </a>
+            <FluentAnchor Href="/Admin/Users/Edit"
+                          IconStart="@(new Icons.Regular.Size20.PersonAdd().WithColor(Color.Fill))"
+                          Appearance="Appearance.Accent">
+                Neuer Benutzer
+            </FluentAnchor>
         </FluentStack>
     </FluentGridItem>
     <FluentGridItem xs="12" sm="9">
@@ -67,7 +57,7 @@
                             <div class="list-item">
                                 <label>Kontotyp</label>
                                 <FluentBadge Appearance="Appearance.Neutral">
-                                    @(item.Origin is "local" ? "Lokales Konto" : "Active Directory")
+                                    @item.AccountType.ToText()
                                 </FluentBadge>
                             </div>
                             <div class="list-item">
@@ -76,9 +66,9 @@
                             </div>
                         </div>
                         <div class="list-buttons">
-                            <a href="/Admin/Users/Edit?userId=@item.GetIdentifier()">
-                                <FluentButton>Bearbeiten</FluentButton>
-                            </a>
+                            <FluentAnchor Href="@($"/Admin/Users/Edit?userId={item.GetIdentifier()}")">
+                                Bearbeiten
+                            </FluentAnchor>
                         </div>
                     </div>
                 }
@@ -93,7 +83,7 @@
 
             <EditForm Model="Filter" OnValidSubmit="async () => await LoadAsync()">
                 <FluentStack Orientation="Orientation.Vertical">
-                    <FluentTextField @bind-Value="Filter.SearchPhrase" Label="Suchbegriff" />
+                    <FluentTextField @bind-Value="Filter.SearchPhrase" Label="Suchbegriff" Placeholder="Name, E-Mail" />
 
                     <FluentButton Type="ButtonType.Submit" IconStart="@(new Icons.Regular.Size20.Search())"
                                   Appearance="Appearance.Accent">
