@@ -26,10 +26,13 @@
 <FluentGrid Width="100%">
     <FluentGridItem xs="12">
         <FluentStack HorizontalAlignment="HorizontalAlignment.End">
-            <FluentButton IconStart="@(new Icons.Regular.Size20.PersonAdd())"
-                          Appearance="Appearance.Accent">
-                Neuer Benutzer
-            </FluentButton>
+            <a href="/Admin/Users/Edit">
+                <FluentButton IconStart="@(new Icons.Regular.Size20.PersonAdd())"
+                              Appearance="Appearance.Accent">
+
+                    Neuer Benutzer
+                </FluentButton>
+            </a>
         </FluentStack>
     </FluentGridItem>
     <FluentGridItem xs="12" sm="9">
@@ -73,7 +76,9 @@
                             </div>
                         </div>
                         <div class="list-buttons">
-                            <FluentButton>Test</FluentButton>
+                            <a href="/Admin/Users/Edit?userId=@item.GetIdentifier()">
+                                <FluentButton>Bearbeiten</FluentButton>
+                            </a>
                         </div>
                     </div>
                 }
@@ -114,6 +119,8 @@
 
 @code {
     protected override bool InternalNavigation => false;
+
+
 
     protected override IDbController GetDbController()
     {

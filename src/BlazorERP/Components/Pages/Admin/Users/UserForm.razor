@@ -1,0 +1,42 @@
+﻿@page "/Admin/Users/Edit"
+@inject AuthService authService
+@inherits EditPageBase<int, User, UserService>
+@rendermode InteractiveServer
+<PageTitle>@FinalBreadcrumbItemName</PageTitle>
+
+
+<FluentBreadcrumb>
+    <FluentBreadcrumbItem Href="/">Start</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem>Administration</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem>Benutzer</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="/Admin/Users">Benutzerliste</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem>@FinalBreadcrumbItemName</FluentBreadcrumbItem>
+</FluentBreadcrumb>
+
+
+<h3>@FinalBreadcrumbItemName</h3>
+
+
+@if (Input is not null)
+{
+    <EditForm Model="Input">
+        <FluentTextField @bind-Value="Input.FirstName" />
+    </EditForm>
+
+}
+
+
+
+
+
+
+
+
+
+
+@code {
+    protected override string BaseUrl => "/Admin/Users/";
+
+    [Parameter,SupplyParameterFromQuery(Name = "userId")]
+    public override int Identifier { get; set; }
+}

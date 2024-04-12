@@ -16,4 +16,10 @@
     <ProjectReference Include="..\BlazorERP.Components\BlazorERP.Components.csproj" />
     <ProjectReference Include="..\BlazorERP.Core\BlazorERP.Core.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Components\Pages\Admin\Users\UserForm.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+  </ItemGroup>
 </Project>
