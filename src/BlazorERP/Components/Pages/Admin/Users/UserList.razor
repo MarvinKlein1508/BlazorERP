@@ -45,17 +45,37 @@
 
                 @foreach (var item in Data)
                 {
-                    <FluentCard>
-                        @item.GetName()
-
-                        <FluentStack Wrap="true">
-                            <FluentStack Orientation="Orientation.Vertical">
-                                <FluentTextField @bind-Value="item.Username" Disabled="true" Label="Username" />
-                            </FluentStack>
-                        </FluentStack>
-                    </FluentCard>
-
-
+                    <div class="list">
+                        <div class="list-details">
+                            <div class="list-item" hidden-when="xs sm">
+                                <label>Id</label>
+                                <span>@item.UserId</span>
+                            </div>
+                            <div class="list-item">
+                                <label>Name</label>
+                                <span>@item.GetName()</span>
+                            </div>
+                            <div class="list-item">
+                                <label>Status</label>
+                                <FluentBadge Appearance="Appearance.Neutral">
+                                    @(item.IsActive ? "Aktiv" : "Inaktiv")
+                                </FluentBadge>
+                            </div>
+                            <div class="list-item">
+                                <label>Kontotyp</label>
+                                <FluentBadge Appearance="Appearance.Neutral">
+                                    @(item.Origin is "local" ? "Lokales Konto" : "Active Directory")
+                                </FluentBadge>
+                            </div>
+                            <div class="list-item">
+                                <label>E-Mail</label>
+                                <span>@item.Email</span>
+                            </div>
+                        </div>
+                        <div class="list-buttons">
+                            <FluentButton>Test</FluentButton>
+                        </div>
+                    </div>
                 }
             }
 
@@ -107,9 +127,9 @@
 
         var item = Data.FirstOrDefault();
 
-        if(item is not null)
+        if (item is not null)
         {
-            for(var i = 0; i < 30; i++)
+            for (var i = 0; i < 30; i++)
             {
                 Data.Add(item);
             }
