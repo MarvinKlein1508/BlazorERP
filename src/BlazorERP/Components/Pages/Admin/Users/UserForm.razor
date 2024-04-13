@@ -191,7 +191,7 @@
             var tmp = (ChangePasswordModel)result.Data;
         }
     }
-
+    
     private async Task ShowDeleteModalAsync()
     {
 
@@ -211,7 +211,7 @@
             {
                 options.Title = "Benutzer wurde erfolgreich gelöscht!";
                 options.Intent = MessageIntent.Success;
-                options.Section = "MESSAGES_TOP";
+                options.Section = Constants.MESSAGEBAR_TOP_SECTION;
                 options.Timeout = 4000;
             });
             
