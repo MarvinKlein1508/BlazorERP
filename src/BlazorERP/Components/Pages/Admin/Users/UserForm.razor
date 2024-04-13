@@ -29,14 +29,17 @@
                 Zurück
             </FluentAnchor>
 
-            <FluentButton id="btnOpen1" Appearance="Appearance.Accent" @onclick="@(() => _showOptionsMenu = !_showOptionsMenu)">
-                Optionen
-            </FluentButton>
+            @if (Modus is EditMode.Edit)
+            {
+                <FluentButton id="btnOpen1" Appearance="Appearance.Accent" @onclick="@(() => _showOptionsMenu = !_showOptionsMenu)">
+                    Optionen
+                </FluentButton>
 
-            <FluentMenu Anchor="btnOpen1" @bind-Open="_showOptionsMenu" VerticalThreshold="170">
-                <FluentMenuItem>Passwort ändern</FluentMenuItem>
-                <FluentMenuItem>Benutzer löschen</FluentMenuItem>
-            </FluentMenu>
+                <FluentMenu Anchor="btnOpen1" @bind-Open="_showOptionsMenu" VerticalThreshold="170">
+                    <FluentMenuItem Disabled="ActiveDirectoryMode">Passwort ändern</FluentMenuItem>
+                    <FluentMenuItem>Benutzer löschen</FluentMenuItem>
+                </FluentMenu>
+            }
 
             <FluentButton IconStart="@(new Icons.Regular.Size20.Save())"
                           Appearance="Appearance.Accent"
