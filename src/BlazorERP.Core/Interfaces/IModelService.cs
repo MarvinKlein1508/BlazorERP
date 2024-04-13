@@ -134,3 +134,15 @@ public interface IFilterOperations<TObject, TFilter>
     /// <returns>A dictionary with all parameters as key value pairs to be used with Dapper.</returns>
     Dictionary<string, object?> GetFilterParameter(TFilter filter);
 }
+
+/// <summary>
+/// Provides methods to generate parameters for Dapper queries.
+/// </summary>
+public interface IDbParameterizable
+{
+    /// <summary>
+    /// Gets a dictionary of parameters for the object which can be used in Dapper-Queries.
+    /// </summary>
+    /// <returns></returns>
+    Dictionary<string, object?> GetParameters();
+}

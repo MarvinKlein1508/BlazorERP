@@ -7,9 +7,44 @@ namespace BlazorERP.Core.Services;
 
 public class UserService : IModelService<User, int?, UserFilter>
 {
-    public Task CreateAsync(User input, IDbController dbController, CancellationToken cancellationToken = default)
+    public async Task CreateAsync(User input, IDbController dbController, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        cancellationToken.ThrowIfCancellationRequested();
+        string sql =
+            """
+            INSERT INTO USERS
+            (
+                USERNAME,
+                NORMALIZED_USERNAME,
+                FIRSTNAME,
+                LASTNAME,
+                ACTIVE_DIRECTORY_GUID,
+                EMAIL,
+                PASSWORD,
+                SALT,
+                ACCOUNT_TYPE,
+                IS_ACTIVE,
+                IS_ADMIN
+            )
+            VALUES
+            (
+                @USERNAME,
+                @NORMALIZED_USERNAME,
+                @FIRSTNAME,
+                @LASTNAME,
+                @ACTIVE_DIRECTORY_GUID,
+                @EMAIL,
+                @PASSWORD,
+                @SALT,
+                @ACCOUNT_TYPE,
+                @IS_ACTIVE,
+                @IS_ADMIN
+            ) RETURNING USER_ID;
+            """;
+
+
+
+        input.UserId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
     }
 
     public Task DeleteAsync(User input, IDbController dbController, CancellationToken cancellationToken = default)
@@ -34,7 +69,22 @@ public class UserService : IModelService<User, int?, UserFilter>
     }
     public Task UpdateAsync(User input, IDbController dbController, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        cancellationToken.ThrowIfCancellationRequested();
+        string sql =
+            """
+            UPDATE USERS SET
+                USERNAME = @USERNAME,
+                NORMALIZED_USERNAME = @NORMALIZED_USERNAME,
+                FIRSTNAME = @FIRSTNAME,
+                LASTNAME = @LASTNAME,
+                EMAIL = @EMAIL,
+                IS_ACTIVE = @IS_ACTIVE,
+                IS_ADMIN = @IS_ADMIN
+            WHERE
+                USER_ID = @USER_ID
+            """;
+
+        return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
     }
 
 

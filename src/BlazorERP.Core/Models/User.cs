@@ -1,5 +1,6 @@
 ﻿using BlazorERP.Core.Enums;
 using BlazorERP.Core.Interfaces;
+
 namespace BlazorERP.Core.Models;
 public class User : IDbModelWithName<int?>
 {
@@ -17,11 +18,32 @@ public class User : IDbModelWithName<int?>
     public bool IsAdmin { get; set; }
     public bool IsActive { get; set; }
 
-    public int? GetIdentifier() => UserId;
+    public int? GetIdentifier() => UserId <= 0 ? null : UserId;
     public string GetName() => $"{FirstName} {LastName}".Trim();
 
     /// <summary>
     /// This property is only to compare passwords during administration processes.
     /// </summary>
     public string PasswordConfirm { get; set; } = string.Empty;
+
+
+    public Dictionary<string, object?> GetParameters()
+    {
+        return new Dictionary<string, object?>
+        {
+            { "USER_ID", UserId },
+            { "USERNAME", Username },
+            { "NORMALIZED_USERNAME", NormalizedUsername },
+            { "FIRSTNAME", FirstName },
+            { "LASTNAME", LastName },
+            { "ACTIVE_DIRECTORY_GUID", ActiveDirectoryGuid?.ToString() },
+            { "EMAIL", Email },
+            { "PASSWORD", Password },
+            { "SALT", Salt },
+            { "ACCOUNT_TYPE", AccountType.ToString() },
+            { "IS_ACTIVE", IsActive },
+            { "IS_ADMIN", IsAdmin },
+        };
+    }
+
 }

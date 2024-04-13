@@ -1,6 +1,6 @@
 ﻿namespace BlazorERP.Core.Interfaces;
 
-public interface IDbModel<T>
+public interface IDbModel<T> : IDbParameterizable
 {
     T GetIdentifier();
 }

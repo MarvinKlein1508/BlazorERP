@@ -117,22 +117,4 @@
         return new FbController();
     }
 
-
-    protected override async Task LoadAsync()
-    {
-        await base.LoadAsync();
-
-        var item = Data.FirstOrDefault();
-
-        if (item is not null)
-        {
-            for (var i = 0; i < 30; i++)
-            {
-                Data.Add(item);
-            }
-        }
-
-    }
-
-
 }

@@ -6,6 +6,7 @@ using BlazorERP.Core.Utilities;
 using FirebirdSql.Data.FirebirdClient;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.FluentUI.AspNetCore.Components;
 
 namespace BlazorERP.Core.ComponentBases;
 
@@ -22,8 +23,6 @@ public abstract class EditPageBase<TIdentifier, TModel, TService> : ComponentBas
 
     protected EditMode Modus { get; set; } = EditMode.Create;
 
-    protected abstract string BaseUrl { get; }
-
     [Inject]
     protected TService Service { get; set; } = default!;
 
@@ -32,6 +31,9 @@ public abstract class EditPageBase<TIdentifier, TModel, TService> : ComponentBas
 
     [Inject]
     protected AuthService AuthService { get; set; } = default!;
+
+    [Inject]
+    protected IToastService ToastService { get; set; } = default!;
 
     public User? User { get; set; }
     protected string FinalBreadcrumbItemName { get; set; } = string.Empty;
@@ -99,7 +101,8 @@ public abstract class EditPageBase<TIdentifier, TModel, TService> : ComponentBas
                 throw;
             }
 
-            NavigationManager.NavigateTo($"{BaseUrl}{Input.GetIdentifier()}");
+            NavigationManager.NavigateTo(GetEntityRedirectUrl());
+            ToastService.ShowSuccess("Success confirmation.");
             //await JSRuntime.ShowToastAsync(ToastType.success, "Datensatz wurde erfolgreich gespeichert");
             await OnParametersSetAsync();
         }
@@ -148,5 +151,13 @@ public abstract class EditPageBase<TIdentifier, TModel, TService> : ComponentBas
     {
         return Task.CompletedTask;
     }
+    /// <summary>
+    /// This method should return a URL to open an entity from the database.
+    /// <para>
+    /// For example: /Admin/Users/Edit?userId={Identifier}
+    /// </para>
+    /// </summary>
+    /// <returns></returns>
+    protected abstract string GetEntityRedirectUrl();
 
 }

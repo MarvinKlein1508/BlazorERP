@@ -10,6 +10,7 @@
   <ItemGroup>
 	<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.*-* " />
     <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.*-* " />
+    <PackageReference Include="vNext.BlazorComponents.FluentValidation" Version="1.1.3" />
   </ItemGroup>
 
   <ItemGroup>
