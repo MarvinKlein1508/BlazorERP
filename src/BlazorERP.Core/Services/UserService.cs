@@ -50,7 +50,9 @@ public class UserService : IModelService<User, int?, UserFilter>
 
     public Task DeleteAsync(User input, IDbController dbController, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        cancellationToken.ThrowIfCancellationRequested();
+        string sql = "DELETE FROM USERS WHERE USER_ID = @USER_ID";
+        return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
     }
 
     public Task<User?> GetAsync(int? userId, IDbController dbController, CancellationToken cancellationToken = default)

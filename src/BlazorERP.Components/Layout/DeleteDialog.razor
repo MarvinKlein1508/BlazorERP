@@ -2,7 +2,7 @@
 @typeparam TModel 
 @typeparam TService where TService : IDeleteOperation<TModel>
 @implements IDialogContentComponent<TModel>
-@inject TService userService
+@inject TService Service
 @* Header *@
 <FluentDialogHeader ShowDismiss="true">
     <FluentStack VerticalAlignment="VerticalAlignment.Center">
@@ -33,6 +33,8 @@
 
     private async Task DeleteAsync()
     {
+        using IDbController dbController = new FbController();
+        await Service.DeleteAsync(Content, dbController);
         await Dialog.CloseAsync(Content);
     }
 

@@ -55,7 +55,7 @@
         <FluentCard>
             <EditForm Model="Input" @ref="_form">
                 <FluentValidationValidator Validator="_validator" />
-                <ValidationSummary />
+                
                 <FluentGrid Spacing="1">
                     @if (ActiveDirectoryMode)
                     {
@@ -74,6 +74,7 @@
 
                     <FluentGridItem xs="12">
                         <FluentTextField @bind-Value="Input.Username" Label="Username" Disabled="ActiveDirectoryMode" />
+                        <FluentValidationMessage For="() => Input.Username" />
                     </FluentGridItem>
 
                     @if (ActiveDirectoryMode)
@@ -94,18 +95,22 @@
 
                     <FluentGridItem xs="12" md="6">
                         <FluentTextField @bind-Value="Input.FirstName" Label="Vorname" Disabled="ActiveDirectoryMode" />
+                        <FluentValidationMessage For="() => Input.FirstName" />
                     </FluentGridItem>
                     <FluentGridItem xs="12" md="6">
                         <FluentTextField @bind-Value="Input.LastName" Label="Nachname" Disabled="ActiveDirectoryMode" />
+                        <FluentValidationMessage For="() => Input.LastName" />
                     </FluentGridItem>
 
                     @if (Modus is EditMode.Create)
                     {
                         <FluentGridItem xs="12" md="6">
                             <FluentTextField @bind-Value="Input.Password" Label="Passwort" TextFieldType="TextFieldType.Password" />
+                            <FluentValidationMessage For="() => Input.Password" />
                         </FluentGridItem>
                         <FluentGridItem xs="12" md="6">
                             <FluentTextField @bind-Value="Input.PasswordConfirm" Label="Passwort wiederholen" TextFieldType="TextFieldType.Password" />
+                            <FluentValidationMessage For="() => Input.PasswordConfirm" />
                         </FluentGridItem>
                     }
 
@@ -170,7 +175,7 @@
         var data = new ChangePasswordModel()
             {
                 UserId = Input.UserId,
-                //RequireOldPassword = true // DEBUG
+                RequireOldPassword = false
             };
 
         var dialog = await DialogService.ShowDialogAsync<ChangePasswordDialog>(data, new DialogParameters()
