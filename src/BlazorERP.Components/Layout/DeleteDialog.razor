@@ -1,0 +1,42 @@
+﻿@typeparam TModel 
+@typeparam TService where TService : IDeleteOperation<TModel>
+@implements IDialogContentComponent<TModel>
+@inject TService userService
+@* Header *@
+<FluentDialogHeader ShowDismiss="true">
+    <FluentStack VerticalAlignment="VerticalAlignment.Center">
+        <FluentIcon Value="@(new Icons.Regular.Size24.Key())" />
+        <FluentLabel Typo="Typography.PaneHeader">
+            @Dialog.Instance.Parameters.Title
+        </FluentLabel>
+    </FluentStack>
+</FluentDialogHeader>
+
+@* Footer *@
+<FluentDialogFooter>
+    <FluentButton Appearance="Appearance.Accent" OnClick="@CancelAsync">Abbrechen</FluentButton>
+    <FluentButton OnClick="@DeleteAsync">Löschen</FluentButton>
+</FluentDialogFooter>
+
+@* Body *@
+<FluentDialogBody>
+
+</FluentDialogBody>
+
+@code {
+    [Parameter]
+    public TModel Content { get; set; } = default!;
+
+    [CascadingParameter]
+    public FluentDialog Dialog { get; set; } = default!;
+
+    private async Task DeleteAsync()
+    {
+        await Dialog.CloseAsync(Content);
+    }
+
+    private async Task CancelAsync()
+    {
+        await Dialog.CancelAsync();
+    }
+}

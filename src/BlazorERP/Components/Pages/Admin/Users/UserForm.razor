@@ -37,7 +37,7 @@
 
                 <FluentMenu Anchor="btnOpen1" @bind-Open="_showOptionsMenu" VerticalThreshold="170">
                     <FluentMenuItem Disabled="ActiveDirectoryMode" OnClick="ShowChangePasswordModal">Passwort ändern</FluentMenuItem>
-                    <FluentMenuItem Disabled="Input.UserId == User!.UserId">Benutzer löschen</FluentMenuItem>
+                    <FluentMenuItem Disabled="Input.UserId == User!.UserId" OnClick="ShowDeleteModalAsync">Benutzer löschen</FluentMenuItem>
                 </FluentMenu>
             }
 
@@ -168,10 +168,10 @@
         // Create a new instance of DialogData
         // to allow the user to cancel the update
         var data = new ChangePasswordModel()
-        {
-            UserId = Input.UserId,
-            //RequireOldPassword = true // DEBUG
-        };
+            {
+                UserId = Input.UserId,
+                //RequireOldPassword = true // DEBUG
+            };
 
         var dialog = await DialogService.ShowDialogAsync<ChangePasswordDialog>(data, new DialogParameters()
             {
@@ -184,6 +184,31 @@
         if (!result.Cancelled && result.Data != null)
         {
             var tmp = (ChangePasswordModel)result.Data;
+        }
+    }
+
+    private async Task ShowDeleteModalAsync()
+    {
+        var dialog = await DialogService.ShowDialogAsync<DeleteDialog<User, UserService>>(Input, new DialogParameters()
+            {
+                Title = $"Benutzer löschen",
+                PreventDismissOnOverlayClick = true,
+                PreventScroll = true,
+            });
+
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            messageService.ShowMessageBar(options =>
+            {
+                options.Title = "Benutzer wurde erfolgreich gelöscht!";
+                options.Intent = MessageIntent.Success;
+                options.Section = "MESSAGES_TOP";
+                options.Timeout = 4000;
+            });
+            
+            NavigationManager.NavigateTo("/Admin/Users");
         }
     }
 
