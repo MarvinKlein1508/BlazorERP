@@ -1,4 +1,5 @@
-﻿@typeparam TModel 
+﻿@using BlazorERP.Core.ComponentBases
+@typeparam TModel 
 @typeparam TService where TService : IDeleteOperation<TModel>
 @implements IDialogContentComponent<TModel>
 @inject TService userService
@@ -20,7 +21,7 @@
 
 @* Body *@
 <FluentDialogBody>
-
+    @(((CustomDialogParameters)Dialog.Instance.Parameters).Text)
 </FluentDialogBody>
 
 @code {

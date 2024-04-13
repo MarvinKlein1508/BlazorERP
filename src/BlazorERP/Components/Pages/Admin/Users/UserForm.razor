@@ -189,11 +189,13 @@
 
     private async Task ShowDeleteModalAsync()
     {
-        var dialog = await DialogService.ShowDialogAsync<DeleteDialog<User, UserService>>(Input, new DialogParameters()
+
+        var dialog = await DialogService.ShowDialogAsync<DeleteDialog<User, UserService>>(Input, new CustomDialogParameters()
             {
                 Title = $"Benutzer löschen",
                 PreventDismissOnOverlayClick = true,
                 PreventScroll = true,
+                Text = $"Möchten Sie den Benutzer \"{Input.GetName()}\" wirklich löschen?"
             });
 
         var result = await dialog.Result;
