@@ -101,14 +101,15 @@ public abstract class EditPageBase<TIdentifier, TModel, TService> : ComponentBas
                 throw;
             }
 
+            
+            
             NavigationManager.NavigateTo(GetEntityRedirectUrl());
-            ToastService.ShowSuccess("Success confirmation.");
-            //await JSRuntime.ShowToastAsync(ToastType.success, "Datensatz wurde erfolgreich gespeichert");
+            ToastService.ShowSuccess("Datensatz wurde erfolgreich gespeichert");
+            
             await OnParametersSetAsync();
         }
         _isLoading = false;
     }
-
 
     protected async Task LoadEditModeAsync(IDbController dbController)
     {
