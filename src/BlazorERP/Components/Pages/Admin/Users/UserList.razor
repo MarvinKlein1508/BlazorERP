@@ -27,6 +27,7 @@
     </FluentGridItem>
     <FluentGridItem xs="12" sm="9">
         <FluentStack Orientation="Orientation.Vertical">
+
             @if (_isLoading)
             {
                 <FluentProgressRing />
@@ -74,8 +75,15 @@
                 }
             }
 
-        </FluentStack>
 
+            @if (TotalPages > 1)
+            {
+                <Pagination CurrentPageNumber="Page"
+                            TotalItems="TotalItems"
+                            ItemsPerPage="Filter.Limit"
+                            NavUrl="/Admin/Users?page=" />
+            }
+        </FluentStack>
     </FluentGridItem>
     <FluentGridItem xs="12" sm="3">
         <FluentCard Height="auto">
@@ -110,11 +118,11 @@
 @code {
     protected override bool InternalNavigation => false;
 
-
-
     protected override IDbController GetDbController()
     {
         return new FbController();
     }
+
+
 
 }
