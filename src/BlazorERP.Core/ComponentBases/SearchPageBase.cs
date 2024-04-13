@@ -2,6 +2,8 @@
 using BlazorERP.Core.Interfaces;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components;
+using FirebirdSql.Data.Services;
+using BlazorERP.Core.Utilities;
 
 namespace BlazorERP.Core.ComponentBases;
 
@@ -13,11 +15,10 @@ public abstract class SearchPageBase<TModel, TService, TFilter> : ComponentBase
     protected EditForm? _form;
     protected bool _isLoading;
 
-    [Parameter]
-    public string BaseUrl { get; set; } = string.Empty;
+    protected abstract string BaseUrl { get; }
     protected abstract bool InternalNavigation { get; }
     [Parameter, SupplyParameterFromForm]
-    public TFilter? Filter { get; set; } = new();
+    public TFilter Filter { get; set; } = new();
     [Inject]
     protected TService Service { get; set; } = default!;
     [Inject]
@@ -38,27 +39,25 @@ public abstract class SearchPageBase<TModel, TService, TFilter> : ComponentBase
             Page = 1;
         }
 
-        if (Filter is not null)
-        {
-            await LoadAsync();
-        }
+
+        await LoadAsync();
+
     }
 
-    protected abstract IDbController GetDbController();
-    protected virtual async Task LoadAsync()
+    protected virtual IDbController GetDbController()
     {
-        if (Filter is null)
-        {
-            return;
-        }
-
-        Data.Clear();
+        return new FbController();
+    }
+    protected virtual async Task LoadAsync(bool navigateToPage1 = false)
+    {
+        StateHasChanged();
         _isLoading = true;
         await Task.Yield();
-
+        if (navigateToPage1)
+        {
+            NavigationManager.NavigateTo($"{BaseUrl}?page=1");
+        }
         Filter.PageNumber = Page < 1 ? 1 : Page;
-
-
 
         using IDbController dbController = GetDbController();
 
@@ -66,20 +65,9 @@ public abstract class SearchPageBase<TModel, TService, TFilter> : ComponentBase
         TotalItems = await Service.GetTotalAsync(Filter, dbController);
         _isLoading = false;
     }
-    protected virtual async Task OnPageChangedAsync(int pageNumber)
+    protected virtual Task OnPageChangedAsync(int pageNumber)
     {
-        if (InternalNavigation)
-        {
-            Page = pageNumber;
-            await LoadAsync();
-        }
-        else if (pageNumber != Page)
-        {
-            NavigationManager.NavigateTo($"{BaseUrl}?page={pageNumber}");
-        }
-        else
-        {
-            await LoadAsync();
-        }
+        NavigationManager.NavigateTo($"{BaseUrl}?page={pageNumber}");
+        return Task.CompletedTask;
     }
 }
