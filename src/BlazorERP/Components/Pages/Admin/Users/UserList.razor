@@ -91,7 +91,7 @@
 
             <EditForm Model="Filter" OnValidSubmit="async () => await LoadAsync(true)">
                 <FluentStack Orientation="Orientation.Vertical">
-                    <FluentTextField @bind-Value="Filter.SearchPhrase" Label="Suchbegriff" Placeholder="Name, E-Mail" />
+                    <FluentTextField @bind-Value="Filter.SearchPhrase" Immediate="true" Label="Suchbegriff" Placeholder="Name, E-Mail" />
                     
                     <FluentButton Type="ButtonType.Submit" IconStart="@(new Icons.Regular.Size20.Search())"
                                   Appearance="Appearance.Accent">

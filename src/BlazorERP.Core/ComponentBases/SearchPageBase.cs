@@ -50,7 +50,6 @@ public abstract class SearchPageBase<TModel, TService, TFilter> : ComponentBase
     }
     protected virtual async Task LoadAsync(bool navigateToPage1 = false)
     {
-        StateHasChanged();
         _isLoading = true;
         await Task.Yield();
         if (navigateToPage1)
