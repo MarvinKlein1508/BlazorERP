@@ -37,7 +37,7 @@
 
                 <FluentMenu Anchor="btnOpen1" @bind-Open="_showOptionsMenu" VerticalThreshold="170">
                     <FluentMenuItem Disabled="ActiveDirectoryMode">Passwort ändern</FluentMenuItem>
-                    <FluentMenuItem>Benutzer löschen</FluentMenuItem>
+                    <FluentMenuItem Disabled="Input.UserId == User!.UserId">Benutzer löschen</FluentMenuItem>
                 </FluentMenu>
             }
 
