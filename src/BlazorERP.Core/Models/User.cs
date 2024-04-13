@@ -26,7 +26,6 @@ public class User : IDbModelWithName<int?>
     /// </summary>
     public string PasswordConfirm { get; set; } = string.Empty;
 
-
     public Dictionary<string, object?> GetParameters()
     {
         return new Dictionary<string, object?>
@@ -46,4 +45,14 @@ public class User : IDbModelWithName<int?>
         };
     }
 
+}
+
+public class ChangePasswordModel
+{
+    public int UserId { get; set; }
+    public string PasswordOld { get; set; } = string.Empty;
+    public string PasswordNew { get; set; } = string.Empty;
+    public string PasswordConfirm { get; set; } = string.Empty;
+
+    public bool RequireOldPassword { get; set; } = true;
 }

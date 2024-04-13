@@ -1,8 +1,9 @@
-﻿using BlazorERP.Core.Filters;
+﻿using BlazorERP.Core.Extensions;
+using BlazorERP.Core.Filters;
 using BlazorERP.Core.Interfaces;
 using BlazorERP.Core.Models;
 using System.Text;
-
+using Microsoft.AspNetCore.Identity;
 namespace BlazorERP.Core.Services;
 
 public class UserService : IModelService<User, int?, UserFilter>
@@ -167,5 +168,46 @@ public class UserService : IModelService<User, int?, UserFilter>
         {
             { "SEARCHPHRASE", $"%{filter.SearchPhrase}%" }
         };
+    }
+
+    public async Task<bool> ChangePasswordAsync(ChangePasswordModel input, IDbController dbController, CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        var user = await GetAsync(input.UserId, dbController, cancellationToken);
+        if (user is null)
+        {
+            throw new NullReferenceException(nameof(user));
+        }
+
+        PasswordHasher<User> hasher = new();
+        // Check old password
+        if (input.RequireOldPassword)
+        {
+            PasswordVerificationResult result = hasher.VerifyHashedPassword(user, user.Password, input.PasswordOld + user.Salt);
+            if (result is PasswordVerificationResult.Failed)
+            {
+                return false;
+            }
+        }
+
+        user.Salt = StringExtensions.RandomString(20);
+
+        string passwordHashed = hasher.HashPassword(user, input.PasswordNew + user.Salt);
+
+        user.Password = passwordHashed;
+
+        string sql =
+            """
+            UPDATE USERS SET
+               PASSWORD = @PASSWORD,
+               SALT = @SALT
+            WHERE 
+                USER_ID = @USER_ID
+            """;
+
+        await dbController.QueryAsync(sql, user.GetParameters(), cancellationToken);
+
+        return true;
     }
 }
