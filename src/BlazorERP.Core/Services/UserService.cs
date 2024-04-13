@@ -121,7 +121,7 @@ public class UserService : IModelService<User, int?, UserFilter>
 
 
 
-        List<User> list = await dbController.SelectDataAsync<User>(sql, GetFilterParameter(filter), cancellationToken);
+        List<User> list = await dbController.SelectDataAsync<User>(sql, filter.GetParameters(), cancellationToken);
 
         // TODO: Load permissions
 
@@ -141,7 +141,7 @@ public class UserService : IModelService<User, int?, UserFilter>
             """;
 
 
-        return dbController.GetFirstAsync<int>(sql, GetFilterParameter(filter), cancellationToken);
+        return dbController.GetFirstAsync<int>(sql, filter.GetParameters(), cancellationToken);
     }
 
     public string GetFilterWhere(UserFilter filter)
@@ -152,9 +152,9 @@ public class UserService : IModelService<User, int?, UserFilter>
         {
             sb.AppendLine(@" AND 
 (
-        UPPER(FIRSTNAME) LIKE @SEARCHPHRASE
-    OR  UPPER(LASTNAME) LIKE @SEARCHPHRASE
-    OR  NORMALIZED_USERNAME LIKE @SEARCHPHRASE
+        UPPER(FIRSTNAME) LIKE @SEARCH_PHRASE
+    OR  UPPER(LASTNAME) LIKE @SEARCH_PHRASE
+    OR  NORMALIZED_USERNAME LIKE @SEARCH_PHRASE
 )");
         }
 
@@ -162,14 +162,6 @@ public class UserService : IModelService<User, int?, UserFilter>
 
         string sql = sb.ToString();
         return sql;
-    }
-
-    public Dictionary<string, object?> GetFilterParameter(UserFilter filter)
-    {
-        return new Dictionary<string, object?>
-        {
-            { "SEARCHPHRASE", $"%{filter.SearchPhrase}%" }
-        };
     }
 
     public async Task<bool> ChangePasswordAsync(ChangePasswordModel input, IDbController dbController, CancellationToken cancellationToken = default)

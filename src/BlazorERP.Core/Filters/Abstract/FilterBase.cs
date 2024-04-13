@@ -1,7 +1,10 @@
-﻿namespace BlazorERP.Core.Filters;
+﻿using BlazorERP.Core.Interfaces;
 
-public abstract class FilterBase
+namespace BlazorERP.Core.Filters;
+
+public abstract class FilterBase : IDbParameterizable
 {
     private string _searchPhrase = string.Empty;
     public string SearchPhrase { get => _searchPhrase; set => _searchPhrase = value?.ToUpper() ?? string.Empty; }
+    public abstract Dictionary<string, object?> GetParameters();
 }

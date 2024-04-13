@@ -1,7 +1,7 @@
 ﻿
 namespace BlazorERP.Core.Filters;
 
-public class UserFilter : PageFilterBase
+public class RoleFilter : PageFilterBase
 {
     public override Dictionary<string, object?> GetParameters()
     {

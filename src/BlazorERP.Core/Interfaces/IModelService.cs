@@ -127,12 +127,6 @@ public interface IFilterOperations<TObject, TFilter>
     /// <param name="filter"></param>
     /// <returns></returns>
     string GetFilterWhere(TFilter filter);
-    /// <summary>
-    /// Gets a dictionary of parameters for the filter which can be used in Dapper-Queries.
-    /// </summary>
-    /// <param name="filter"></param>
-    /// <returns>A dictionary with all parameters as key value pairs to be used with Dapper.</returns>
-    Dictionary<string, object?> GetFilterParameter(TFilter filter);
 }
 
 /// <summary>
