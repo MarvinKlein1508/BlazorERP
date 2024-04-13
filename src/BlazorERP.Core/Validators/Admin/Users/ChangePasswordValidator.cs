@@ -9,7 +9,7 @@ public class ChangePasswordValidator : AbstractValidator<ChangePasswordModel>
     {
         RuleFor(x => x.PasswordNew)
             .NotEmpty()
-            .WithMessage("Bitte geben ein Passwort ein.");
+            .WithMessage("Bitte geben Sie ein Passwort ein.");
 
         RuleFor(x => x.PasswordNew)
             .MinimumLength(8)
