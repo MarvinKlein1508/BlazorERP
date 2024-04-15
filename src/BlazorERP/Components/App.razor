@@ -15,7 +15,7 @@
 </head>
 
 <body>
-    <Routes />
+    <Routes @rendermode="new InteractiveServerRenderMode(prerender: false)" />
     <FluentDialogProvider @rendermode="InteractiveServer" />
     <script src="_framework/blazor.web.js"></script>
 </body>
