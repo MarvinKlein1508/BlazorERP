@@ -17,28 +17,28 @@ public class UserService : IModelService<User, int?, UserFilter>
             (
                 USERNAME,
                 NORMALIZED_USERNAME,
-                FIRSTNAME,
-                LASTNAME,
+                VORNAME,
+                NACHNAME,
                 ACTIVE_DIRECTORY_GUID,
                 EMAIL,
                 PASSWORD,
                 SALT,
                 ACCOUNT_TYPE,
-                IS_ACTIVE,
+                IS_AKTIV,
                 IS_ADMIN
             )
             VALUES
             (
                 @USERNAME,
                 @NORMALIZED_USERNAME,
-                @FIRSTNAME,
-                @LASTNAME,
+                @VORNAME,
+                @NACHNAME,
                 @ACTIVE_DIRECTORY_GUID,
                 @EMAIL,
                 @PASSWORD,
                 @SALT,
                 @ACCOUNT_TYPE,
-                @IS_ACTIVE,
+                @IS_AKTIV,
                 @IS_ADMIN
             ) RETURNING USER_ID;
             """;
@@ -78,10 +78,10 @@ public class UserService : IModelService<User, int?, UserFilter>
             UPDATE USERS SET
                 USERNAME = @USERNAME,
                 NORMALIZED_USERNAME = @NORMALIZED_USERNAME,
-                FIRSTNAME = @FIRSTNAME,
-                LASTNAME = @LASTNAME,
+                VORNAME = @VORNAME,
+                NACHNAME = @NACHNAME,
                 EMAIL = @EMAIL,
-                IS_ACTIVE = @IS_ACTIVE,
+                IS_AKTIV = @IS_AKTIV,
                 IS_ADMIN = @IS_ADMIN
             WHERE
                 USER_ID = @USER_ID
@@ -152,8 +152,8 @@ public class UserService : IModelService<User, int?, UserFilter>
         {
             sb.AppendLine(@" AND 
 (
-        UPPER(FIRSTNAME) LIKE @SEARCH_PHRASE
-    OR  UPPER(LASTNAME) LIKE @SEARCH_PHRASE
+        UPPER(VORNAME) LIKE @SEARCH_PHRASE
+    OR  UPPER(NACHNAME) LIKE @SEARCH_PHRASE
     OR  NORMALIZED_USERNAME LIKE @SEARCH_PHRASE
 )");
         }

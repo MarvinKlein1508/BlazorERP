@@ -4,7 +4,7 @@ using BlazorERP.Core.Models;
 
 namespace BlazorERP.Core.Services;
 
-public class GroupService : IModelService<Group, int, GroupFilter>
+public class UsergruppeService : IModelService<Group, int, GroupFilter>
 {
     public Task CreateAsync(Group input, IDbController dbController, CancellationToken cancellationToken = default)
     {
