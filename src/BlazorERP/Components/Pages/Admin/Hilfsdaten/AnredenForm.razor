@@ -17,42 +17,38 @@
 {
     return;
 }
+<FluentStack HorizontalAlignment="HorizontalAlignment.End">
+    <FluentAnchor Href="/Admin/Anreden"
+                  IconStart="@(new Icons.Regular.Size20.ArrowReply())">
+        Zurück
+    </FluentAnchor>
 
-<FluentGrid>
-    <FluentGridItem xs="12">
-        <FluentStack HorizontalAlignment="HorizontalAlignment.End">
-            <FluentAnchor Href="/Admin/Anreden"
-                          IconStart="@(new Icons.Regular.Size20.ArrowReply())">
-                Zurück
-            </FluentAnchor>
+    @if (Modus is EditMode.Edit)
+    {
+        <FluentButton id="btnOpen1" Appearance="Appearance.Accent" @onclick="@(() => _showOptionsMenu = !_showOptionsMenu)">
+            Optionen
+        </FluentButton>
 
-            @if (Modus is EditMode.Edit)
-            {
-                <FluentButton id="btnOpen1" Appearance="Appearance.Accent" @onclick="@(() => _showOptionsMenu = !_showOptionsMenu)">
-                    Optionen
-                </FluentButton>
+        <FluentMenu Anchor="btnOpen1" @bind-Open="_showOptionsMenu" VerticalThreshold="170">
+            <FluentMenuItem OnClick="ShowDeleteModalAsync">Anrede löschen</FluentMenuItem>
+        </FluentMenu>
+    }
 
-                <FluentMenu Anchor="btnOpen1" @bind-Open="_showOptionsMenu" VerticalThreshold="170">
-                    <FluentMenuItem OnClick="ShowDeleteModalAsync">Anrede löschen</FluentMenuItem>
-                </FluentMenu>
-            }
+    <FluentButton IconStart="@(new Icons.Regular.Size20.Save())"
+                  Appearance="Appearance.Accent"
+                  OnClick="SaveAsync">
 
-            <FluentButton IconStart="@(new Icons.Regular.Size20.Save())"
-                          Appearance="Appearance.Accent"
-                          OnClick="SaveAsync">
+        Speichern
+    </FluentButton>
+</FluentStack>
 
-                Speichern
-            </FluentButton>
-        </FluentStack>
-    </FluentGridItem>
-    <FluentGridItem md="4" HiddenWhen="GridItemHidden.MdAndDown"></FluentGridItem>
-    <FluentGridItem xs="12" md="4">
-
+<FluentTabs>
+    <FluentTab Label="Allgemein">
         <FluentCard>
             <EditForm Model="Input" @ref="_form">
                 <FluentValidationValidator Validator="_validator" />
                 <FluentGrid Spacing="1">
-                    @if(Modus is EditMode.Edit)
+                    @if (Modus is EditMode.Edit)
                     {
                         <FluentGridItem xs="12">
                             <FluentNumberField @bind-Value="Input.AnredeId" Label="AnredeId" Disabled />
@@ -65,9 +61,16 @@
                 </FluentGrid>
             </EditForm>
         </FluentCard>
-    </FluentGridItem>
-    <FluentGridItem md="4" HiddenWhen="GridItemHidden.MdAndDown"></FluentGridItem>
-</FluentGrid>
+    </FluentTab>
+    <FluentTab Label="Übersetzungen" @onclick="Test">
+        <Content>
+          
+            Tab two content. This is for testing.
+        </Content>
+    </FluentTab>
+
+
+</FluentTabs>
 
 @code {
 
@@ -78,6 +81,10 @@
 
     protected override string GetEntityRedirectUrl() => $"/Admin/Anreden/Edit?anredeId={Input!.AnredeId}";
 
+    private void Test()
+    {
+        
+    }
 
     [Parameter, SupplyParameterFromQuery(Name = "anredeId")]
     public override int? Identifier { get; set; }
