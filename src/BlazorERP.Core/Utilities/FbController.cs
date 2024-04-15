@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using System.Data;
 
 namespace BlazorERP.Core.Utilities;
-
 public sealed class FbController : IDisposable, IDbController
 {
     private static string _connectionString = string.Empty;

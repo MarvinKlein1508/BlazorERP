@@ -70,6 +70,15 @@ public class UserService : IModelService<User, int?, UserFilter>
             USER_ID = userId
         }, cancellationToken);
     }
+    public Task<User?> GetAsync(Guid guid, IDbController dbController, CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        return dbController.GetFirstAsync<User>("SELECT * FROM USERS WHERE ACTIVE_DIRECTORY_GUID = @ACTIVE_DIRECTORY_GUID", new
+        {
+            ACTIVE_DIRECTORY_GUID = guid.ToString()
+        }, cancellationToken);
+    }
+
     public Task UpdateAsync(User input, IDbController dbController, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();

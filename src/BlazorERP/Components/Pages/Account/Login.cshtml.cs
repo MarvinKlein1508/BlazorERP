@@ -1,8 +1,10 @@
 #if DEBUG
 //#define CUSTOM_LOGIN // To login as another user
 #endif
+using BlazorERP.Core.Enums;
 using BlazorERP.Core.Interfaces;
 using BlazorERP.Core.Models;
+using BlazorERP.Core.Options;
 using BlazorERP.Core.Services;
 using BlazorERP.Core.Utilities;
 using Microsoft.AspNetCore.Authentication;
@@ -11,7 +13,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Options;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
+using System.DirectoryServices.Protocols;
+using System.Net;
 using System.Security.Claims;
 using System.Web;
 
@@ -21,14 +27,16 @@ namespace BlazorERP.Components.Pages.Account
     public class LoginModel : PageModel
     {
         private readonly UserService _userService;
+        private readonly LdapOptions _ldapOptions;
 
         [BindProperty]
         public LoginInput Input { get; set; } = new LoginInput();
         public string? ReturnUrl { get; set; }
 
-        public LoginModel(UserService mitarbeiterService)
+        public LoginModel(UserService mitarbeiterService, IOptions<LdapOptions> ldapOptions)
         {
             _userService = mitarbeiterService;
+            _ldapOptions = ldapOptions.Value;
         }
 
         public async Task OnGetAsync(string? returnUrl = null)
@@ -70,7 +78,105 @@ namespace BlazorERP.Components.Pages.Account
                     }
                 }
 
-                // TODO: Try LDAP login
+                // Try LDAP login
+                if (_ldapOptions.EnableLdapLogin)
+                {
+                    try
+                    {
+                        using var connection = new LdapConnection(_ldapOptions.LDAP_SERVER);
+
+                        var networkCredential = new NetworkCredential(Input.Username, Input.Password, _ldapOptions.DOMAIN_SERVER);
+                        connection.SessionOptions.SecureSocketLayer = false;
+                        connection.AuthType = AuthType.Negotiate;
+                        connection.Bind(networkCredential);
+
+                        var searchRequest = new SearchRequest
+                            (
+                            _ldapOptions.DistinguishedName,
+            $"(SAMAccountName={Input.Username})",
+                            SearchScope.Subtree,
+                            [
+                                "cn",
+                                "mail",
+                                "displayName",
+                                "givenName",
+                                "sn",
+                                "objectGUID",
+                                "memberOf"
+                            ]);
+
+                        SearchResponse directoryResponse = (SearchResponse)connection.SendRequest(searchRequest);
+
+                        SearchResultEntry searchResultEntry = directoryResponse.Entries[0];
+
+                        Dictionary<string, string> attributes = [];
+                        Guid? guid = null;
+
+                        List<string> gruppen = [];
+                        foreach (DirectoryAttribute userReturnAttribute in searchResultEntry.Attributes.Values)
+                        {
+                            if (userReturnAttribute.Name == "objectGUID")
+                            {
+                                byte[] guidByteArray = (byte[])userReturnAttribute.GetValues(typeof(byte[]))[0];
+                                guid = new Guid(guidByteArray);
+                                attributes.Add("guid", ((Guid)guid).ToString());
+                            }
+                            else if (userReturnAttribute.Name == "memberOf")
+                            {
+                                foreach (string item in userReturnAttribute.GetValues(typeof(string)).Cast<string>())
+                                {
+                                    gruppen.Add(item);
+                                }
+                            }
+                            else
+                            {
+                                attributes.Add(userReturnAttribute.Name, (string)userReturnAttribute.GetValues(typeof(string))[0]);
+                            }
+                        }
+
+                        attributes.TryAdd("mail", string.Empty);
+                        attributes.TryAdd("sn", string.Empty);
+                        attributes.TryAdd("givenName", string.Empty);
+                        attributes.TryAdd("displayName", string.Empty);
+
+                        if (guid is null)
+                        {
+                            throw new InvalidOperationException();
+                        }
+
+                        user = await _userService.GetAsync((Guid)guid, dbController);
+
+                        if (user is null)
+                        {
+                            user = new User
+                            {
+                                Username = Input.Username.ToUpper(),
+                                ActiveDirectoryGuid = (Guid)guid,
+                                Email = attributes["mail"],
+                                Vorname = attributes["givenName"],
+                                Nachname = attributes["sn"],
+                                IsAktiv = true,
+                                AccountType = AccountType.ActiveDirectory
+                            };
+
+                            await _userService.CreateAsync(user, dbController);
+                        }
+                        else
+                        {
+                            // Update des User Objekts
+                            user.Email = attributes["mail"];
+                            user.Vorname = attributes["givenName"];
+                            user.Nachname = attributes["sn"];
+                            user.Username = Input.Username.ToUpper();
+                            await _userService.UpdateAsync(user, dbController);
+                        }
+
+                    }
+                    catch (LdapException ex)
+                    {
+
+                    }
+                }
 
                 if (user is not null)
                 {
@@ -98,6 +204,7 @@ namespace BlazorERP.Components.Pages.Account
                     ModelState.AddModelError("login-error", "Username oder Passwort ist falsch.");
                 }
             }
+
             return Page();
         }
 

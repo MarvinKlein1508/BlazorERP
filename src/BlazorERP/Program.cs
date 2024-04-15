@@ -1,5 +1,6 @@
 using BlazorERP.Components;
 using BlazorERP.Core.Models;
+using BlazorERP.Core.Options;
 using BlazorERP.Core.Services;
 using BlazorERP.Core.Utilities;
 using Dapper;
@@ -8,10 +9,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.FluentUI.AspNetCore.Components;
 
 var builder = WebApplication.CreateBuilder(args);
-
+var config = builder.Configuration;
 // will allow dapper to parse columns like user_id to UserId
 DefaultTypeMap.MatchNamesWithUnderscores = true;
-
+SqlMapper.AddTypeHandler(typeof(Guid), new GuidTypeHandler());
+SqlMapper.RemoveTypeMap(typeof(Guid));
+SqlMapper.RemoveTypeMap(typeof(Guid?));
 
 
 
@@ -35,8 +38,12 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<AbteilungService>();
 builder.Services.AddScoped<AuthService>();
 
+// Options
+builder.Services.AddOptions<LdapOptions>()
+    .Bind(config.GetRequiredSection(LdapOptions.SectionName));
 
-FbController.Initialize(builder.Configuration);
+
+FbController.Initialize(config);
 
 var app = builder.Build();
 
