@@ -1,0 +1,121 @@
+﻿@page "/Admin/Anreden/Edit"
+@using BlazorERP.Core.Validators.Admin.Hilfsdaten
+@using Microsoft.AspNetCore.Identity
+@inject AuthService authService
+@inherits EditPageBase<int?, Anrede, AnredeService>
+@inject IMessageService messageService
+@inject IDialogService DialogService
+<PageTitle>@FinalBreadcrumbItemName</PageTitle>
+
+<FluentBreadcrumb>
+    <FluentBreadcrumbItem Href="/">Start</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem>Administration</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="/Admin/Anreden">Anreden</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem>@FinalBreadcrumbItemName</FluentBreadcrumbItem>
+</FluentBreadcrumb>
+@if (Input is null)
+{
+    return;
+}
+
+<FluentGrid>
+    <FluentGridItem xs="12">
+        <FluentStack HorizontalAlignment="HorizontalAlignment.End">
+            <FluentAnchor Href="/Admin/Anreden"
+                          IconStart="@(new Icons.Regular.Size20.ArrowReply())">
+                Zurück
+            </FluentAnchor>
+
+            @if (Modus is EditMode.Edit)
+            {
+                <FluentButton id="btnOpen1" Appearance="Appearance.Accent" @onclick="@(() => _showOptionsMenu = !_showOptionsMenu)">
+                    Optionen
+                </FluentButton>
+
+                <FluentMenu Anchor="btnOpen1" @bind-Open="_showOptionsMenu" VerticalThreshold="170">
+                    <FluentMenuItem OnClick="ShowDeleteModalAsync">Anrede löschen</FluentMenuItem>
+                </FluentMenu>
+            }
+
+            <FluentButton IconStart="@(new Icons.Regular.Size20.Save())"
+                          Appearance="Appearance.Accent"
+                          OnClick="SaveAsync">
+
+                Speichern
+            </FluentButton>
+        </FluentStack>
+    </FluentGridItem>
+    <FluentGridItem md="4" HiddenWhen="GridItemHidden.MdAndDown"></FluentGridItem>
+    <FluentGridItem xs="12" md="4">
+
+        <FluentCard>
+            <EditForm Model="Input" @ref="_form">
+                <FluentValidationValidator Validator="_validator" />
+                <FluentGrid Spacing="1">
+                    @if(Modus is EditMode.Edit)
+                    {
+                        <FluentGridItem xs="12">
+                            <FluentNumberField @bind-Value="Input.AnredeId" Label="AnredeId" Disabled />
+                        </FluentGridItem>
+                    }
+                    <FluentGridItem xs="12">
+                        <FluentTextField @bind-Value="Input.Name" Label="Name" />
+                        <FluentValidationMessage For="() => Input.Name" />
+                    </FluentGridItem>
+                </FluentGrid>
+            </EditForm>
+        </FluentCard>
+    </FluentGridItem>
+    <FluentGridItem md="4" HiddenWhen="GridItemHidden.MdAndDown"></FluentGridItem>
+</FluentGrid>
+
+@code {
+
+
+    private bool _showOptionsMenu;
+    private AnredeValidator _validator = new();
+
+
+    protected override string GetEntityRedirectUrl() => $"/Admin/Anreden/Edit?anredeId={Input!.AnredeId}";
+
+
+    [Parameter, SupplyParameterFromQuery(Name = "anredeId")]
+    public override int? Identifier { get; set; }
+
+
+    private async Task ShowDeleteModalAsync()
+    {
+
+        var dialog = await DialogService.ShowDialogAsync<DeleteDialog<Anrede, AnredeService>>(Input!, new CustomDialogParameters()
+            {
+                Title = $"Anrede löschen",
+                PreventDismissOnOverlayClick = true,
+                PreventScroll = true,
+                Text = $"Möchten Sie die Anrede \"{Input!.GetName()}\" wirklich löschen?"
+            });
+
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            messageService.ShowMessageBar(options =>
+            {
+                options.Title = "Anrede wurde erfolgreich gelöscht!";
+                options.Intent = MessageIntent.Success;
+                options.Section = Constants.MESSAGEBAR_TOP_SECTION;
+                options.Timeout = 4000;
+            });
+
+            NavigationManager.NavigateTo("/Admin/Anreden");
+        }
+    }
+
+    protected override Task BeforeSaveAsync(IDbController dbController)
+    {
+        Input.LetzterBearbeiter = User.UserId;
+        Input.ZuletztGeaendert = DateTime.Now;
+
+        return Task.CompletedTask;
+    }
+
+}

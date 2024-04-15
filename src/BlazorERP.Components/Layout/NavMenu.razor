@@ -17,9 +17,11 @@
             {
                 <FluentNavGroup Title="Administration" Icon="@(new Icons.Regular.Size20.Settings())">
                     <ChildContent>
-                        <FluentNavGroup Title="Benutzer" Icon="@(new Icons.Regular.Size20.Person())">
+                        <FluentNavLink Href="/Admin/Users" Icon="@(new Icons.Regular.Size20.PeopleList())">Benutzer</FluentNavLink>
+
+                        <FluentNavGroup Title="Hilfsdaten" Icon="@(new Icons.Regular.Size20.Database())">
                             <ChildContent>
-                                <FluentNavLink Href="/Admin/Users" Icon="@(new Icons.Regular.Size20.PeopleList())">Benutzerliste</FluentNavLink>
+                                <FluentNavLink Href="/Admin/Anreden" Icon="@(new Icons.Regular.Size20.EmojiHand())">Anreden</FluentNavLink>
                                 <FluentNavLink Href="/Admin/Abteilungen" Icon="@(new Icons.Regular.Size20.Group())">Abteilungen</FluentNavLink>
                             </ChildContent>
                         </FluentNavGroup>

@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Components\Pages\Admin\Users\UserForm.razor">
+    <Content Update="Components\Pages\Admin\UserForm.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
   </ItemGroup>
