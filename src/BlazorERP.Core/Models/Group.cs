@@ -2,13 +2,13 @@
 
 namespace BlazorERP.Core.Models;
 
-public class Role : IDbModelWithName<int?>
+public class Group : IDbModelWithName<int?>
 {
-    public int RoleId { get; set; }
+    public int GroupId { get; set; }
     public string Name { get; set; } = string.Empty;
     public string ActiveDirectoryGroupCN { get; set; } = string.Empty;
 
-    public int? GetIdentifier() => RoleId <= 0 ? null : RoleId;
+    public int? GetIdentifier() => GroupId <= 0 ? null : GroupId;
 
 
     public string GetName() => Name; 
