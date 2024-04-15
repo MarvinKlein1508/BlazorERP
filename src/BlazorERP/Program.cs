@@ -37,6 +37,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<AbteilungService>();
 builder.Services.AddScoped<AnredeService>();
+builder.Services.AddScoped<ÜbersetzungService>();
 builder.Services.AddScoped<AuthService>();
 
 // Options
