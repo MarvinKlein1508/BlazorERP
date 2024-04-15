@@ -118,12 +118,4 @@
 @code {
     protected override bool InternalNavigation => false;
     protected override string BaseUrl => "/Admin/Users";
-
-    protected override IDbController GetDbController()
-    {
-        return new FbController();
-    }
-
-
-
 }
