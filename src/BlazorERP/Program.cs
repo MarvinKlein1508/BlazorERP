@@ -20,6 +20,8 @@ DefaultTypeMap.MatchNamesWithUnderscores = true;
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+builder.Services.AddRazorPages().WithRazorPagesRoot("/Components/Pages");
+
 builder.Services.AddServerSideBlazor()
     .AddHubOptions(options => options.MaximumReceiveMessageSize = 1024 * 1024)
     .AddCircuitOptions(options => { options.DetailedErrors = true; });
@@ -54,6 +56,7 @@ app.UseAntiforgery();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapRazorPages();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
