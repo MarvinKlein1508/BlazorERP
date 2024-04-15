@@ -32,7 +32,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
 
 builder.Services.AddScoped<UserService>();
-builder.Services.AddScoped<UsergruppeService>();
+builder.Services.AddScoped<AbteilungService>();
 builder.Services.AddScoped<AuthService>();
 
 
