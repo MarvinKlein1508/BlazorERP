@@ -48,21 +48,37 @@
     <FluentTabs>
         <FluentTab Label="Allgemein">
             <div class="row">
-                @if (Modus is EditMode.Edit)
-                {
-                    <div class="col-md-12">
-                        <FluentNumberField @bind-Value="Input.LandId" Label="LandId" Disabled />
-                    </div>
+                <div class="col-md-6 row">
+                    @if (Modus is EditMode.Edit)
+                    {
+                        <div class="col-md-12">
+                            <FluentNumberField @bind-Value="Input.LandId" Label="LandId" Disabled />
+                        </div>
+                    }
+
                     <div class="col-md-12">
                         <FluentTextField @bind-Value="Input.Name" Label="Name" />
                         <FluentValidationMessage For="() => Input.Name" />
                     </div>
-                }
+                    <div class="col-md-3">
+                        <FluentTextField @bind-Value="Input.ISO2" Label="ISO2" />
+                        <FluentValidationMessage For="() => Input.ISO2" />
+                    </div>
+                    <div class="col-md-3">
+                        <FluentTextField @bind-Value="Input.ISO3" Label="ISO3" />
+                        <FluentValidationMessage For="() => Input.ISO3" />
+                    </div>
+                    <div class="col-md-3">
+                        <FluentTextField @bind-Value="Input.Vorwahl" Label="Vorwahl" />
+                        <FluentValidationMessage For="() => Input.Vorwahl" />
+                    </div>
+
+                </div>
             </div>
         </FluentTab>
         <FluentTab Label="Übersetzungen">
             <Content>
-               <BlazorERP.Components.Shared.ÜbersetzungEditor Übersetzungen="Input.Übersetzungen" />
+                <BlazorERP.Components.Shared.ÜbersetzungEditor Übersetzungen="Input.Übersetzungen" />
             </Content>
         </FluentTab>
 
@@ -73,11 +89,11 @@
 
     private bool _showOptionsMenu;
     private AnredeValidator _validator = new();
-    
+
 
     protected override string GetEntityRedirectUrl() => $"/Admin/Länder/Edit?landId={Input!.LandId}";
 
- 
+
 
     [Parameter, SupplyParameterFromQuery(Name = "landId")]
     public override int? Identifier { get; set; }

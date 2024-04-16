@@ -140,3 +140,8 @@ public interface IDbParameterizable
     /// <returns></returns>
     Dictionary<string, object?> GetParameters();
 }
+
+public interface ITranslationCode
+{
+    string GetCode();
+}
