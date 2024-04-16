@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using System.Data;
+using System.Data.Common;
 
 namespace BlazorERP.Core.Interfaces;
 
@@ -45,5 +46,30 @@ public interface IDbController : IDisposable
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<DynamicParameters?> ExecuteProcedureAsync(string procedureName, DynamicParameters? param = null, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Executes the provided SQL-Statement and returns a <see cref="DbDataReader"/> to process each row individually.
+    /// </summary>
+    /// <param name="sql"></param>
+    /// <param name="param"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<DbDataReader> ExecuteReaderAsync(string sql, object? param = null, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Starts a new transaction for this IDbController instance.
+    /// </summary>
+    /// <returns></returns>
+    Task StartTransactionAsync();
+    /// <summary>
+    /// Commits and write all changes of the current transaction to the database.
+    /// </summary>
+    /// <returns></returns>
+    Task CommitAsync();
+    /// <summary>
+    /// Rollsback all changes of the current transaction
+    /// </summary>
+    /// <returns></returns>
+    Task RollbackAsync();
 }
 

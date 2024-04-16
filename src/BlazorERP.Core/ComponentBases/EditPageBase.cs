@@ -77,7 +77,7 @@ public abstract class EditPageBase<TIdentifier, TModel, TService> : ComponentBas
         if (_form.EditContext.Validate())
         {
             using IDbController dbController = new FbController();
-            //await dbController.StartTransactionAsync();
+            await dbController.StartTransactionAsync();
             try
             {
                 await BeforeSaveAsync(dbController);
@@ -93,11 +93,11 @@ public abstract class EditPageBase<TIdentifier, TModel, TService> : ComponentBas
 
                 await OnSaveAsync(dbController);
 
-                //await dbController.CommitChangesAsync();
+                await dbController.CommitAsync();
             }
             catch (FbException ex)
             {
-                //await dbController.RollbackChangesAsync();
+                await dbController.RollbackAsync();
                 throw;
             }
 
