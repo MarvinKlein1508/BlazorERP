@@ -3,6 +3,7 @@ using Dapper;
 using FirebirdSql.Data.FirebirdClient;
 using Microsoft.Extensions.Configuration;
 using System.Data;
+using System.Data.Common;
 
 namespace BlazorERP.Core.Utilities;
 public sealed class FbController : IDisposable, IDbController
@@ -70,12 +71,12 @@ public sealed class FbController : IDisposable, IDbController
     }
 
     /// <inheritdoc />
-    public Task<IDataReader> ExecuteReaderAsync(string sql, object? param = null, CancellationToken cancellationToken = default)
+    public Task<DbDataReader> ExecuteReaderAsync(string sql, object? param = null, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         CommandDefinition definition = new CommandDefinition(sql, param, Transaction, cancellationToken: cancellationToken);
 
-        return Connection.ExecuteReaderAsync(definition);
+        return ((FbConnection)Connection).ExecuteReaderAsync(definition);
     }
     #endregion
     #region Transaction
