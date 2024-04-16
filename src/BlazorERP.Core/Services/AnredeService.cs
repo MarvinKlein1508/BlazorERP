@@ -49,7 +49,7 @@ public class AnredeService : IModelService<Anrede, int?, AnredeFilter>, ITransla
 
     public Task DeleteAsync(Anrede input, IDbController dbController, CancellationToken cancellationToken = default)
     {
-        string sql = "DELETE * FROM ANREDEN WHERE ANREDE_ID = @ANREDE_ID";
+        string sql = "DELETE FROM ANREDEN WHERE ANREDE_ID = @ANREDE_ID";
 
         return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
     }

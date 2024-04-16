@@ -55,7 +55,7 @@ public class LandService : IModelService<Land, int?, LandFilter>, ITranslationCo
 
     public Task DeleteAsync(Land input, IDbController dbController, CancellationToken cancellationToken = default)
     {
-        string sql = "DELETE * FROM LAENDER WHERE LAND_ID = @LAND_ID";
+        string sql = "DELETE FROM LAENDER WHERE LAND_ID = @LAND_ID";
 
         return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
     }
