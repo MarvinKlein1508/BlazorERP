@@ -102,7 +102,7 @@
     private async Task ShowDeleteModalAsync()
     {
 
-        var dialog = await DialogService.ShowDialogAsync<DeleteDialog<Anrede, AnredeService>>(Input!, new CustomDialogParameters()
+        var dialog = await DialogService.ShowDialogAsync<DeleteDialog<Land, LandService>>(Input!, new CustomDialogParameters()
             {
                 Title = $"Land löschen",
                 PreventDismissOnOverlayClick = true,
