@@ -98,3 +98,22 @@
 fluent-text-field, fluent-number-field, fluent-select{
     width: 100%;
 }
+
+.fluent-select {
+    background: padding-box linear-gradient(var(--neutral-fill-rest),var(--neutral-fill-rest)),border-box var(--neutral-stroke-control-rest);
+    border: calc(var(--stroke-width) * 1px) solid transparent;
+    border-radius: calc(var(--control-corner-radius) * 1px);
+    height: calc((var(--base-height-multiplier) + var(--density)) * var(--design-unit) * 1px);
+    align-items: center;
+    box-sizing: border-box;
+    font-family: var(--body-font);
+    font-size: var(--type-ramp-base-font-size);
+    line-height: var(--type-ramp-base-line-height);
+    font-weight: initial;
+    font-variation-settings: var(--type-ramp-base-font-variations);
+    min-height: 100%;
+    padding: 0 calc(var(--design-unit) * 2.25px);
+    color: var(--neutral-foreground-rest);
+    fill: currentcolor;
+    font-family: var(--body-font);
+}

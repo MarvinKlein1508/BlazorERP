@@ -13,9 +13,12 @@ public class Anrede : IDbModelWithName<int?>
     public int? LetzterBearbeiter { get; set; }
     public DateTime ZuletztGeaendert { get; set; }
 
+
     public int? GetIdentifier() => AnredeId > 0 ? AnredeId : null;
 
     public string GetName() => Name;
+
+    public List<Übersetzung> Übersetzungen { get; set; } = [];
 
     public Dictionary<string, object?> GetParameters()
     {

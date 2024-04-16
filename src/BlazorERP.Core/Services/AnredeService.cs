@@ -1,12 +1,20 @@
 ﻿using BlazorERP.Core.Filters;
 using BlazorERP.Core.Interfaces;
 using BlazorERP.Core.Models;
+using Microsoft.AspNetCore.Components.Forms;
 using System.Text;
 
 namespace BlazorERP.Core.Services;
 
 public class AnredeService : IModelService<Anrede, int?, AnredeFilter>
 {
+    private readonly ÜbersetzungService _übersetzungService;
+
+    public AnredeService(ÜbersetzungService übersetzungService)
+    {
+        _übersetzungService = übersetzungService;
+    }
+
     public async Task CreateAsync(Anrede input, IDbController dbController, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -29,6 +37,15 @@ public class AnredeService : IModelService<Anrede, int?, AnredeFilter>
 
 
         input.AnredeId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
+
+        foreach (var item in input.Übersetzungen)
+        {
+            item.Code = Anrede.CODE;
+            item.ParentId = input.AnredeId;
+
+            await _übersetzungService.CreateAsync(item, dbController, cancellationToken);
+        }
+
     }
 
     public Task DeleteAsync(Anrede input, IDbController dbController, CancellationToken cancellationToken = default)
@@ -38,22 +55,29 @@ public class AnredeService : IModelService<Anrede, int?, AnredeFilter>
         return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
     }
 
-    public Task<Anrede?> GetAsync(int? identifier, IDbController dbController, CancellationToken cancellationToken = default)
+    public async Task<Anrede?> GetAsync(int? identifier, IDbController dbController, CancellationToken cancellationToken = default)
     {
         if (identifier is null)
         {
-            return Task.FromResult<Anrede?>(null);
+            return null;
         }
 
         string sql = "SELECT * FROM ANREDEN WHERE ANREDE_ID = @ANREDE_ID";
 
-        return dbController.GetFirstAsync<Anrede>(sql, new
+        var result = await dbController.GetFirstAsync<Anrede>(sql, new
         {
             ANREDE_ID = identifier
         }, cancellationToken);
+
+        if (result is not null)
+        {
+            result.Übersetzungen = await _übersetzungService.GetAsync(Anrede.CODE, result.AnredeId, dbController, cancellationToken);
+        }
+
+        return result;
     }
 
-    public Task<List<Anrede>> GetAsync(AnredeFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
+    public async Task<List<Anrede>> GetAsync(AnredeFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         string sql =
@@ -67,7 +91,18 @@ public class AnredeService : IModelService<Anrede, int?, AnredeFilter>
             ORDER BY ANREDE_ID DESC
         """;
 
-        return dbController.SelectDataAsync<Anrede>(sql, filter.GetParameters(), cancellationToken);
+        var results = await dbController.SelectDataAsync<Anrede>(sql, filter.GetParameters(), cancellationToken);
+        if (results.Count > 0)
+        {
+            var anredeIds = results.Select(x => x.AnredeId).ToArray();
+            var übersetzungen = await _übersetzungService.GetAsync(Anrede.CODE, anredeIds, dbController, cancellationToken);
+            foreach (var item in results)
+            {
+                item.Übersetzungen = übersetzungen.Where(x => x.ParentId == item.AnredeId).ToList();
+            }
+        }
+
+        return results;
     }
 
     public string GetFilterWhere(AnredeFilter filter)
@@ -104,7 +139,7 @@ public class AnredeService : IModelService<Anrede, int?, AnredeFilter>
         return dbController.GetFirstAsync<int>(sql, filter.GetParameters(), cancellationToken);
     }
 
-    public Task UpdateAsync(Anrede input, IDbController dbController, CancellationToken cancellationToken = default)
+    public async Task UpdateAsync(Anrede input, IDbController dbController, CancellationToken cancellationToken = default)
     {
         string sql =
            """
@@ -116,6 +151,17 @@ public class AnredeService : IModelService<Anrede, int?, AnredeFilter>
                 ANREDE_ID = @ANREDE_ID
             """;
 
-        return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
+
+        await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
+
+
+        await _übersetzungService.ClearAsync(Anrede.CODE, input.AnredeId, dbController, cancellationToken);
+        foreach (var item in input.Übersetzungen)
+        {
+            item.Code = Anrede.CODE;
+            item.ParentId = input.AnredeId;
+
+            await _übersetzungService.CreateAsync(item, dbController, cancellationToken);
+        }
     }
 }

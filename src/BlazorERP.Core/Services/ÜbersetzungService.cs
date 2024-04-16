@@ -72,6 +72,28 @@ public class ÜbersetzungService : IModelService<Übersetzung>
             PARENT_ID = parentId
         }, cancellationToken);
     }
+
+    public Task<List<Übersetzung>> GetAsync(string code, int[] parentIds, IDbController dbController, CancellationToken cancellationToken = default)
+    {
+        if(parentIds.Length == 0)
+        {
+            return Task.FromResult<List<Übersetzung>>([]);
+        }
+        string sql =
+            $"""
+            SELECT 
+                * 
+            FROM UEBERSETZUNGEN 
+            WHERE 
+                    CODE = @CODE
+                AND PARENT_ID IN ({string.Join(",", parentIds)})
+            """;
+
+        return dbController.SelectDataAsync<Übersetzung>(sql, new
+        {
+            CODE = code,
+        }, cancellationToken);
+    }
     public Task<Übersetzung?> GetAsync(string code, int sprachId, int parentId, IDbController dbController, CancellationToken cancellationToken = default)
     {
         string sql =
@@ -93,5 +115,14 @@ public class ÜbersetzungService : IModelService<Übersetzung>
         }, cancellationToken);
     }
 
+    public Task ClearAsync(string code, int parentId, IDbController dbController, CancellationToken cancellationToken)
+    {
+        string sql = $"DELETE FROM UEBERSETZUNGEN WHERE CODE = @CODE AND PARENT_ID = @PARENT_ID";
 
+        return dbController.QueryAsync(sql, new
+        {
+            CODE = code,
+            PARENT_ID = parentId,
+        }, cancellationToken);
+    }
 }

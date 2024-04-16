@@ -3,6 +3,7 @@
 @using Microsoft.AspNetCore.Identity
 @inject AuthService authService
 @inherits EditPageBase<int?, Anrede, AnredeService>
+@inject SpracheService spracheService
 @inject IMessageService messageService
 @inject IDialogService DialogService
 <PageTitle>@FinalBreadcrumbItemName</PageTitle>
@@ -42,49 +43,41 @@
     </FluentButton>
 </FluentStack>
 
-<FluentTabs>
-    <FluentTab Label="Allgemein">
-        <FluentCard>
-            <EditForm Model="Input" @ref="_form">
-                <FluentValidationValidator Validator="_validator" />
-                <FluentGrid Spacing="1">
-                    @if (Modus is EditMode.Edit)
-                    {
-                        <FluentGridItem xs="12">
-                            <FluentNumberField @bind-Value="Input.AnredeId" Label="AnredeId" Disabled />
-                        </FluentGridItem>
-                    }
-                    <FluentGridItem xs="12">
+<EditForm Model="Input" @ref="_form">
+    <FluentValidationValidator Validator="_validator" />
+    <FluentTabs>
+        <FluentTab Label="Allgemein">
+            <div class="row">
+                @if (Modus is EditMode.Edit)
+                {
+                    <div class="col-md-12">
+                        <FluentNumberField @bind-Value="Input.AnredeId" Label="AnredeId" Disabled />
+                    </div>
+                    <div class="col-md-12">
                         <FluentTextField @bind-Value="Input.Name" Label="Name" />
                         <FluentValidationMessage For="() => Input.Name" />
-                    </FluentGridItem>
-                </FluentGrid>
-            </EditForm>
-        </FluentCard>
-    </FluentTab>
-    <FluentTab Label="Übersetzungen" @onclick="Test">
-        <Content>
-          
-            Tab two content. This is for testing.
-        </Content>
-    </FluentTab>
+                    </div>
+                }
+            </div>
+        </FluentTab>
+        <FluentTab Label="Übersetzungen">
+            <Content>
+               <BlazorERP.Components.Shared.ÜbersetzungEditor Übersetzungen="Input.Übersetzungen" />
+            </Content>
+        </FluentTab>
 
-
-</FluentTabs>
-
+    </FluentTabs>
+</EditForm>
 @code {
 
 
     private bool _showOptionsMenu;
     private AnredeValidator _validator = new();
-
+    
 
     protected override string GetEntityRedirectUrl() => $"/Admin/Anreden/Edit?anredeId={Input!.AnredeId}";
 
-    private void Test()
-    {
-        
-    }
+ 
 
     [Parameter, SupplyParameterFromQuery(Name = "anredeId")]
     public override int? Identifier { get; set; }
