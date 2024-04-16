@@ -15,6 +15,8 @@ public class Währung : IDbModelWithName<string?>
     public string? GetIdentifier() => string.IsNullOrWhiteSpace(Code) ? null : Code;
     public string GetName() => Code;
 
+    public string BearbeiterName { get; set; } = string.Empty;
+
     public Dictionary<string, object?> GetParameters()
     {
         return new Dictionary<string, object?>

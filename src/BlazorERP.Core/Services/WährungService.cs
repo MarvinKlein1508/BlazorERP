@@ -53,7 +53,15 @@ public class WährungService : IModelService<Währung, string?, WährungFilter>
             return Task.FromResult<Währung?>(null);
         }
 
-        string sql = "SELECT * FROM WAEHRUNG WHERE CODE = @CODE";
+        string sql =
+            """
+            SELECT 
+                W.*,
+                U.ANZEIGENAME AS BEARBEITER_NAME
+            FROM WAEHRUNG W
+            LEFT JOIN USERS U ON (u.USER_ID = W.LETZTER_BEARBEITER)
+            WHERE CODE = @CODE
+            """;
 
         return dbController.GetFirstAsync<Währung>(sql, new
         {
@@ -68,8 +76,10 @@ public class WährungService : IModelService<Währung, string?, WährungFilter>
         $"""
         SELECT 
             FIRST {filter.Limit} SKIP {(filter.PageNumber - 1) * filter.Limit}
-                * 
-            FROM WAEHRUNG 
+                W.*,
+                U.ANZEIGENAME AS BEARBEITER_NAME
+            FROM WAEHRUNG W
+            LEFT JOIN USERS U ON (u.USER_ID = W.LETZTER_BEARBEITER)
             WHERE 1 = 1
             {GetFilterWhere(filter)}
             ORDER BY CODE DESC
