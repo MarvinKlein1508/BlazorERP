@@ -4,7 +4,6 @@ namespace BlazorERP.Core.Models;
 
 public class Land : IDbModelWithName<int?>
 {
-    public const string CODE = "LAND";
     public int LandId { get; set; }
     public string Name { get; set; } = string.Empty;
     public string ISO2 { get; set; } = string.Empty;

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BlazorERP.Core.Services;
 
-public class LandService : IModelService<Land, int?, LandFilter>
+public class LandService : IModelService<Land, int?, LandFilter>, ITranslationCode
 {
     private readonly ÜbersetzungService _übersetzungService;
 
@@ -45,7 +45,7 @@ public class LandService : IModelService<Land, int?, LandFilter>
 
         foreach (var item in input.Übersetzungen)
         {
-            item.Code = Land.CODE;
+            item.Code = GetTranslationCode();
             item.ParentId = input.LandId;
 
             await _übersetzungService.CreateAsync(item, dbController, cancellationToken);
@@ -76,7 +76,7 @@ public class LandService : IModelService<Land, int?, LandFilter>
 
         if (result is not null)
         {
-            result.Übersetzungen = await _übersetzungService.GetAsync(Anrede.CODE, result.LandId, dbController, cancellationToken);
+            result.Übersetzungen = await _übersetzungService.GetAsync(GetTranslationCode(), result.LandId, dbController, cancellationToken);
         }
 
         return result;
@@ -100,7 +100,7 @@ public class LandService : IModelService<Land, int?, LandFilter>
         if (results.Count > 0)
         {
             var landIds = results.Select(x => x.LandId).ToArray();
-            var übersetzungen = await _übersetzungService.GetAsync(Land.CODE, landIds, dbController, cancellationToken);
+            var übersetzungen = await _übersetzungService.GetAsync(GetTranslationCode(), landIds, dbController, cancellationToken);
             foreach (var item in results)
             {
                 item.Übersetzungen = übersetzungen.Where(x => x.ParentId == item.LandId).ToList();
@@ -144,6 +144,11 @@ public class LandService : IModelService<Land, int?, LandFilter>
         return dbController.GetFirstAsync<int>(sql, filter.GetParameters(), cancellationToken);
     }
 
+    public string GetTranslationCode()
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task UpdateAsync(Land input, IDbController dbController, CancellationToken cancellationToken = default)
     {
         string sql =
@@ -163,10 +168,10 @@ public class LandService : IModelService<Land, int?, LandFilter>
         await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
 
 
-        await _übersetzungService.ClearAsync(Land.CODE, input.LandId, dbController, cancellationToken);
+        await _übersetzungService.ClearAsync(GetTranslationCode(), input.LandId, dbController, cancellationToken);
         foreach (var item in input.Übersetzungen)
         {
-            item.Code = Land.CODE;
+            item.Code = GetTranslationCode();
             item.ParentId = input.LandId;
 
             await _übersetzungService.CreateAsync(item, dbController, cancellationToken);

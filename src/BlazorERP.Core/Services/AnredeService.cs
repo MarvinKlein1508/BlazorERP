@@ -1,12 +1,11 @@
 ﻿using BlazorERP.Core.Filters;
 using BlazorERP.Core.Interfaces;
 using BlazorERP.Core.Models;
-using Microsoft.AspNetCore.Components.Forms;
 using System.Text;
 
 namespace BlazorERP.Core.Services;
 
-public class AnredeService : IModelService<Anrede, int?, AnredeFilter>
+public class AnredeService : IModelService<Anrede, int?, AnredeFilter>, ITranslationCode
 {
     private readonly ÜbersetzungService _übersetzungService;
 
@@ -40,7 +39,7 @@ public class AnredeService : IModelService<Anrede, int?, AnredeFilter>
 
         foreach (var item in input.Übersetzungen)
         {
-            item.Code = Anrede.CODE;
+            item.Code = GetTranslationCode();
             item.ParentId = input.AnredeId;
 
             await _übersetzungService.CreateAsync(item, dbController, cancellationToken);
@@ -71,7 +70,7 @@ public class AnredeService : IModelService<Anrede, int?, AnredeFilter>
 
         if (result is not null)
         {
-            result.Übersetzungen = await _übersetzungService.GetAsync(Anrede.CODE, result.AnredeId, dbController, cancellationToken);
+            result.Übersetzungen = await _übersetzungService.GetAsync(GetTranslationCode(), result.AnredeId, dbController, cancellationToken);
         }
 
         return result;
@@ -95,7 +94,7 @@ public class AnredeService : IModelService<Anrede, int?, AnredeFilter>
         if (results.Count > 0)
         {
             var anredeIds = results.Select(x => x.AnredeId).ToArray();
-            var übersetzungen = await _übersetzungService.GetAsync(Anrede.CODE, anredeIds, dbController, cancellationToken);
+            var übersetzungen = await _übersetzungService.GetAsync(GetTranslationCode(), anredeIds, dbController, cancellationToken);
             foreach (var item in results)
             {
                 item.Übersetzungen = übersetzungen.Where(x => x.ParentId == item.AnredeId).ToList();
@@ -104,6 +103,8 @@ public class AnredeService : IModelService<Anrede, int?, AnredeFilter>
 
         return results;
     }
+
+ 
 
     public string GetFilterWhere(AnredeFilter filter)
     {
@@ -139,6 +140,8 @@ public class AnredeService : IModelService<Anrede, int?, AnredeFilter>
         return dbController.GetFirstAsync<int>(sql, filter.GetParameters(), cancellationToken);
     }
 
+    public string GetTranslationCode() => "ANREDE";
+
     public async Task UpdateAsync(Anrede input, IDbController dbController, CancellationToken cancellationToken = default)
     {
         string sql =
@@ -155,10 +158,10 @@ public class AnredeService : IModelService<Anrede, int?, AnredeFilter>
         await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
 
 
-        await _übersetzungService.ClearAsync(Anrede.CODE, input.AnredeId, dbController, cancellationToken);
+        await _übersetzungService.ClearAsync(GetTranslationCode(), input.AnredeId, dbController, cancellationToken);
         foreach (var item in input.Übersetzungen)
         {
-            item.Code = Anrede.CODE;
+            item.Code = GetTranslationCode();
             item.ParentId = input.AnredeId;
 
             await _übersetzungService.CreateAsync(item, dbController, cancellationToken);

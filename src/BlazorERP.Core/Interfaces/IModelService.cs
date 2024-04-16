@@ -143,5 +143,8 @@ public interface IDbParameterizable
 
 public interface ITranslationCode
 {
-    string GetCode();
+    /// <summary>
+    /// Liefert den Code für die Identifizierung von Einträgen in der Tabelle UEBERSETZUNGEN
+    /// </summary>
+    string GetTranslationCode();
 }

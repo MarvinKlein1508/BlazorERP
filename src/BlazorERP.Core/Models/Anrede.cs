@@ -3,11 +3,7 @@
 namespace BlazorERP.Core.Models;
 
 public class Anrede : IDbModelWithName<int?>
-{
-    /// <summary>
-    /// Code für die Identifizierung von Einträgen in der Tabelel UEBERSETZUNGEN
-    /// </summary>
-    public const string CODE = "ANREDE";
+{   
     public int AnredeId { get; set; }
     public string Name { get; set; } = string.Empty;
     public int? LetzterBearbeiter { get; set; }
