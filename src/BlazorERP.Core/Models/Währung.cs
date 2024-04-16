@@ -9,9 +9,9 @@ public class Währung : IDbModelWithName<string?>
     public decimal Wechselkurs { get; set; }
     public bool MussRunden { get; set; }
     public int Nachkommastellen { get; set; }
-    public DateTime KursVom { get; set; }
+    public DateTime? KursVom { get; set; }
     public int? LetzterBearbeiter { get; set; }
-    public DateTime ZuletztGeaendert { get; set; }
+    public DateTime? ZuletztGeaendert { get; set; }
     public string? GetIdentifier() => string.IsNullOrWhiteSpace(Code) ? null : Code;
     public string GetName() => Code;
 

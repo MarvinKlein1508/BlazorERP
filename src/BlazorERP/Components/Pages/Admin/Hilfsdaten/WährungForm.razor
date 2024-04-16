@@ -6,6 +6,7 @@
 @inject SpracheService spracheService
 @inject IMessageService messageService
 @inject IDialogService DialogService
+@inject UserService userService
 <PageTitle>@FinalBreadcrumbItemName</PageTitle>
 
 <FluentBreadcrumb>
@@ -43,31 +44,83 @@
     </FluentButton>
 </FluentStack>
 
-<EditForm Model="Input" @ref="_form">
-    <FluentValidationValidator Validator="_validator" />
-    <FluentTabs>
-        <FluentTab Label="Allgemein">
-            <div class="row">
-                @if (Modus is EditMode.Edit)
-                {
-                    <div class="col-md-12">
-                        <FluentTextField @bind-Value="Input.Code" Label="Code" Disabled="Modus is EditMode.Edit" />
+<div class="row">
+    <div class="col-md-9">
+        <EditForm Model="Input" @ref="_form">
+            <FluentValidationValidator Validator="_validator" />
+            <FluentTabs>
+                <FluentTab Label="Allgemein">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="row">
+                                @if (Modus is EditMode.Edit)
+                                {
+                                    <div class="col-md-12">
+                                        <FluentTextField @bind-Value="Input.Code" Label="Code" Disabled="Modus is EditMode.Edit" />
+                                        <FluentValidationMessage For="() => Input.Code" />
+                                    </div>
+
+
+                                    <div class="col-md-4">
+                                        <FluentNumberField @bind-Value="Input.Wechselkurs" Label="Wechselkurs" />
+                                        <FluentValidationMessage For="() => Input.Wechselkurs" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <FluentNumberField @bind-Value="Input.Kurs" Label="Kurs" />
+                                        <FluentValidationMessage For="() => Input.Kurs" />
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <FluentDatePicker Label="Kurs Vom" @bind-Value="@Input.KursVom" />
+                                        <FluentValidationMessage For="() => Input.KursVom" />
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <FluentNumberField @bind-Value="Input.Nachkommastellen" Label="Nachkommastellen" />
+                                        <FluentValidationMessage For="() => Input.Nachkommastellen" />
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-md-3 ">
+                            <div class="row">
+                                @if (Modus is EditMode.Edit)
+                                {
+                                    <div class="col-12">
+                                        <FluentDatePicker Appearance="FluentInputAppearance.Filled" Label="Letzte Änderung" @bind-Value="@Input.ZuletztGeaendert" ReadOnly />
+                                    </div>
+
+                                    <div class="col-12">
+                                        <FluentTextField Appearance="FluentInputAppearance.Filled" Label="Letzter Bearbeiter" Value="@(_letzterBearbeiter?.GetName() ?? string.Empty)" ReadOnly />
+                                    </div>
+                                }
+                            </div>
+                        </div>
                     </div>
-                }
-            </div>
-        </FluentTab>
-    </FluentTabs>
-</EditForm>
+
+                </FluentTab>
+            </FluentTabs>
+        </EditForm>
+    </div>
+    <div class="col-md-3"></div>
+</div>
 @code {
 
 
     private bool _showOptionsMenu;
     private AnredeValidator _validator = new();
-    
+
+    private User? _letzterBearbeiter;
 
     protected override string GetEntityRedirectUrl() => $"/Admin/Währungen/Edit?code={Input!.Code}";
 
- 
+    protected override async Task InitializeModelAsync(bool newEntry, IDbController dbController)
+    {
+        if(!newEntry)
+        {
+            _letzterBearbeiter = await userService.GetAsync(Input.LetzterBearbeiter, dbController);
+        }
+    }
 
     [Parameter, SupplyParameterFromQuery(Name = "code")]
     public override string? Identifier { get; set; }
