@@ -1,7 +1,8 @@
 ﻿
 namespace BlazorERP.Core.Filters;
 
-public partial class AnredeFilter : PageFilterBase
+
+public class LandFilter : PageFilterBase
 {
     public override Dictionary<string, object?> GetParameters()
     {
