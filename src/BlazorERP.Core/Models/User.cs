@@ -35,6 +35,7 @@ public class User : IDbModelWithName<int?>
             { "NORMALIZED_USERNAME", NormalizedUsername },
             { "VORNAME", Vorname },
             { "NACHNAME", Nachname },
+            { "ANZEIGENAME", GetName() },
             { "ACTIVE_DIRECTORY_GUID", ActiveDirectoryGuid?.ToString() },
             { "EMAIL", Email },
             { "PASSWORD", Password },

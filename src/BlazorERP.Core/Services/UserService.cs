@@ -19,6 +19,7 @@ public class UserService : IModelService<User, int?, UserFilter>
                 NORMALIZED_USERNAME,
                 VORNAME,
                 NACHNAME,
+                ANZEIGENAME,
                 ACTIVE_DIRECTORY_GUID,
                 EMAIL,
                 PASSWORD,
@@ -33,6 +34,7 @@ public class UserService : IModelService<User, int?, UserFilter>
                 @NORMALIZED_USERNAME,
                 @VORNAME,
                 @NACHNAME,
+                @ANZEIGENAME,
                 @ACTIVE_DIRECTORY_GUID,
                 @EMAIL,
                 @PASSWORD,
@@ -89,6 +91,7 @@ public class UserService : IModelService<User, int?, UserFilter>
                 NORMALIZED_USERNAME = @NORMALIZED_USERNAME,
                 VORNAME = @VORNAME,
                 NACHNAME = @NACHNAME,
+                ANZEIGENAME = @ANZEIGENAME,
                 EMAIL = @EMAIL,
                 IS_AKTIV = @IS_AKTIV,
                 IS_ADMIN = @IS_ADMIN
