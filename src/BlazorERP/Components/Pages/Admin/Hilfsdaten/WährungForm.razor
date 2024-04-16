@@ -19,7 +19,7 @@
     return;
 }
 <FluentStack HorizontalAlignment="HorizontalAlignment.End">
-    <FluentAnchor Href="/Admin/Anreden"
+    <FluentAnchor Href="/Admin/Währungen"
                   IconStart="@(new Icons.Regular.Size20.ArrowReply())">
         Zurück
     </FluentAnchor>
@@ -51,7 +51,7 @@
                 @if (Modus is EditMode.Edit)
                 {
                     <div class="col-md-12">
-                        <FluentTextField @bind-Value="Input.Zeichen" Label="Zeichen" Disabled="Modus is EditMode.Edit" />
+                        <FluentTextField @bind-Value="Input.Code" Label="Code" Disabled="Modus is EditMode.Edit" />
                     </div>
                 }
             </div>
@@ -65,11 +65,11 @@
     private AnredeValidator _validator = new();
     
 
-    protected override string GetEntityRedirectUrl() => $"/Admin/Anreden/Edit?anredeId={Input!.Zeichen}";
+    protected override string GetEntityRedirectUrl() => $"/Admin/Währungen/Edit?code={Input!.Code}";
 
  
 
-    [Parameter, SupplyParameterFromQuery(Name = "zeichen")]
+    [Parameter, SupplyParameterFromQuery(Name = "code")]
     public override string? Identifier { get; set; }
 
 

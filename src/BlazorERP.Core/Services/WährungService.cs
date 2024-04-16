@@ -14,7 +14,7 @@ public class WährungService : IModelService<Währung, string?, WährungFilter>
             """
             INSERT INTO WAEHRUNG
             (
-                ZEICHEN,
+                CODE,
                 KURS,
                 WECHSELKURS,
                 MUSS_RUNDEN,
@@ -25,7 +25,7 @@ public class WährungService : IModelService<Währung, string?, WährungFilter>
             )
             VALUES
             (
-                @ZEICHEN,
+                @CODE,
                 @KURS,
                 @WECHSELKURS,
                 @MUSS_RUNDEN,
@@ -41,7 +41,7 @@ public class WährungService : IModelService<Währung, string?, WährungFilter>
 
     public Task DeleteAsync(Währung input, IDbController dbController, CancellationToken cancellationToken = default)
     {
-        string sql = "DELETE FROM WAEHRUNG WHERE ZEICHEN = @ZEICHEN";
+        string sql = "DELETE FROM WAEHRUNG WHERE CODE = @CODE";
 
         return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
     }
@@ -53,11 +53,11 @@ public class WährungService : IModelService<Währung, string?, WährungFilter>
             return Task.FromResult<Währung?>(null);
         }
 
-        string sql = "SELECT * FROM WAEHRUNG WHERE ZEICHEN = @ZEICHEN";
+        string sql = "SELECT * FROM WAEHRUNG WHERE CODE = @CODE";
 
         return dbController.GetFirstAsync<Währung>(sql, new
         {
-            ZEICHEN = identifier
+            CODE = identifier
         }, cancellationToken);
     }
 
@@ -72,7 +72,7 @@ public class WährungService : IModelService<Währung, string?, WährungFilter>
             FROM WAEHRUNG 
             WHERE 1 = 1
             {GetFilterWhere(filter)}
-            ORDER BY ZEICHEN DESC
+            ORDER BY CODE DESC
         """;
 
         return dbController.SelectDataAsync<Währung>(sql, filter.GetParameters(), cancellationToken);
@@ -89,7 +89,7 @@ public class WährungService : IModelService<Währung, string?, WährungFilter>
         {
             sb.AppendLine(@" AND 
 (
-        UPPER(ZEICHEN) LIKE @SEARCH_PHRASE
+        UPPER(CODE) LIKE @SEARCH_PHRASE
 )");
         }
 
@@ -128,7 +128,7 @@ public class WährungService : IModelService<Währung, string?, WährungFilter>
                 LETZTER_BEARBEITER = @LETZTER_BEARBEITER,
                 ZULETZT_GEAENDERT = @ZULETZT_GEAENDERT
             WHERE
-                ZEICHEN = @ZEICHEN
+                CODE = @CODE
             """;
 
 
