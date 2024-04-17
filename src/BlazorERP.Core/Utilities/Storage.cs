@@ -32,7 +32,12 @@ public static class Storage
 
         var list = _storage[typeof(T)] as List<T>;
 
-        var existingItem = list.FirstOrDefault(x => (x as T)?.GetIdentifier()?.Equals(input.GetIdentifier()) ?? false);
+        if(list is null)
+        {
+            return;
+        }
+
+        var existingItem = list.FirstOrDefault(x => x?.GetIdentifier()?.Equals(input.GetIdentifier()) ?? false);
 
         if (existingItem == null)
         {
