@@ -94,6 +94,8 @@ public abstract class EditPageBase<TIdentifier, TModel, TService> : ComponentBas
                 await OnSaveAsync(dbController);
 
                 await dbController.CommitAsync();
+
+                Storage.UpdateStorage<TModel, TIdentifier>(Input);
             }
             catch (FbException ex)
             {
