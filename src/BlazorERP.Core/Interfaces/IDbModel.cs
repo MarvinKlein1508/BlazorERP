@@ -1,11 +1,11 @@
 ﻿namespace BlazorERP.Core.Interfaces;
 
-public interface IDbModelWithName<T> : IDbParameterizable
+public interface IDbModel<T> : IDbParameterizable
 {
     T GetIdentifier();
 }
 
-public interface IDbModelWithName<T> : IDbModelWithName<T>
+public interface IDbModelWithName<T> : IDbModel<T>
 {
     string GetName();
 }
