@@ -1,0 +1,151 @@
+﻿@page "/Admin/Lieferbedingungen/Edit"
+@using BlazorERP.Core.Validators.Admin.Hilfsdaten
+@using Microsoft.AspNetCore.Identity
+@inject AuthService authService
+@inherits EditPageBase<int?, Lieferbedingung, LieferbedingungService>
+@inject SpracheService spracheService
+@inject IMessageService messageService
+@inject IDialogService DialogService
+<PageTitle>@FinalBreadcrumbItemName</PageTitle>
+
+<FluentBreadcrumb>
+    <FluentBreadcrumbItem Href="/">Start</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem>Administration</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="/Admin/Lieferbedingungen">Lieferbedingungen</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem>@FinalBreadcrumbItemName</FluentBreadcrumbItem>
+</FluentBreadcrumb>
+@if (Input is null)
+{
+    return;
+}
+<FluentStack HorizontalAlignment="HorizontalAlignment.End">
+    <FluentAnchor Href="/Admin/Lieferbedingungen"
+                  IconStart="@(new Icons.Regular.Size20.ArrowReply())">
+        Zurück
+    </FluentAnchor>
+
+    @if (Modus is EditMode.Edit)
+    {
+        <FluentButton id="btnOpen1" Appearance="Appearance.Accent" @onclick="@(() => _showOptionsMenu = !_showOptionsMenu)">
+            Optionen
+        </FluentButton>
+
+        <FluentMenu Anchor="btnOpen1" @bind-Open="_showOptionsMenu" VerticalThreshold="170">
+            <FluentMenuItem OnClick="ShowDeleteModalAsync">Lieferbedingung löschen</FluentMenuItem>
+        </FluentMenu>
+    }
+
+    <FluentButton IconStart="@(new Icons.Regular.Size20.Save())"
+                  Appearance="Appearance.Accent"
+                  OnClick="SaveAsync">
+
+        Speichern
+    </FluentButton>
+</FluentStack>
+
+<EditForm Model="Input" @ref="_form">
+    <FluentValidationValidator Validator="_validator" />
+    <FluentTabs>
+        <FluentTab Label="Allgemein">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="row">
+                        @if (Modus is EditMode.Edit)
+                        {
+                            <div class="col-md-12">
+                                <FluentNumberField @bind-Value="Input.LieferbedingungId" Label="LieferbedingungId" Disabled />
+                                <FluentValidationMessage For="() => Input.LieferbedingungId" />
+                            </div>
+                        }
+
+                        <div class="col-md-8">
+                            <FluentTextField @bind-Value="Input.Name" Label="Name" />
+                            <FluentValidationMessage For="() => Input.Name" />
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-3 ">
+                    <div class="row">
+                        @if (Modus is EditMode.Edit)
+                        {
+                            <div class="col-12">
+                                <FluentDatePicker Appearance="FluentInputAppearance.Filled" Label="Letzte Änderung" @bind-Value="@Input.ZuletztGeaendert" ReadOnly />
+                            </div>
+
+                            <div class="col-12">
+                                <FluentTextField Appearance="FluentInputAppearance.Filled" Label="Letzter Bearbeiter" Value="@Input.BearbeiterName" ReadOnly />
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex flex-column gap-2 mt-2">
+                                    <FluentSwitch @bind-Value="@Input.IstAktiv" Label="Aktiv" />
+                                    <FluentSwitch @bind-Value="@Input.VersandMitSpedition" Label="Versand mit Spedition" />
+                                    <FluentSwitch @bind-Value="@Input.IstAbholung" Label="Abholung" />
+                                    <FluentSwitch @bind-Value="@Input.VerfuegbarKunde" Label="Verfügbar für Kunden" />
+                                    <FluentSwitch @bind-Value="@Input.VerfuegbarLieferant" Label="Verfügbar für Lieferanten" />
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </FluentTab>
+        <FluentTab Label="Übersetzungen">
+            <Content>
+                <BlazorERP.Components.Shared.ÜbersetzungEditor Übersetzungen="Input.Übersetzungen" />
+            </Content>
+        </FluentTab>
+
+    </FluentTabs>
+</EditForm>
+@code {
+
+
+    private bool _showOptionsMenu;
+    private LieferbedingungValidator _validator = new();
+
+
+    protected override string GetEntityRedirectUrl() => $"/Admin/Lieferbedingungen/Edit?lieferbedingungId={Input!.LieferbedingungId}";
+
+
+
+    [Parameter, SupplyParameterFromQuery(Name = "lieferbedingungId")]
+    public override int? Identifier { get; set; }
+
+
+    private async Task ShowDeleteModalAsync()
+    {
+
+        var dialog = await DialogService.ShowDialogAsync<DeleteDialog<Lieferbedingung, LieferbedingungService>>(Input!, new CustomDialogParameters()
+            {
+                Title = $"Lieferbedingung löschen",
+                PreventDismissOnOverlayClick = true,
+                PreventScroll = true,
+                Text = $"Möchten Sie die Lieferbedingung \"{Input!.GetName()}\" wirklich löschen?"
+            });
+
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            messageService.ShowMessageBar(options =>
+            {
+                options.Title = "Lieferbedingung wurde erfolgreich gelöscht!";
+                options.Intent = MessageIntent.Success;
+                options.Section = Constants.MESSAGEBAR_TOP_SECTION;
+                options.Timeout = 4000;
+            });
+
+            NavigationManager.NavigateTo("/Admin/Lieferbedingungen");
+        }
+    }
+
+    protected override Task BeforeSaveAsync(IDbController dbController)
+    {
+        Input.LetzterBearbeiter = User.UserId;
+        Input.ZuletztGeaendert = DateTime.Now;
+
+        return Task.CompletedTask;
+    }
+
+}

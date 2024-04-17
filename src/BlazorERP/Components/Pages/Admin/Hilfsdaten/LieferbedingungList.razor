@@ -1,14 +1,14 @@
-﻿@page "/Admin/Zahlungsbedingungen"
+﻿@page "/Admin/Lieferbedingungen"
 @inject AuthService authService
-@inherits SearchPageBase<Zahlungsbedingung, ZahlungsbedingungService, ZahlungsbedingungFilter>
+@inherits SearchPageBase<Lieferbedingung, LieferbedingungService, LieferbedingungFilter>
 
-<PageTitle>Zahlungsbedingungen</PageTitle>
+<PageTitle>Lieferbedingungen</PageTitle>
 
 
 <FluentBreadcrumb>
     <FluentBreadcrumbItem Href="/">Start</FluentBreadcrumbItem>
     <FluentBreadcrumbItem>Administration</FluentBreadcrumbItem>
-    <FluentBreadcrumbItem>Zahlungsbedingungen</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem>Lieferbedingungen</FluentBreadcrumbItem>
 </FluentBreadcrumb>
 
 
@@ -17,10 +17,10 @@
 <FluentGrid Width="100%">
     <FluentGridItem xs="12">
         <FluentStack HorizontalAlignment="HorizontalAlignment.End">
-            <FluentAnchor Href="/Admin/Zahlungsbedingungen/Edit"
+            <FluentAnchor Href="/Admin/Lieferbedingungen/Edit"
                           IconStart="@(new Icons.Regular.Size20.Add().WithColor(Color.Fill))"
                           Appearance="Appearance.Accent">
-                Neue Zahlungsbedingung
+                Neue Lieferbedingung
             </FluentAnchor>
         </FluentStack>
     </FluentGridItem>
@@ -42,7 +42,7 @@
                         <div class="list-details">
                             <div class="list-item" hidden-when="xs sm">
                                 <label>Id</label>
-                                <span>@item.ZahlungsbedingungId</span>
+                                <span>@item.LieferbedingungId</span>
                             </div>
 
                             <div class="list-item">
@@ -60,7 +60,7 @@
                             </div>
                         </div>
                         <div class="list-buttons">
-                            <FluentAnchor Href="@($"/Admin/Zahlungsbedingungen/Edit?zahlungsbedingungId={item.GetIdentifier()}")">
+                            <FluentAnchor Href="@($"/Admin/Lieferbedingungen/Edit?lieferbedingungId={item.GetIdentifier()}")">
                                 Bearbeiten
                             </FluentAnchor>
                         </div>
@@ -81,7 +81,7 @@
                 <Pagination CurrentPageNumber="Page"
                             TotalItems="TotalItems"
                             ItemsPerPage="Filter.Limit"
-                            NavUrl="/Admin/Zahlungsbedingungen?page=" />
+                            NavUrl="/Admin/Lieferbedingungen?page=" />
             }
         </FluentStack>
     </FluentGridItem>
@@ -104,18 +104,7 @@
     </FluentGridItem>
 </FluentGrid>
 
-
-
-
-
-
-
-
-
-
-
-
 @code {
     protected override bool InternalNavigation => false;
-    protected override string BaseUrl => "/Admin/Zahlungsbedingungen";
+    protected override string BaseUrl => "/Admin/Lieferbedingungen";
 }
