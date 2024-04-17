@@ -2,6 +2,7 @@
 using BlazorERP.Core.Interfaces;
 using BlazorERP.Core.Models;
 using System.Text;
+using System.Threading;
 
 namespace BlazorERP.Core.Services;
 
@@ -54,6 +55,22 @@ public class AnredeService : IModelService<Anrede, int?, AnredeFilter>, ITransla
         return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
     }
 
+    public static async Task<List<Anrede>> GetAsync(IDbController dbController)
+    {
+        string sql = "SELECT * FROM ANREDEN";
+
+        var results = await dbController.SelectDataAsync<Anrede>(sql);
+
+
+        var übersetzungen = await ÜbersetzungService.GetAsync(GetTranslationCode(), dbController);
+
+        foreach (var item in results)
+        {
+            item.Übersetzungen = übersetzungen.Where(x => x.ParentId == item.AnredeId).ToList();
+        }
+
+        return results;
+    }
     public async Task<Anrede?> GetAsync(int? identifier, IDbController dbController, CancellationToken cancellationToken = default)
     {
         if (identifier is null)
@@ -104,7 +121,7 @@ public class AnredeService : IModelService<Anrede, int?, AnredeFilter>, ITransla
         return results;
     }
 
- 
+
 
     public string GetFilterWhere(AnredeFilter filter)
     {
@@ -140,7 +157,7 @@ public class AnredeService : IModelService<Anrede, int?, AnredeFilter>, ITransla
         return dbController.GetFirstAsync<int>(sql, filter.GetParameters(), cancellationToken);
     }
 
-    public string GetTranslationCode() => "ANREDE";
+    
 
     public async Task UpdateAsync(Anrede input, IDbController dbController, CancellationToken cancellationToken = default)
     {
@@ -167,4 +184,6 @@ public class AnredeService : IModelService<Anrede, int?, AnredeFilter>, ITransla
             await _übersetzungService.CreateAsync(item, dbController, cancellationToken);
         }
     }
+
+    public static string GetTranslationCode() => "ANREDE";
 }

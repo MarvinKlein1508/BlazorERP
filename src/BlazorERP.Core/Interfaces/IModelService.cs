@@ -146,5 +146,5 @@ public interface ITranslationCode
     /// <summary>
     /// Liefert den Code für die Identifizierung von Einträgen in der Tabelle UEBERSETZUNGEN
     /// </summary>
-    string GetTranslationCode();
+    static abstract string GetTranslationCode();
 }

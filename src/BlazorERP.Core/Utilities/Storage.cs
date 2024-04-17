@@ -1,4 +1,6 @@
 ﻿using BlazorERP.Core.Interfaces;
+using BlazorERP.Core.Models;
+using BlazorERP.Core.Services;
 using Microsoft.Extensions.Configuration;
 
 namespace BlazorERP.Core.Utilities;
@@ -6,13 +8,14 @@ namespace BlazorERP.Core.Utilities;
 public static class Storage
 {
     private static IConfiguration? _configuration;
-    private readonly static Dictionary<Type, List<object>> _storage = [];
+    private readonly static Dictionary<Type, object> _storage = [];
 
     public static async Task InitAsync(IConfiguration configuration)
     {
         _configuration = configuration;
 
        using IDbController dbController = new FbController();
+        _storage.Add(typeof(Anrede), await AnredeService.GetAsync(dbController));
     }
 
     /// <summary>
@@ -27,7 +30,7 @@ public static class Storage
             return;
         }
 
-        var list = _storage[typeof(T)];
+        var list = _storage[typeof(T)] as List<T>;
 
         var existingItem = list.FirstOrDefault(x => (x as T)?.GetIdentifier()?.Equals(input.GetIdentifier()) ?? false);
 
@@ -49,7 +52,7 @@ public static class Storage
     /// <param name="input"></param>
     public static void DeleteFromStorage<T, TIdentifier>(T input) where T : class, IDbModel<TIdentifier>
     {
-        var storage = _storage.GetValueOrDefault(typeof(T));
+        var storage = _storage.GetValueOrDefault(typeof(T)) as List<T>;
 
         var item = storage?.Cast<T>().FirstOrDefault(x => x.GetIdentifier()?.Equals(input.GetIdentifier()) ?? false);
 
@@ -68,7 +71,7 @@ public static class Storage
     {
         if (_storage.ContainsKey(typeof(T)))
         {
-            var storage = _storage.GetValueOrDefault(typeof(T)) ?? [];
+            var storage = _storage.GetValueOrDefault(typeof(T)) as List<T> ?? [];
 
             foreach (var item in storage)
             {

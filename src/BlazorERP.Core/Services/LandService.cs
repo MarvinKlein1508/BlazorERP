@@ -144,7 +144,7 @@ public class LandService : IModelService<Land, int?, LandFilter>, ITranslationCo
         return dbController.GetFirstAsync<int>(sql, filter.GetParameters(), cancellationToken);
     }
 
-    public string GetTranslationCode() => "LAND";
+    public static string GetTranslationCode() => "LAND";
 
     public async Task UpdateAsync(Land input, IDbController dbController, CancellationToken cancellationToken = default)
     {

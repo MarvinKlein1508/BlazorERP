@@ -101,11 +101,11 @@
 
     protected override string GetEntityRedirectUrl() => $"/Admin/Voreinstellungen/Edit?voreinstellungId={Input!.VoreinstellungId}";
 
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         using IDbController dbController = new FbController();
 
-        User = AuthService.GetUserAsync(dbController);
+        User = await AuthService.GetUserAsync(dbController);
     }
 
 

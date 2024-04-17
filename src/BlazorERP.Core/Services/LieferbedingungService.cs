@@ -161,7 +161,7 @@ public class LieferbedingungService : IModelService<Lieferbedingung, int?, Liefe
         return dbController.GetFirstAsync<int>(sql, filter.GetParameters(), cancellationToken);
     }
 
-    public string GetTranslationCode() => "LIEFERBEDINGUNG";
+    public static string GetTranslationCode() => "LIEFERBEDINGUNG";
 
     public async Task UpdateAsync(Lieferbedingung input, IDbController dbController, CancellationToken cancellationToken = default)
     {

@@ -175,7 +175,7 @@ public class ZahlungsbedingungService : IModelService<Zahlungsbedingung, int?, Z
         return dbController.GetFirstAsync<int>(sql, filter.GetParameters(), cancellationToken);
     }
 
-    public string GetTranslationCode() => "ZAHLUNGSBEDINGUNG";
+    public static string GetTranslationCode() => "ZAHLUNGSBEDINGUNG";
 
     public async Task UpdateAsync(Zahlungsbedingung input, IDbController dbController, CancellationToken cancellationToken = default)
     {

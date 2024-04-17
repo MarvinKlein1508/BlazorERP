@@ -73,6 +73,24 @@ public class ÜbersetzungService : IModelService<Übersetzung>
         }, cancellationToken);
     }
 
+    public static Task<List<Übersetzung>> GetAsync(string code, IDbController dbController, CancellationToken cancellationToken = default)
+    {
+        
+        string sql =
+            $"""
+            SELECT 
+                * 
+            FROM UEBERSETZUNGEN 
+            WHERE 
+                CODE = @CODE
+            """;
+
+        return dbController.SelectDataAsync<Übersetzung>(sql, new
+        {
+            CODE = code,
+        }, cancellationToken);
+    }
+
     public Task<List<Übersetzung>> GetAsync(string code, int[] parentIds, IDbController dbController, CancellationToken cancellationToken = default)
     {
         if(parentIds.Length == 0)
