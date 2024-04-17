@@ -1,11 +1,7 @@
 ﻿@page "/Admin/Anreden/Edit"
 @using BlazorERP.Core.Validators.Admin.Hilfsdaten
 @using Microsoft.AspNetCore.Identity
-@inject AuthService authService
 @inherits EditPageBase<int?, Anrede, AnredeService>
-@inject SpracheService spracheService
-@inject IMessageService messageService
-@inject IDialogService DialogService
 <PageTitle>@FinalBreadcrumbItemName</PageTitle>
 
 <FluentBreadcrumb>
@@ -98,7 +94,7 @@
 
         if (!result.Cancelled)
         {
-            messageService.ShowMessageBar(options =>
+            MessageService.ShowMessageBar(options =>
             {
                 options.Title = "Anrede wurde erfolgreich gelöscht!";
                 options.Intent = MessageIntent.Success;

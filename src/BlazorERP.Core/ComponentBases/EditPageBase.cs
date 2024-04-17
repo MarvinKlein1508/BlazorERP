@@ -34,6 +34,11 @@ public abstract class EditPageBase<TIdentifier, TModel, TService> : ComponentBas
 
     [Inject]
     protected IToastService ToastService { get; set; } = default!;
+    [Inject]
+    protected IMessageService MessageService { get; set; } = default!;
+
+    [Inject]
+    protected IDialogService DialogService { get; set; } = default!;
 
     public User? User { get; set; }
     protected string FinalBreadcrumbItemName { get; set; } = string.Empty;

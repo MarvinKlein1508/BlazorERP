@@ -1,12 +1,8 @@
 ﻿@page "/Admin/Währungen/Edit"
 @using BlazorERP.Core.Validators.Admin.Hilfsdaten
 @using Microsoft.AspNetCore.Identity
-@inject AuthService authService
 @inherits EditPageBase<string?, Währung, WährungService>
-@inject SpracheService spracheService
-@inject IMessageService messageService
-@inject IDialogService DialogService
-@inject UserService userService
+
 <PageTitle>@FinalBreadcrumbItemName</PageTitle>
 
 <FluentBreadcrumb>
@@ -134,7 +130,7 @@
 
         if (!result.Cancelled)
         {
-            messageService.ShowMessageBar(options =>
+            MessageService.ShowMessageBar(options =>
             {
                 options.Title = "Währung wurde erfolgreich gelöscht!";
                 options.Intent = MessageIntent.Success;

@@ -1,12 +1,8 @@
 ﻿@page "/Admin/Kostenstellen/Edit"
 @using BlazorERP.Core.Validators.Admin.Hilfsdaten
 @using Microsoft.AspNetCore.Identity
-@inject AuthService authService
 @inherits EditPageBase<int?, Kostenstelle, KostenstelleService>
-@inject SpracheService spracheService
-@inject IMessageService messageService
-@inject IDialogService DialogService
-@inject UserService userService
+
 <PageTitle>@FinalBreadcrumbItemName</PageTitle>
 
 <FluentBreadcrumb>
@@ -116,7 +112,7 @@
 
         if (!result.Cancelled)
         {
-            messageService.ShowMessageBar(options =>
+            MessageService.ShowMessageBar(options =>
             {
                 options.Title = "Kostenstelle wurde erfolgreich gelöscht!";
                 options.Intent = MessageIntent.Success;
