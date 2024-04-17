@@ -53,7 +53,7 @@ builder.Services.AddOptions<LdapOptions>()
 
 
 FbController.Initialize(config);
-
+await Storage.InitAsync(config);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
