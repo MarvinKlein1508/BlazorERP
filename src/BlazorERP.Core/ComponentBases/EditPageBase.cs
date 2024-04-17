@@ -11,7 +11,7 @@ using Microsoft.FluentUI.AspNetCore.Components;
 namespace BlazorERP.Core.ComponentBases;
 
 public abstract class EditPageBase<TIdentifier, TModel, TService> : ComponentBase
-    where TModel : class, IDbModelWithName<TIdentifier>, new()
+    where TModel : class, IDbModel<TIdentifier>, new()
     where TService : IModelService<TModel, TIdentifier>
 {
     protected EditForm? _form;
