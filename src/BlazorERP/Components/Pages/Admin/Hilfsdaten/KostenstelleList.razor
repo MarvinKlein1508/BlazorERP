@@ -1,0 +1,96 @@
+﻿@page "/Admin/Kostenstellen"
+@inject AuthService authService
+@inherits SearchPageBase<Kostenstelle, KostenstelleService, KostenstelleFilter>
+
+<PageTitle>Kostenstellen</PageTitle>
+
+
+<FluentBreadcrumb>
+    <FluentBreadcrumbItem Href="/">Start</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem>Administration</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem>Kostenstellen</FluentBreadcrumbItem>
+</FluentBreadcrumb>
+
+
+
+
+<FluentGrid Width="100%">
+    <FluentGridItem xs="12">
+        <FluentStack HorizontalAlignment="HorizontalAlignment.End">
+            <FluentAnchor Href="/Admin/Kostenstellen/Edit"
+                          IconStart="@(new Icons.Regular.Size20.Add().WithColor(Color.Fill))"
+                          Appearance="Appearance.Accent">
+                Neue Kostenstelle
+            </FluentAnchor>
+        </FluentStack>
+    </FluentGridItem>
+    <FluentGridItem xs="12" sm="9">
+        <FluentStack Orientation="Orientation.Vertical">
+
+            @if (_isLoading)
+            {
+                <FluentProgressRing />
+            }
+            else
+            {
+
+
+
+                @foreach (var item in Data)
+                {
+                    <div class="list">
+                        <div class="list-details">
+                            <div class="list-item">
+                                <label>Name</label>
+                                <span>@item.GetName()</span>
+                            </div>
+                        </div>
+                        <div class="list-buttons">
+                            <FluentAnchor Href="@($"/Admin/Kostenstellen/Edit?nummer={item.GetIdentifier()}")">
+                                Bearbeiten
+                            </FluentAnchor>
+                        </div>
+                    </div>
+                }
+
+                @if(!_isLoading && Data.Count == 0)
+                {
+                    <div class="list justify-content-center">
+                        Keine Datensätze
+                    </div>
+                }
+            }
+
+
+            @if (TotalPages > 1)
+            {
+                <Pagination CurrentPageNumber="Page"
+                            TotalItems="TotalItems"
+                            ItemsPerPage="Filter.Limit"
+                            NavUrl="/Admin/Kostenstellen?page=" />
+            }
+        </FluentStack>
+    </FluentGridItem>
+    <FluentGridItem xs="12" sm="3">
+        <FluentCard Height="auto">
+            <h4>Filter</h4>
+
+            <EditForm Model="Filter" OnValidSubmit="async () => await LoadAsync(true)">
+                <FluentStack Orientation="Orientation.Vertical">
+                    <FluentTextField @bind-Value="Filter.SearchPhrase" Immediate="true" Label="Suchbegriff" Placeholder="Name" />
+                    
+                    <FluentButton Type="ButtonType.Submit" IconStart="@(new Icons.Regular.Size20.Search())"
+                                  Appearance="Appearance.Accent">
+                        Suchen
+                    </FluentButton>
+                </FluentStack>
+
+            </EditForm>
+        </FluentCard>
+    </FluentGridItem>
+</FluentGrid>
+
+@code {
+    protected override bool InternalNavigation => false;
+    protected override string BaseUrl => "/Admin/Kostenstellen";
+}

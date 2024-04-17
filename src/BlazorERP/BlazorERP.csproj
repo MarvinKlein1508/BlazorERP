@@ -20,6 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Components\Pages\Admin\Hilfsdaten\KostenstelleList.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
     <Content Update="Components\Pages\Admin\Hilfsdaten\WährungList.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
