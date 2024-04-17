@@ -42,6 +42,7 @@ builder.Services.AddScoped<SpracheService>();
 builder.Services.AddScoped<LandService>();
 builder.Services.AddScoped<WährungService>();
 builder.Services.AddScoped<KostenstelleService>();
+builder.Services.AddScoped<ZahlungsbedingungService>();
 builder.Services.AddScoped<AuthService>();
 
 // Options
