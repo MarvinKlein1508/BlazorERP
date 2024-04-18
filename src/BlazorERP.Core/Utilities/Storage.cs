@@ -20,6 +20,7 @@ public static class Storage
         _storage.Add(typeof(Zahlungsbedingung), await ZahlungsbedingungService.GetAsync(dbController));
         _storage.Add(typeof(Währung), await WährungService.GetAsync(dbController));
         _storage.Add(typeof(Sprache), await SpracheService.GetAsync(dbController));
+        _storage.Add(typeof(Kostenstelle), await KostenstelleService.GetAsync(dbController));
     }
 
     /// <summary>

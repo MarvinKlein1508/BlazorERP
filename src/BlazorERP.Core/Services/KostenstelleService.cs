@@ -37,7 +37,12 @@ public class KostenstelleService : IModelService<Kostenstelle, int?, Kostenstell
 
         return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
     }
+    public static Task<List<Kostenstelle>> GetAsync(IDbController dbController)
+    {
+        string sql = "SELECT * FROM KOSTENSTELLEN";
 
+        return dbController.SelectDataAsync<Kostenstelle>(sql);
+    }
     public Task<Kostenstelle?> GetAsync(int? identifier, IDbController dbController, CancellationToken cancellationToken = default)
     {
         if (identifier is null)
