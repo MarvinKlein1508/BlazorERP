@@ -64,6 +64,22 @@ public class LieferbedingungService : IModelService<Lieferbedingung, int?, Liefe
         return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
     }
 
+    public static async Task<List<Lieferbedingung>> GetAsync(IDbController dbController)
+    {
+        string sql = "SELECT * FROM LIEFERBEDINGUNGEN";
+
+        var results = await dbController.SelectDataAsync<Lieferbedingung>(sql);
+
+
+        var übersetzungen = await ÜbersetzungService.GetAsync(GetTranslationCode(), dbController);
+
+        foreach (var item in results)
+        {
+            item.Übersetzungen = übersetzungen.Where(x => x.ParentId == item.LieferbedingungId).ToList();
+        }
+
+        return results;
+    }
     public async Task<Lieferbedingung?> GetAsync(int? identifier, IDbController dbController, CancellationToken cancellationToken = default)
     {
         if (identifier is null)
