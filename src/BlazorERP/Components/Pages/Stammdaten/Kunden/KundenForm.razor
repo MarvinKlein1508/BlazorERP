@@ -87,7 +87,19 @@
                         <div class="col-md-6">
 
                             <div class="row">
-                                <div class="col-12">
+                                <div class="col-6">
+                                    <FluentSelect TOption="Sprache"
+                                                  Label="Sprache"
+                                                  Width="100%;"
+                                                  Items="@([Storage.EmptySprache,..Storage.Get<Sprache>()])"
+                                                  OptionValue="@(p => p.SprachId.ToString())"
+                                                  OptionText="@(p => p.Name)"
+                                                  OptionSelected="(option) => Input.AnredeId == option.SprachId"
+                                                  SelectedOptionChanged="(option) => Input.LandId = option.SprachId > 0 ? option.SprachId : null" />
+                                    <FluentValidationMessage For="() => Input.SprachId" />
+                                </div>
+
+                                <div class="col-6">
                                     <FluentSelect TOption="Anrede"
                                                   Label="Anrede"
                                                   Width="100%;"
