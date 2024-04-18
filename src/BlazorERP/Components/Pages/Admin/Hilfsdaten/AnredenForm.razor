@@ -70,7 +70,7 @@
     private bool _showOptionsMenu;
     private AnredeValidator _validator = new();
     
-
+    protected override string GetListUrl() => "/Admin/Anreden";
     protected override string GetEntityRedirectUrl() => $"/Admin/Anreden/Edit?anredeId={Input!.AnredeId}";
 
  
@@ -78,33 +78,6 @@
     [Parameter, SupplyParameterFromQuery(Name = "anredeId")]
     public override int? Identifier { get; set; }
 
-
-    private async Task ShowDeleteModalAsync()
-    {
-
-        var dialog = await DialogService.ShowDialogAsync<DeleteDialog<Anrede, AnredeService>>(Input!, new CustomDialogParameters()
-            {
-                Title = $"Anrede löschen",
-                PreventDismissOnOverlayClick = true,
-                PreventScroll = true,
-                Text = $"Möchten Sie die Anrede \"{Input!.GetName()}\" wirklich löschen?"
-            });
-
-        var result = await dialog.Result;
-
-        if (!result.Cancelled)
-        {
-            MessageService.ShowMessageBar(options =>
-            {
-                options.Title = "Anrede wurde erfolgreich gelöscht!";
-                options.Intent = MessageIntent.Success;
-                options.Section = Constants.MESSAGEBAR_TOP_SECTION;
-                options.Timeout = 4000;
-            });
-
-            NavigationManager.NavigateTo("/Admin/Anreden");
-        }
-    }
 
     protected override Task BeforeSaveAsync(IDbController dbController)
     {

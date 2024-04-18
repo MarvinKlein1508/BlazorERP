@@ -87,41 +87,13 @@
     private bool _showOptionsMenu;
     private LandValidator _validator = new();
 
-
+    protected override string GetListUrl() => "/Admin/Länder";
     protected override string GetEntityRedirectUrl() => $"/Admin/Länder/Edit?landId={Input!.LandId}";
-
-
 
     [Parameter, SupplyParameterFromQuery(Name = "landId")]
     public override int? Identifier { get; set; }
 
 
-    private async Task ShowDeleteModalAsync()
-    {
-
-        var dialog = await DialogService.ShowDialogAsync<DeleteDialog<Land, LandService>>(Input!, new CustomDialogParameters()
-            {
-                Title = $"Land löschen",
-                PreventDismissOnOverlayClick = true,
-                PreventScroll = true,
-                Text = $"Möchten Sie das Land \"{Input!.GetName()}\" wirklich löschen?"
-            });
-
-        var result = await dialog.Result;
-
-        if (!result.Cancelled)
-        {
-            MessageService.ShowMessageBar(options =>
-            {
-                options.Title = "Land wurde erfolgreich gelöscht!";
-                options.Intent = MessageIntent.Success;
-                options.Section = Constants.MESSAGEBAR_TOP_SECTION;
-                options.Timeout = 4000;
-            });
-
-            NavigationManager.NavigateTo("/Admin/Länder");
-        }
-    }
 
     protected override Task BeforeSaveAsync(IDbController dbController)
     {

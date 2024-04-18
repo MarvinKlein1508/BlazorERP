@@ -106,7 +106,7 @@
     private bool _showOptionsMenu;
     private WährungValidator _validator = new();
 
-    
+    protected override string GetListUrl() => "/Admin/Währungen";
     protected override string GetEntityRedirectUrl() => $"/Admin/Währungen/Edit?code={Input!.Code}";
 
    
@@ -115,32 +115,7 @@
     public override string? Identifier { get; set; }
 
 
-    private async Task ShowDeleteModalAsync()
-    {
 
-        var dialog = await DialogService.ShowDialogAsync<DeleteDialog<Währung, WährungService>>(Input!, new CustomDialogParameters()
-            {
-                Title = $"Währung löschen",
-                PreventDismissOnOverlayClick = true,
-                PreventScroll = true,
-                Text = $"Möchten Sie die Währung \"{Input!.GetName()}\" wirklich löschen?"
-            });
-
-        var result = await dialog.Result;
-
-        if (!result.Cancelled)
-        {
-            MessageService.ShowMessageBar(options =>
-            {
-                options.Title = "Währung wurde erfolgreich gelöscht!";
-                options.Intent = MessageIntent.Success;
-                options.Section = Constants.MESSAGEBAR_TOP_SECTION;
-                options.Timeout = 4000;
-            });
-
-            NavigationManager.NavigateTo("/Admin/Währungen");
-        }
-    }
 
     protected override Task BeforeSaveAsync(IDbController dbController)
     {

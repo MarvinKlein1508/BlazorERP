@@ -98,7 +98,7 @@
     private ZahlungsbedingungValidator _validator = new();
 
 
-
+    protected override string GetListUrl() => "/Admin/Voreinstellungen";
     protected override string GetEntityRedirectUrl() => $"/Admin/Voreinstellungen/Edit?voreinstellungId={Input!.VoreinstellungId}";
 
     protected override async Task OnInitializedAsync()
@@ -114,32 +114,7 @@
     public override int? Identifier { get; set; }
 
 
-    private async Task ShowDeleteModalAsync()
-    {
-
-        var dialog = await DialogService.ShowDialogAsync<DeleteDialog<Voreinstellung, VoreinstellungService>>(Input!, new CustomDialogParameters()
-            {
-                Title = $"Voreinstellung löschen",
-                PreventDismissOnOverlayClick = true,
-                PreventScroll = true,
-                Text = $"Möchten Sie die Voreinstellung \"{Input!.GetName()}\" wirklich löschen?"
-            });
-
-        var result = await dialog.Result;
-
-        if (!result.Cancelled)
-        {
-            messageService.ShowMessageBar(options =>
-            {
-                options.Title = "Voreinstellung wurde erfolgreich gelöscht!";
-                options.Intent = MessageIntent.Success;
-                options.Section = Constants.MESSAGEBAR_TOP_SECTION;
-                options.Timeout = 4000;
-            });
-
-            NavigationManager.NavigateTo("/Admin/Voreinstellungen");
-        }
-    }
+   
 
     protected override Task BeforeSaveAsync(IDbController dbController)
     {

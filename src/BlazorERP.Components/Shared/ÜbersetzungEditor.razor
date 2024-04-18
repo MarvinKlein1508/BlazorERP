@@ -47,7 +47,7 @@
     protected override async Task OnInitializedAsync()
     {
         using IDbController dbController = new FbController();
-        _sprachen = await spracheService.GetAsync(dbController);
+        _sprachen = await SpracheService.GetAsync(dbController);
     }
 
     protected override void OnParametersSet()

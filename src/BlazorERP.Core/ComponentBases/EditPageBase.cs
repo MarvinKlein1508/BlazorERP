@@ -154,6 +154,16 @@ public abstract class EditPageBase<TIdentifier, TModel, TService> : ComponentBas
         return Task.CompletedTask;
     }
 
+    protected virtual Task BeforeDeleteAsync(IDbController dbController)
+    {
+        return Task.CompletedTask;
+    }
+
+    protected virtual Task OnDeleteAsync(IDbController dbController)
+    {
+        return Task.CompletedTask;
+    }
+
 
     protected virtual Task InitializeModelAsync(bool newEntry, IDbController dbController)
     {
@@ -167,5 +177,52 @@ public abstract class EditPageBase<TIdentifier, TModel, TService> : ComponentBas
     /// </summary>
     /// <returns></returns>
     protected abstract string GetEntityRedirectUrl();
+    /// <summary>
+    /// Gibt die Url zur Umleitung an die Liste an.
+    /// <para>
+    /// Beispiel: /Admin/Users
+    /// </para>
+    /// </summary>
+    /// <returns></returns>
+    protected abstract string GetListUrl();
+
+    protected virtual async Task ShowDeleteModalAsync()
+    {
+
+        var dialog = await DialogService.ShowConfirmationAsync("Möchten Sie diesen Datensatz wirklich löschen?", "Löschen", "Abbrechen", "Datensatz löschen?");
+        var result = await dialog.Result;
+
+        if(!result.Cancelled)
+        {
+
+            using IDbController dbController = new FbController();
+            await dbController.StartTransactionAsync();
+            try
+            {
+                await BeforeDeleteAsync(dbController);
+                await Service.DeleteAsync(Input, dbController);
+                await OnDeleteAsync(dbController);
+                await dbController.CommitAsync();
+
+                Storage.DeleteFromStorage<TModel, TIdentifier>(Input);
+            }
+            catch (FbException ex)
+            {
+                await dbController.RollbackAsync();
+                throw;
+            }
+            
+
+            MessageService.ShowMessageBar(options =>
+            {
+                options.Title = "Datensatz wurde erfolgreich gelöscht!";
+                options.Intent = MessageIntent.Success;
+                options.Section = Constants.MESSAGEBAR_TOP_SECTION;
+                options.Timeout = 4000;
+            });
+
+            NavigationManager.NavigateTo(GetListUrl());
+        }
+    }
 
 }
