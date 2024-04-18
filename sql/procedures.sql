@@ -54,7 +54,7 @@ BEGIN
     IF (MIN_KUNDE = 0 OR MAX_KUNDE = 0) THEN
     BEGIN
         -- Return error if range is not defined
-        NEXT_KUNDENNUMMER = -1; -- Or whatever error code you prefer
+        EXCEPTION NO_NUMBERS_AVAILABLE;
         SUSPEND;
     END
     
@@ -83,9 +83,9 @@ BEGIN
                                 (
                                     WITH RECURSIVE NUMBERS(NUMMER) AS 
                                     (
-                                        SELECT 10000 AS NUMMER FROM RDB$DATABASE -- Anfangswert
+                                        SELECT :MIN_KUNDE AS NUMMER FROM RDB$DATABASE -- Anfangswert
                                         UNION ALL
-                                        SELECT NUMMER + 1 FROM NUMBERS WHERE NUMMER < 10002 -- Endwert
+                                        SELECT NUMMER + 1 FROM NUMBERS WHERE NUMMER < :MAX_KUNDE -- Endwert
                                     )
                                     SELECT FIRST 1 N.NUMMER 
                                     FROM NUMBERS N
@@ -94,7 +94,7 @@ BEGIN
                                 )
                             );
 
-        WHEN (NEXT_KUNDENNUMMER = -1) DO
+        IF (NEXT_KUNDENNUMMER = -1) THEN
         BEGIN
             EXCEPTION NO_NUMBERS_AVAILABLE;
         END
