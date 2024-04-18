@@ -94,8 +94,8 @@
                                                   Items="@([Storage.EmptySprache,..Storage.Get<Sprache>()])"
                                                   OptionValue="@(p => p.SprachId.ToString())"
                                                   OptionText="@(p => p.Name)"
-                                                  OptionSelected="(option) => Input.AnredeId == option.SprachId"
-                                                  SelectedOptionChanged="(option) => Input.LandId = option.SprachId > 0 ? option.SprachId : null" />
+                                                  OptionSelected="(option) => Input.SprachId == option.SprachId"
+                                                  SelectedOptionChanged="(option) => Input.SprachId = option.SprachId > 0 ? option.SprachId : null" />
                                     <FluentValidationMessage For="() => Input.SprachId" />
                                 </div>
 
@@ -107,7 +107,7 @@
                                                   OptionValue="@(p => p.AnredeId.ToString())"
                                                   OptionText="@(p => p.Name)"
                                                   OptionSelected="(option) => Input.AnredeId == option.AnredeId"
-                                                  SelectedOptionChanged="(option) => Input.LandId = option.AnredeId > 0 ? option.AnredeId : null" />
+                                                  SelectedOptionChanged="(option) => Input.AnredeId = option.AnredeId > 0 ? option.AnredeId : null" />
                                     <FluentValidationMessage For="() => Input.AnredeId" />
                                 </div>
                                 <div class="col-md-6">
@@ -168,8 +168,8 @@
                                               Items="@([Storage.EmptyLieferbedingung,..Storage.Get<Lieferbedingung>()])"
                                               OptionValue="@(p => p.LieferbedingungId.ToString())"
                                               OptionText="@(p => p.Name)"
-                                              OptionSelected="(option) => Input.LandId == option.LieferbedingungId"
-                                              SelectedOptionChanged="(option) => Input.LandId = option.LieferbedingungId > 0 ? option.LieferbedingungId : null" />
+                                              OptionSelected="(option) => Input.LieferbedingungId == option.LieferbedingungId"
+                                              SelectedOptionChanged="(option) => Input.LieferbedingungId = option.LieferbedingungId > 0 ? option.LieferbedingungId : null" />
                                 <FluentValidationMessage For="() => Input.LieferbedingungId" />
 
                             </div>
@@ -180,8 +180,8 @@
                                               Items="@([Storage.EmptyZahlungsbedingung,..Storage.Get<Zahlungsbedingung>()])"
                                               OptionValue="@(p => p.ZahlungsbedingungId.ToString())"
                                               OptionText="@(p => p.Name)"
-                                              OptionSelected="(option) => Input.LandId == option.ZahlungsbedingungId"
-                                              SelectedOptionChanged="(option) => Input.LandId = option.ZahlungsbedingungId > 0 ? option.ZahlungsbedingungId : null" />
+                                              OptionSelected="(option) => Input.ZahlungsbedingungId == option.ZahlungsbedingungId"
+                                              SelectedOptionChanged="(option) => Input.ZahlungsbedingungId = option.ZahlungsbedingungId > 0 ? option.ZahlungsbedingungId : null" />
                                 <FluentValidationMessage For="() => Input.ZahlungsbedingungId" />
                             </div>
                             <div class="col-md-6">
@@ -242,6 +242,11 @@
 
     protected override Task BeforeSaveAsync(IDbController dbController)
     {
+        if (Modus is EditMode.Create)
+        {
+            Input.Anlagedatum = DateTime.Now;
+        }
+
         Input.LetzterBearbeiter = User.UserId;
         Input.ZuletztGeaendert = DateTime.Now;
 
