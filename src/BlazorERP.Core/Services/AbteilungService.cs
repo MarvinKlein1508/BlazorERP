@@ -31,7 +31,7 @@ public class AbteilungService : IModelService<Abteilung, int?, AbteilungFilter>
 
     public Task DeleteAsync(Abteilung input, IDbController dbController, CancellationToken cancellationToken = default)
     {
-        string sql = "DELETE * FROM ABTEILUNGEN WHERE ABTEILUNG_ID = @ABTEILUNG_ID";
+        string sql = "DELETE FROM ABTEILUNGEN WHERE ABTEILUNG_ID = @ABTEILUNG_ID";
 
         return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);  
     }
