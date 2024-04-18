@@ -146,17 +146,11 @@
                             <div class="col-12">
                                 <FluentTextField Value="@Input.Anlagedatum?.ToShortDateString()" Appearance="FluentInputAppearance.Filled" Label="Anlagedatum" ReadOnly />
                             </div>
-                            @*  <div class="col-12">
-                        <div class="d-flex flex-column gap-2 mt-2">
-                        <FluentSwitch @bind-Value="@Input.IstAktiv" Label="Aktiv" />
-                        <FluentSwitch @bind-Value="@Input.IstVorkasse" Label="Vorkasse" />
-                        <FluentSwitch @bind-Value="@Input.IstBarzahlung" Label="Barzahlung" />
-                        <FluentSwitch @bind-Value="@Input.IstAbbuchung" Label="Abbuchung" />
-                        <FluentSwitch @bind-Value="@Input.IstRechnung" Label="Rechnung" />
-                        <FluentSwitch @bind-Value="@Input.VerfuegbarKunde" Label="Verfügbar für Kunden" />
-                        <FluentSwitch @bind-Value="@Input.VerfuegbarLieferant" Label="Verfügbar für Lieferanten" />
-                        </div>
-                        </div> *@
+                            <div class="col-12">
+                                <div class="d-flex flex-column gap-2 mt-2">
+                                    <FluentSwitch @bind-Value="@Input.IstGesperrt" Label="Gesperrt" />
+                                </div>
+                            </div>
                         }
                     </div>
                 </div>
@@ -224,7 +218,11 @@
                 </div>
             </Content>
         </FluentTab>
+        <FluentTab Label="Historie">
+            <Content>
 
+            </Content>
+        </FluentTab>
     </FluentTabs>
 </EditForm>
 @code {
