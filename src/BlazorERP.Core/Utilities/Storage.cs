@@ -10,6 +10,18 @@ public static class Storage
     private static IConfiguration? _configuration;
     private readonly static Dictionary<Type, object> _storage = [];
 
+    public static Land EmptyLand => new()
+    {
+        LandId = -1,
+        Name = "--- Auswählen ---"
+    };
+
+    public static Anrede EmptyAnrede => new()
+    {
+        AnredeId = -1,
+        Name = "--- Auswählen ---"
+    };
+
     public static async Task InitAsync(IConfiguration configuration)
     {
         _configuration = configuration;

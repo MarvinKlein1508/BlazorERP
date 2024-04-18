@@ -117,3 +117,19 @@ fluent-text-field, fluent-number-field, fluent-select{
     fill: currentcolor;
     font-family: var(--body-font);
 }
+
+
+.input-group {
+    display: flex;
+    gap: .25em;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+    .input-group > label {
+        width: 100%; /* Abstand zwischen den Elementen */
+    }
+
+    .input-group fluent-text-field {
+        flex: 1;
+    }

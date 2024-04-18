@@ -65,13 +65,13 @@
                                     <FluentSelect TOption="Land"
                                                   Label="Land"
                                                   Width="100%;"
-                                                  Items="@([_emptyLand,..Storage.Get<Land>()])"
+                                                  Items="@([Storage.EmptyLand,..Storage.Get<Land>()])"
                                                   OptionValue="@(p => p.LandId.ToString())"
                                                   OptionText="@(p => p.Name)"
                                                   OptionSelected="(option) => Input.LandId is null && option is null || Input.LandId == option.LandId"
-                                                  SelectedOptionChanged="(option) => Input.LandId = option.LandId > 0 ? option.LandId : null"  />
+                                                  SelectedOptionChanged="(option) => Input.LandId = option.LandId > 0 ? option.LandId : null" />
 
-                                                  <p>Land: @Input.LandId</p>
+                                    <p>Land: @Input.LandId</p>
 
                                 </div>
                                 <div class="col-md-4">
@@ -84,13 +84,56 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-6">
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <FluentSelect TOption="Anrede"
+                                                  Label="Anrede"
+                                                  Width="100%;"
+                                                  Items="@([Storage.EmptyAnrede,..Storage.Get<Anrede>()])"
+                                                  OptionValue="@(p => p.AnredeId.ToString())"
+                                                  OptionText="@(p => p.Name)"
+                                                  OptionSelected="(option) => Input.AnredeId == option.AnredeId"
+                                                  SelectedOptionChanged="(option) => Input.LandId = option.AnredeId > 0 ? option.AnredeId : null" />
+                                    <FluentValidationMessage For="() => Input.AnredeId" />
+                                </div>
+                                <div class="col-md-6">
+                                    <FluentTextField @bind-Value="Input.Telefonnummer" Label="Telefonnummer" />
+                                    <FluentValidationMessage For="() => Input.Telefonnummer" />
+                                </div>
+                                <div class="col-md-6">
+                                    <FluentTextField @bind-Value="Input.Mobilnummer" Label="Mobilnummer" />
+                                    <FluentValidationMessage For="() => Input.Mobilnummer" />
+                                </div>
+
+                                <div class="col-md-6">
+                                    <FluentTextField @bind-Value="Input.Email" Label="E-Mail" />
+                                    <FluentValidationMessage For="() => Input.Email" />
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <FluentTextField @bind-Value="Input.Website" Immediate="true" Label="Website" />
+                                        <FluentAnchor Appearance="Appearance.Accent" Href="@Input.Website" Target="_blank" IconStart="@(new Icons.Regular.Size20.Open().WithColor(Color.Fill))" />
+                                    </div>
+                                    <FluentValidationMessage For="() => Input.Website" />
+                                </div>
+                                <div class="col-12">
+                                    <FluentTextArea @bind-Value="Input.Notiz" Label="Notiz" Class="w-100" Rows="6" />
+                                    <FluentValidationMessage For="() => Input.Notiz" />
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-3 ">
                     <div class="row">
                         @if (Modus is EditMode.Edit)
                         {
-
+                            <div class="col-12">
+                                <FluentTextField Value="@Input.Anlagedatum?.ToShortDateString()" Appearance="FluentInputAppearance.Filled" Label="Anlagedatum" ReadOnly />
+                            </div>
                             @*  <div class="col-12">
                         <div class="d-flex flex-column gap-2 mt-2">
                         <FluentSwitch @bind-Value="@Input.IstAktiv" Label="Aktiv" />
@@ -116,12 +159,7 @@
     </FluentTabs>
 </EditForm>
 @code {
-    private readonly Land _emptyLand = new()
-    {
-        LandId = -1,
-        Name = "--- Auswählen ---"
-    };
-
+   
     private bool _showOptionsMenu;
     private ZahlungsbedingungValidator _validator = new();
 

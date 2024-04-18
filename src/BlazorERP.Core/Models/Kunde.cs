@@ -79,7 +79,7 @@ public class Kunde : IDbModelWithName<string?>
             { "KREDITLIMIT", Kreditlimit },
             { "IBAN", IBAN },
             { "BIC", BIC },
-            { "IST_GESCHLOSSEN", IstGesperrt },
+            { "IST_GESPERRT", IstGesperrt },
             { "NEUTRALER_VERSAND", NeutralerVersand },
             { "WAEHRUNGSCODE", Waehrungscode },
             { "LETZTER_BEARBEITER", LetzterBearbeiter },
