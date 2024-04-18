@@ -12,7 +12,11 @@
             <FluentNavLink Href="/" Match="NavLinkMatch.All" Icon="@(new Icons.Regular.Size20.Home())" IconColor="Color.Accent">Home</FluentNavLink>
             <FluentNavLink Href="counter" Icon="@(new Icons.Regular.Size20.NumberSymbolSquare())" IconColor="Color.Accent">Counter</FluentNavLink>
             <FluentNavLink Href="weather" Icon="@(new Icons.Regular.Size20.WeatherPartlyCloudyDay())" IconColor="Color.Accent">Weather</FluentNavLink>
-
+            <FluentNavGroup Title="Stammdaten" Icon="@(new Icons.Regular.Size20.Archive())">
+                <ChildContent>
+                    <FluentNavLink Href="/Stammdaten/Kunden" Icon="@(new Icons.Regular.Size20.Person())">Kunden</FluentNavLink>
+                </ChildContent>
+            </FluentNavGroup>
             @if(_user.IsAdmin)
             {
                 <FluentNavGroup Title="Administration" Icon="@(new Icons.Regular.Size20.Settings())">

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BlazorERP.Core.Services;
 
-public class KundeService : IModelService<Kunde, int?, KundeFilter>
+public class KundeService : IModelService<Kunde, string?, KundeFilter>
 {
     public async Task CreateAsync(Kunde input, IDbController dbController, CancellationToken cancellationToken = default)
     {
@@ -86,7 +86,7 @@ public class KundeService : IModelService<Kunde, int?, KundeFilter>
         return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
     }
 
-    public Task<Kunde?> GetAsync(int? identifier, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task<Kunde?> GetAsync(string? identifier, IDbController dbController, CancellationToken cancellationToken = default)
     {
         if (identifier is null)
         {

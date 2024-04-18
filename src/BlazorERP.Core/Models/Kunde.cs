@@ -39,7 +39,17 @@ public class Kunde : IDbModelWithName<string?>
 
     public string GetName()
     {
-        throw new NotImplementedException();
+        if(!string.IsNullOrWhiteSpace(Firma))
+        {
+            return Firma;
+        }
+
+        if(!string.IsNullOrWhiteSpace(Name1))
+        {
+            return Name1;
+        }
+
+        return string.Empty;
     }
 
     public Dictionary<string, object?> GetParameters()

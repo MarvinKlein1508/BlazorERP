@@ -1,0 +1,146 @@
+﻿@page "/Stammdaten/Kunden/Edit"
+@using BlazorERP.Core.Validators.Admin.Hilfsdaten
+@using Microsoft.AspNetCore.Identity
+@inherits EditPageBase<string?, Kunde, KundeService>
+
+<PageTitle>@FinalBreadcrumbItemName</PageTitle>
+
+<FluentBreadcrumb>
+    <FluentBreadcrumbItem Href="/">Start</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem>Administration</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="/Stammdaten/Kunden">Kunden</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem>@FinalBreadcrumbItemName</FluentBreadcrumbItem>
+</FluentBreadcrumb>
+@if (Input is null)
+{
+    return;
+}
+<FluentStack HorizontalAlignment="HorizontalAlignment.End">
+    <FluentAnchor Href="/Stammdaten/Kunden"
+                  IconStart="@(new Icons.Regular.Size20.ArrowReply())">
+        Zurück
+    </FluentAnchor>
+
+    @if (Modus is EditMode.Edit)
+    {
+        <FluentButton id="btnOpen1" Appearance="Appearance.Accent" @onclick="@(() => _showOptionsMenu = !_showOptionsMenu)">
+            Optionen
+        </FluentButton>
+
+        <FluentMenu Anchor="btnOpen1" @bind-Open="_showOptionsMenu" VerticalThreshold="170">
+            <FluentMenuItem OnClick="ShowDeleteModalAsync">Kunde löschen</FluentMenuItem>
+        </FluentMenu>
+    }
+
+    <FluentButton IconStart="@(new Icons.Regular.Size20.Save())"
+                  Appearance="Appearance.Accent"
+                  OnClick="SaveAsync">
+
+        Speichern
+    </FluentButton>
+</FluentStack>
+
+<EditForm Model="Input" @ref="_form">
+    <FluentValidationValidator Validator="_validator" />
+    <FluentTabs>
+        <FluentTab Label="Allgemein">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <FluentTextField @bind-Value="Input.Firma" Label="Firma" />
+                            <FluentValidationMessage For="() => Input.Firma" />
+
+                            <FluentTextField @bind-Value="Input.Name1" Label="Name1" />
+                            <FluentValidationMessage For="() => Input.Name1" />
+
+                            <FluentTextField @bind-Value="Input.Name2" Label="Name2" />
+                            <FluentValidationMessage For="() => Input.Name2" />
+
+                            <FluentTextField @bind-Value="Input.Strasse" Label="Straße" />
+                            <FluentValidationMessage For="() => Input.Strasse" />
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <FluentSelect TOption="Land"
+                                                  Label="Land"
+                                                  Width="100%;"
+                                                  Items="@([_emptyLand,..Storage.Get<Land>()])"
+                                                  OptionValue="@(p => p.LandId.ToString())"
+                                                  OptionText="@(p => p.Name)"
+                                                  OptionSelected="(option) => Input.LandId is null && option is null || Input.LandId == option.LandId"
+                                                  SelectedOptionChanged="(option) => Input.LandId = option.LandId > 0 ? option.LandId : null"  />
+
+                                                  <p>Land: @Input.LandId</p>
+
+                                </div>
+                                <div class="col-md-4">
+                                    <FluentTextField @bind-Value="Input.Postleitzahl" Label="Postleitzahl" />
+                                    <FluentValidationMessage For="() => Input.Postleitzahl" />
+                                </div>
+                                <div class="col-md-4">
+                                    <FluentTextField @bind-Value="Input.Ort" Label="Postleitzahl" />
+                                    <FluentValidationMessage For="() => Input.Ort" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 ">
+                    <div class="row">
+                        @if (Modus is EditMode.Edit)
+                        {
+
+                            @*  <div class="col-12">
+                        <div class="d-flex flex-column gap-2 mt-2">
+                        <FluentSwitch @bind-Value="@Input.IstAktiv" Label="Aktiv" />
+                        <FluentSwitch @bind-Value="@Input.IstVorkasse" Label="Vorkasse" />
+                        <FluentSwitch @bind-Value="@Input.IstBarzahlung" Label="Barzahlung" />
+                        <FluentSwitch @bind-Value="@Input.IstAbbuchung" Label="Abbuchung" />
+                        <FluentSwitch @bind-Value="@Input.IstRechnung" Label="Rechnung" />
+                        <FluentSwitch @bind-Value="@Input.VerfuegbarKunde" Label="Verfügbar für Kunden" />
+                        <FluentSwitch @bind-Value="@Input.VerfuegbarLieferant" Label="Verfügbar für Lieferanten" />
+                        </div>
+                        </div> *@
+                        }
+                    </div>
+                </div>
+            </div>
+        </FluentTab>
+        <FluentTab Label="Finanzdaten">
+            <Content>
+
+            </Content>
+        </FluentTab>
+
+    </FluentTabs>
+</EditForm>
+@code {
+    private readonly Land _emptyLand = new()
+    {
+        LandId = -1,
+        Name = "--- Auswählen ---"
+    };
+
+    private bool _showOptionsMenu;
+    private ZahlungsbedingungValidator _validator = new();
+
+    protected override string GetListUrl() => "/Stammdaten/Kunden";
+    protected override string GetEntityRedirectUrl() => $"/Stammdaten/Kunden/Edit?kundennummer={Input!.Kundennummer}";
+
+
+
+    [Parameter, SupplyParameterFromQuery(Name = "kundennummer")]
+    public override string? Identifier { get; set; }
+
+
+
+    protected override Task BeforeSaveAsync(IDbController dbController)
+    {
+        Input.LetzterBearbeiter = User.UserId;
+        Input.ZuletztGeaendert = DateTime.Now;
+
+        return Task.CompletedTask;
+    }
+
+}
