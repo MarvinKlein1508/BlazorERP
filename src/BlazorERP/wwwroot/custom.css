@@ -121,7 +121,6 @@ fluent-text-field, fluent-number-field, fluent-select{
 
 .input-group {
     display: flex;
-    gap: .25em;
     align-items: center;
     flex-wrap: wrap;
 }
