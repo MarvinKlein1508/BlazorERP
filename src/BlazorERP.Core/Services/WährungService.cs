@@ -45,7 +45,13 @@ public class WährungService : IModelService<Währung, string?, WährungFilter>
 
         return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
     }
+    public static Task<List<Währung>> GetAsync(IDbController dbController)
+    {
+        string sql = "SELECT * FROM WAEHRUNG";
 
+        return dbController.SelectDataAsync<Währung>(sql);
+
+    }
     public Task<Währung?> GetAsync(string? identifier, IDbController dbController, CancellationToken cancellationToken = default)
     {
         if (identifier is null)
@@ -86,10 +92,10 @@ public class WährungService : IModelService<Währung, string?, WährungFilter>
         """;
 
         return dbController.SelectDataAsync<Währung>(sql, filter.GetParameters(), cancellationToken);
-      
+
     }
 
- 
+
 
     public string GetFilterWhere(WährungFilter filter)
     {
