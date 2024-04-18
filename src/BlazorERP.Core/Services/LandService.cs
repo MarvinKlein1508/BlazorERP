@@ -60,6 +60,22 @@ public class LandService : IModelService<Land, int?, LandFilter>, ITranslationCo
         return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
     }
 
+    public static async Task<List<Land>> GetAsync(IDbController dbController)
+    {
+        string sql = "SELECT * FROM LAENDER";
+
+        var results = await dbController.SelectDataAsync<Land>(sql);
+
+
+        var übersetzungen = await ÜbersetzungService.GetAsync(GetTranslationCode(), dbController);
+
+        foreach (var item in results)
+        {
+            item.Übersetzungen = übersetzungen.Where(x => x.ParentId == item.LandId).ToList();
+        }
+
+        return results;
+    }
     public async Task<Land?> GetAsync(int? identifier, IDbController dbController, CancellationToken cancellationToken = default)
     {
         if (identifier is null)
