@@ -5,7 +5,8 @@ namespace BlazorERP.Core.Services;
 
 public class SpracheService
 {
-    public Task<List<Sprache>> GetAsync(IDbController dbController, CancellationToken cancellationToken = default)
+
+    public static Task<List<Sprache>> GetAsync(IDbController dbController, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
