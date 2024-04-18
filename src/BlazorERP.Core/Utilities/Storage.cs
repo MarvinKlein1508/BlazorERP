@@ -10,6 +10,10 @@ public static class Storage
     private static IConfiguration? _configuration;
     private readonly static Dictionary<Type, object> _storage = [];
 
+    public static Währung EmptyWährung => new()
+    {
+        Code = string.Empty
+    };
     public static Sprache EmptySprache => new()
     {
          SprachId = -1,

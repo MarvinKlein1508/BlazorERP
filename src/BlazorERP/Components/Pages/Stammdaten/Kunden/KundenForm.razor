@@ -185,6 +185,17 @@
                                 <FluentValidationMessage For="() => Input.ZahlungsbedingungId" />
                             </div>
                             <div class="col-md-6">
+                                <FluentSelect TOption="Währung"
+                                              Label="Währung"
+                                              Width="100%;"
+                                              Items="@([Storage.EmptyWährung,..Storage.Get<Währung>()])"
+                                              OptionValue="@(p => p.Code)"
+                                              OptionText="@(p => p.Code)"
+                                              OptionSelected="(option) => Input.Waehrungscode == option.Code"
+                                              SelectedOptionChanged="(option) => Input.Waehrungscode = string.IsNullOrWhiteSpace(option.Code) ? null : option.Code" />
+                                <FluentValidationMessage For="() => Input.Waehrungscode" />
+                            </div>
+                            <div class="col-md-6">
                                 <FluentNumberField @bind-Value="Input.Kreditlimit" Label="Kreditlimit" />
                                 <FluentValidationMessage For="() => Input.Kreditlimit" />
                             </div>
