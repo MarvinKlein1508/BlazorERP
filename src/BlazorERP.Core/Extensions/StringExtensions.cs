@@ -21,4 +21,17 @@ public static class StringExtensions
         var finalString = new string(stringChars);
         return finalString;
     }
+
+    public static string ParseUrl(string? url)
+    {
+        if (url is null)
+        {
+            return string.Empty;
+        }
+
+        url = url.Replace("https://", "");
+        url = url.Replace("http://", "");
+        url = url.Replace("www.", "");
+        return $"//{url}";
+    }
 }

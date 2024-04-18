@@ -120,13 +120,16 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <FluentTextField @bind-Value="Input.Email" Label="E-Mail" />
+                                    <FluentTextField Value="@Input.Email"
+                                                     ValueChanged="OnEmailChanged"
+                                                     ValueExpression="() => Input.Email"
+                                                     Label="E-Mail" />
                                     <FluentValidationMessage For="() => Input.Email" />
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <FluentTextField @bind-Value="Input.Website" Immediate="true" Label="Website" />
-                                        <FluentAnchor Appearance="Appearance.Accent" Href="@Input.Website" Target="_blank" IconStart="@(new Icons.Regular.Size20.Open().WithColor(Color.Fill))" />
+                                        <FluentAnchor Appearance="Appearance.Accent" Href="@StringExtensions.ParseUrl(Input.Website)" Target="_blank" IconStart="@(new Icons.Regular.Size20.Open().WithColor(Color.Fill))" />
                                     </div>
                                     <FluentValidationMessage For="() => Input.Website" />
                                 </div>
@@ -236,32 +239,3 @@
         </FluentTab>
     </FluentTabs>
 </EditForm>
-@code {
-
-    private bool _showOptionsMenu;
-    private ZahlungsbedingungValidator _validator = new();
-
-    protected override string GetListUrl() => "/Stammdaten/Kunden";
-    protected override string GetEntityRedirectUrl() => $"/Stammdaten/Kunden/Edit?kundennummer={Input!.Kundennummer}";
-
-
-
-    [Parameter, SupplyParameterFromQuery(Name = "kundennummer")]
-    public override string? Identifier { get; set; }
-
-
-
-    protected override Task BeforeSaveAsync(IDbController dbController)
-    {
-        if (Modus is EditMode.Create)
-        {
-            Input.Anlagedatum = DateTime.Now;
-        }
-
-        Input.LetzterBearbeiter = User.UserId;
-        Input.ZuletztGeaendert = DateTime.Now;
-
-        return Task.CompletedTask;
-    }
-
-}
