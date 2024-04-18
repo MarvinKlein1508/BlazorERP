@@ -10,6 +10,16 @@ public static class Storage
     private static IConfiguration? _configuration;
     private readonly static Dictionary<Type, object> _storage = [];
 
+    public static Zahlungsbedingung EmptyZahlungsbedingung => new()
+    {
+        ZahlungsbedingungId = -1,
+        Name = "--- Auswählen ---"
+    };
+    public static Lieferbedingung EmptyLieferbedingung => new()
+    {
+        LieferbedingungId = -1,
+        Name = "--- Auswählen ---"
+    };
     public static Land EmptyLand => new()
     {
         LandId = -1,

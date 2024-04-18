@@ -152,14 +152,71 @@
         </FluentTab>
         <FluentTab Label="Finanzdaten">
             <Content>
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <FluentSelect TOption="Lieferbedingung"
+                                              Label="Lieferbedingung"
+                                              Width="100%;"
+                                              Items="@([Storage.EmptyLieferbedingung,..Storage.Get<Lieferbedingung>()])"
+                                              OptionValue="@(p => p.LieferbedingungId.ToString())"
+                                              OptionText="@(p => p.Name)"
+                                              OptionSelected="(option) => Input.LandId == option.LieferbedingungId"
+                                              SelectedOptionChanged="(option) => Input.LandId = option.LieferbedingungId > 0 ? option.LieferbedingungId : null" />
+                                <FluentValidationMessage For="() => Input.LieferbedingungId" />
 
+                            </div>
+                            <div class="col-md-6">
+                                <FluentSelect TOption="Zahlungsbedingung"
+                                              Label="Zahlungsbedingung"
+                                              Width="100%;"
+                                              Items="@([Storage.EmptyZahlungsbedingung,..Storage.Get<Zahlungsbedingung>()])"
+                                              OptionValue="@(p => p.ZahlungsbedingungId.ToString())"
+                                              OptionText="@(p => p.Name)"
+                                              OptionSelected="(option) => Input.LandId == option.ZahlungsbedingungId"
+                                              SelectedOptionChanged="(option) => Input.LandId = option.ZahlungsbedingungId > 0 ? option.ZahlungsbedingungId : null" />
+                                <FluentValidationMessage For="() => Input.ZahlungsbedingungId" />
+                            </div>
+                            <div class="col-md-6">
+                                <FluentNumberField @bind-Value="Input.Kreditlimit" Label="Kreditlimit" />
+                                <FluentValidationMessage For="() => Input.Kreditlimit" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <FluentTextField @bind-Value="Input.UmsatzsteuerIdentifikationsnummer" Label="Ust. ID-Nummer" />
+                                    <FluentButton Appearance="Appearance.Accent" IconStart="@(new Icons.Regular.Size20.BuildingBank().WithColor(Color.Fill))" />
+                                </div>
+                                <FluentValidationMessage For="() => Input.UmsatzsteuerIdentifikationsnummer" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <FluentTextField @bind-Value="Input.IBAN" Label="IBAN" />
+                                        <FluentValidationMessage For="() => Input.IBAN" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <FluentTextField @bind-Value="Input.BIC" Label="BIC" />
+                                        <FluentValidationMessage For="() => Input.BIC" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 ">
+                        <div class="row">
+                        </div>
+                    </div>
+                </div>
             </Content>
         </FluentTab>
 
     </FluentTabs>
 </EditForm>
 @code {
-   
+
     private bool _showOptionsMenu;
     private ZahlungsbedingungValidator _validator = new();
 
