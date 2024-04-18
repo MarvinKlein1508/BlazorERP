@@ -17,6 +17,7 @@ public static class Storage
        using IDbController dbController = new FbController();
         _storage.Add(typeof(Anrede), await AnredeService.GetAsync(dbController));
         _storage.Add(typeof(Lieferbedingung), await LieferbedingungService.GetAsync(dbController));
+        _storage.Add(typeof(Zahlungsbedingung), await ZahlungsbedingungService.GetAsync(dbController));
         _storage.Add(typeof(Währung), await WährungService.GetAsync(dbController));
     }
 

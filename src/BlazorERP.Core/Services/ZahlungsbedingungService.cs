@@ -78,6 +78,22 @@ public class ZahlungsbedingungService : IModelService<Zahlungsbedingung, int?, Z
         return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
     }
 
+    public static async Task<List<Zahlungsbedingung>> GetAsync(IDbController dbController)
+    {
+        string sql = "SELECT * FROM ZAHLUNGSBEDINGUNGEN";
+
+        var results = await dbController.SelectDataAsync<Zahlungsbedingung>(sql);
+
+
+        var übersetzungen = await ÜbersetzungService.GetAsync(GetTranslationCode(), dbController);
+
+        foreach (var item in results)
+        {
+            item.Übersetzungen = übersetzungen.Where(x => x.ParentId == item.ZahlungsbedingungId).ToList();
+        }
+
+        return results;
+    }
     public async Task<Zahlungsbedingung?> GetAsync(int? identifier, IDbController dbController, CancellationToken cancellationToken = default)
     {
         if (identifier is null)
