@@ -14,6 +14,7 @@ public class KundeService : IModelService<Kunde, int?, KundeFilter>
             """
             INSERT INTO KUNDEN
             (
+                KUNDENNUMMER,
                 FIRMA,
                 NAME1,
                 NAME2,
@@ -44,6 +45,7 @@ public class KundeService : IModelService<Kunde, int?, KundeFilter>
             )
             VALUES
             (
+                @KUNDENNUMMER,
                 @FIRMA,
                 @NAME1,
                 @NAME2,

@@ -1,0 +1,1 @@
+CREATE EXCEPTION NO_NUMBERS_AVAILABLE 'No available number could be found.';
