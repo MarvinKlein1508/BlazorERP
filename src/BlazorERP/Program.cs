@@ -46,6 +46,7 @@ builder.Services.AddScoped<ZahlungsbedingungService>();
 builder.Services.AddScoped<LieferbedingungService>();
 builder.Services.AddScoped<KundeService>();
 builder.Services.AddScoped<VoreinstellungService>();
+builder.Services.AddScoped<NummernkreisService>();
 builder.Services.AddScoped<AuthService>();
 
 // Options

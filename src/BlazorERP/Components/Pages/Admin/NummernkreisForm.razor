@@ -1,0 +1,130 @@
+﻿@page "/Admin/Nummernkreise/Edit"
+@using BlazorERP.Core.Validators.Admin
+@using Microsoft.AspNetCore.Identity
+@inject AuthService authService
+@inherits EditPageBase<int?, Nummernkreis, NummernkreisService>
+@inject SpracheService spracheService
+@inject IMessageService messageService
+@inject IDialogService DialogService
+<PageTitle>@FinalBreadcrumbItemName</PageTitle>
+
+<FluentBreadcrumb>
+    <FluentBreadcrumbItem Href="/">Start</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem>Administration</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="/Admin/Nummernkreise">Nummernkreise</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem>@FinalBreadcrumbItemName</FluentBreadcrumbItem>
+</FluentBreadcrumb>
+@if (Input is null)
+{
+    return;
+}
+<FluentStack HorizontalAlignment="HorizontalAlignment.End">
+    <FluentAnchor Href="/Admin/Nummernkreise"
+                  IconStart="@(new Icons.Regular.Size20.ArrowReply())">
+        Zurück
+    </FluentAnchor>
+
+    <FluentButton IconStart="@(new Icons.Regular.Size20.Save())"
+                  Appearance="Appearance.Accent"
+                  OnClick="SaveAsync">
+
+        Speichern
+    </FluentButton>
+</FluentStack>
+
+<EditForm Model="Input" @ref="_form">
+    <FluentValidationValidator Validator="_validator" />
+    <FluentTabs>
+        <FluentTab Label="Allgemein">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="row">
+                        @if (Modus is EditMode.Edit)
+                        {
+                            <div class="col-12">
+                                <FluentNumberField @bind-Value="Input.NummernkreisId" Label="NummernkreisId" Disabled />
+                                <FluentValidationMessage For="() => Input.NummernkreisId" />
+                            </div>
+                        }
+
+                        <div class="col-12">
+                            <FluentTextField @bind-Value="Input.Name" Label="Name" />
+                            <FluentValidationMessage For="() => Input.Name" />
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-3 ">
+                    <div class="row">
+                        @if (Modus is EditMode.Edit)
+                        {
+                            <div class="col-12">
+                                <FluentDatePicker Appearance="FluentInputAppearance.Filled" Label="Letzte Änderung" @bind-Value="@Input.ZuletztGeaendert" ReadOnly />
+                            </div>
+
+                            <div class="col-12">
+                                <FluentTextField Appearance="FluentInputAppearance.Filled" Label="Letzter Bearbeiter" Value="@Input.BearbeiterName" ReadOnly />
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </FluentTab>
+        <FluentTab Label="Stammdaten">
+            <Content>
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <FluentNumberField @bind-Value="Input.KundeVon" Label="Kunde Von" />
+                                <FluentValidationMessage For="() => Input.KundeVon" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <FluentNumberField @bind-Value="Input.KundeBis" Label="Kunde Bis" />
+                                <FluentValidationMessage For="() => Input.KundeBis" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="row">
+                            <div class="col-12">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </Content>
+        </FluentTab>
+
+    </FluentTabs>
+</EditForm>
+@code {
+
+
+    private bool _showOptionsMenu;
+    private NummernkreisValidator _validator = new();
+
+
+    protected override string GetListUrl() => "/Admin/Nummernkreise";
+    protected override string GetEntityRedirectUrl() => $"/Admin/Nummernkreise/Edit?nummernkreisId={Input!.NummernkreisId}";
+
+    protected override async Task OnInitializedAsync()
+    {
+        using IDbController dbController = new FbController();
+
+        User = await AuthService.GetUserAsync(dbController);
+    }
+
+    [Parameter, SupplyParameterFromQuery(Name = "nummernkreisId")]
+    public override int? Identifier { get; set; }
+
+    protected override Task BeforeSaveAsync(IDbController dbController)
+    {
+        Input.LetzterBearbeiter = User.UserId;
+        Input.ZuletztGeaendert = DateTime.Now;
+
+        return Task.CompletedTask;
+    }
+
+}
