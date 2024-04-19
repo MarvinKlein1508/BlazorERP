@@ -62,14 +62,13 @@
 
                             <div class="row">
                                 <div class="col-md-4">
-                                    <FluentSelect TOption="Land"
-                                                  Label="Land"
-                                                  Width="100%;"
-                                                  Items="@([Storage.EmptyLand,..Storage.Get<Land>()])"
-                                                  OptionValue="@(p => p.LandId.ToString())"
-                                                  OptionText="@(p => p.Name)"
-                                                  OptionSelected="(option) => Input.LandId is null && option is null || Input.LandId == option.LandId"
-                                                  SelectedOptionChanged="(option) => Input.LandId = option.LandId > 0 ? option.LandId : null" />
+                                    <FluentSelect TOption="Land" Label="Land" Width="100%;">
+                                        <FluentOption Value="null" Selected="@(Input.LandId is null)" OnSelect="(val) => Input.LandId = null">--- Auswählen ---</FluentOption>
+                                        @foreach (var item in Storage.Get<Land>())
+                                        {
+                                            <FluentOption TOption="Land" Value="@item.LandId.ToString()" Selected="@(Input.LandId == item.LandId)" OnSelect="(val) => Input.LandId = item.LandId">@item.Name</FluentOption>
+                                        }
+                                    </FluentSelect>
 
                                     <p>Land: @Input.LandId</p>
 
@@ -88,26 +87,24 @@
 
                             <div class="row">
                                 <div class="col-6">
-                                    <FluentSelect TOption="Sprache"
-                                                  Label="Sprache"
-                                                  Width="100%;"
-                                                  Items="@([Storage.EmptySprache,..Storage.Get<Sprache>()])"
-                                                  OptionValue="@(p => p.SprachId.ToString())"
-                                                  OptionText="@(p => p.Name)"
-                                                  OptionSelected="(option) => Input.SprachId == option.SprachId"
-                                                  SelectedOptionChanged="(option) => Input.SprachId = option.SprachId > 0 ? option.SprachId : null" />
+                                    <FluentSelect TOption="Sprache" Label="Sprache" Width="100%;">
+                                        <FluentOption Value="null" Selected="@(Input.SprachId is null)" OnSelect="(val) => Input.SprachId = null">--- Auswählen ---</FluentOption>
+                                        @foreach (var item in Storage.Get<Sprache>())
+                                        {
+                                            <FluentOption TOption="Sprache" Value="@item.SprachId.ToString()" Selected="@(Input.SprachId == item.SprachId)" OnSelect="(val) => Input.SprachId = item.SprachId">@item.Name</FluentOption>
+                                        }
+                                    </FluentSelect>
                                     <FluentValidationMessage For="() => Input.SprachId" />
                                 </div>
 
                                 <div class="col-6">
-                                    <FluentSelect TOption="Anrede"
-                                                  Label="Anrede"
-                                                  Width="100%;"
-                                                  Items="@([Storage.EmptyAnrede,..Storage.Get<Anrede>()])"
-                                                  OptionValue="@(p => p.AnredeId.ToString())"
-                                                  OptionText="@(p => p.Name)"
-                                                  OptionSelected="(option) => Input.AnredeId == option.AnredeId"
-                                                  SelectedOptionChanged="(option) => Input.AnredeId = option.AnredeId > 0 ? option.AnredeId : null" />
+                                    <FluentSelect TOption="Anrede" Label="Anrede" Width="100%;">
+                                        <FluentOption Value="null" Selected="@(Input.AnredeId is null)" OnSelect="(val) => Input.AnredeId = null">--- Auswählen ---</FluentOption>
+                                        @foreach (var item in Storage.Get<Anrede>())
+                                        {
+                                            <FluentOption TOption="Anrede" Value="@item.AnredeId.ToString()" Selected="@(Input.AnredeId == item.AnredeId)" OnSelect="(val) => Input.AnredeId = item.AnredeId">@item.Name</FluentOption>
+                                        }
+                                    </FluentSelect>
                                     <FluentValidationMessage For="() => Input.AnredeId" />
                                 </div>
                                 <div class="col-md-6">
@@ -165,37 +162,34 @@
                     <div class="col-md-9">
                         <div class="row">
                             <div class="col-md-6">
-                                <FluentSelect TOption="Lieferbedingung"
-                                              Label="Lieferbedingung"
-                                              Width="100%;"
-                                              Items="@([Storage.EmptyLieferbedingung,..Storage.Get<Lieferbedingung>()])"
-                                              OptionValue="@(p => p.LieferbedingungId.ToString())"
-                                              OptionText="@(p => p.Name)"
-                                              OptionSelected="(option) => Input.LieferbedingungId == option.LieferbedingungId"
-                                              SelectedOptionChanged="(option) => Input.LieferbedingungId = option.LieferbedingungId > 0 ? option.LieferbedingungId : null" />
+                                <FluentSelect TOption="Lieferbedingung" Label="Lieferbedingung" Width="100%;">
+                                    <FluentOption Value="null" Selected="@(Input.LieferbedingungId is null)" OnSelect="(val) => Input.LieferbedingungId = null">--- Auswählen ---</FluentOption>
+                                    @foreach (var item in Storage.Get<Lieferbedingung>())
+                                    {
+                                        <FluentOption TOption="Lieferbedingung" Value="@item.LieferbedingungId.ToString()" Selected="@(Input.LieferbedingungId == item.LieferbedingungId)" OnSelect="(val) => Input.LieferbedingungId = item.LieferbedingungId">@item.Name</FluentOption>
+                                    }
+                                </FluentSelect>
                                 <FluentValidationMessage For="() => Input.LieferbedingungId" />
 
                             </div>
                             <div class="col-md-6">
-                                <FluentSelect TOption="Zahlungsbedingung"
-                                              Label="Zahlungsbedingung"
-                                              Width="100%;"
-                                              Items="@([Storage.EmptyZahlungsbedingung,..Storage.Get<Zahlungsbedingung>()])"
-                                              OptionValue="@(p => p.ZahlungsbedingungId.ToString())"
-                                              OptionText="@(p => p.Name)"
-                                              OptionSelected="(option) => Input.ZahlungsbedingungId == option.ZahlungsbedingungId"
-                                              SelectedOptionChanged="(option) => Input.ZahlungsbedingungId = option.ZahlungsbedingungId > 0 ? option.ZahlungsbedingungId : null" />
+                                <FluentSelect TOption="Zahlungsbedingung" Label="Zahlungsbedingung" Width="100%;">
+                                    <FluentOption Value="null" Selected="@(Input.ZahlungsbedingungId is null)" OnSelect="(val) => Input.ZahlungsbedingungId = null">--- Auswählen ---</FluentOption>
+                                    @foreach (var item in Storage.Get<Zahlungsbedingung>())
+                                    {
+                                        <FluentOption TOption="Zahlungsbedingung" Value="@item.ZahlungsbedingungId.ToString()" Selected="@(Input.ZahlungsbedingungId == item.ZahlungsbedingungId)" OnSelect="(val) => Input.ZahlungsbedingungId = item.ZahlungsbedingungId">@item.Name</FluentOption>
+                                    }
+                                </FluentSelect>
                                 <FluentValidationMessage For="() => Input.ZahlungsbedingungId" />
                             </div>
                             <div class="col-md-6">
-                                <FluentSelect TOption="Währung"
-                                              Label="Währung"
-                                              Width="100%;"
-                                              Items="@([Storage.EmptyWährung,..Storage.Get<Währung>()])"
-                                              OptionValue="@(p => p.Code)"
-                                              OptionText="@(p => p.Code)"
-                                              OptionSelected="(option) => Input.Waehrungscode == option.Code"
-                                              SelectedOptionChanged="(option) => Input.Waehrungscode = string.IsNullOrWhiteSpace(option.Code) ? null : option.Code" />
+                                <FluentSelect TOption="Währung" Label="Währung" Width="100%;">
+                                    <FluentOption Value="null" Selected="@(Input.Waehrungscode is null)" OnSelect="(val) => Input.Waehrungscode = null">--- Auswählen ---</FluentOption>
+                                    @foreach (var item in Storage.Get<Währung>())
+                                    {
+                                        <FluentOption TOption="Währung" Value="@item.Code.ToString()" Selected="@(Input.Waehrungscode == item.Code)" OnSelect="(val) => Input.Waehrungscode = item.Code">@item.Code</FluentOption>
+                                    }
+                                </FluentSelect>
                                 <FluentValidationMessage For="() => Input.Waehrungscode" />
                             </div>
                             <div class="col-md-6">
