@@ -1,5 +1,5 @@
 ﻿@inject AuthService authService
-@if(_user is null)
+@if (_user is null)
 {
     return;
 }
@@ -17,7 +17,7 @@
                     <FluentNavLink Href="/Stammdaten/Kunden" Icon="@(new Icons.Regular.Size20.Person())">Kunden</FluentNavLink>
                 </ChildContent>
             </FluentNavGroup>
-            @if(_user.IsAdmin)
+            @if (_user.IsAdmin)
             {
                 <FluentNavGroup Title="Administration" Icon="@(new Icons.Regular.Size20.Settings())">
                     <ChildContent>
@@ -30,11 +30,11 @@
                                 <FluentNavLink Href="/Admin/Kostenstellen" Icon="@(new Icons.Regular.Size20.MoneyCalculator())">Kostenstellen</FluentNavLink>
                                 <FluentNavLink Href="/Admin/Länder" Icon="@(new Icons.Regular.Size20.Globe())">Länder</FluentNavLink>
                                 <FluentNavLink Href="/Admin/Lieferbedingungen" Icon="@(new Icons.Regular.Size20.VehicleTruckProfile())">Lieferbedingungen</FluentNavLink>
-                                <FluentNavLink Href="/Admin/Voreinstellungen" Icon="@(new Icons.Regular.Size20.ArchiveSettings())">Voreinstellungen</FluentNavLink>
                                 <FluentNavLink Href="/Admin/Währungen" Icon="@(new Icons.Regular.Size20.CurrencyDollarEuro())">Währungen</FluentNavLink>
                                 <FluentNavLink Href="/Admin/Zahlungsbedingungen" Icon="@(new Icons.Regular.Size20.Money())">Zahlungsbedingungen</FluentNavLink>
                             </ChildContent>
                         </FluentNavGroup>
+                        <FluentNavLink Href="/Admin/Voreinstellungen" Icon="@(new Icons.Regular.Size20.ArchiveSettings())">Voreinstellungen</FluentNavLink>
                     </ChildContent>
                 </FluentNavGroup>
             }
@@ -46,7 +46,7 @@
                     <FluentNavLink Href="/Account/Logout" Icon="@(new Icons.Regular.Size20.SignOut())" IconColor="Color.Accent">Logout</FluentNavLink>
                 </ChildContent>
             </FluentNavGroup>
-            
+
         </FluentNavMenu>
     </nav>
 </div>

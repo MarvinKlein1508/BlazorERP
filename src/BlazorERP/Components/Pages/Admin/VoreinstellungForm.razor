@@ -1,0 +1,192 @@
+﻿@page "/Admin/Voreinstellungen/Edit"
+@using BlazorERP.Core.Validators.Admin.Hilfsdaten
+@using Microsoft.AspNetCore.Identity
+@inject AuthService authService
+@inherits EditPageBase<int?, Voreinstellung, VoreinstellungService>
+@inject SpracheService spracheService
+@inject IMessageService messageService
+@inject IDialogService DialogService
+<PageTitle>@FinalBreadcrumbItemName</PageTitle>
+
+<FluentBreadcrumb>
+    <FluentBreadcrumbItem Href="/">Start</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem>Administration</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="/Admin/Voreinstellungen">Voreinstellungen</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem>@FinalBreadcrumbItemName</FluentBreadcrumbItem>
+</FluentBreadcrumb>
+@if (Input is null)
+{
+    return;
+}
+<FluentStack HorizontalAlignment="HorizontalAlignment.End">
+    <FluentAnchor Href="/Admin/Voreinstellungen"
+                  IconStart="@(new Icons.Regular.Size20.ArrowReply())">
+        Zurück
+    </FluentAnchor>
+
+    <FluentButton IconStart="@(new Icons.Regular.Size20.Save())"
+                  Appearance="Appearance.Accent"
+                  OnClick="SaveAsync">
+
+        Speichern
+    </FluentButton>
+</FluentStack>
+
+<EditForm Model="Input" @ref="_form">
+    <FluentValidationValidator Validator="_validator" />
+    <FluentTabs>
+        <FluentTab Label="Allgemein">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="row">
+                        @if (Modus is EditMode.Edit)
+                        {
+                            <div class="col-12">
+                                <FluentNumberField @bind-Value="Input.VoreinstellungId" Label="VoreinstellungId" Disabled />
+                                <FluentValidationMessage For="() => Input.VoreinstellungId" />
+                            </div>
+                        }
+
+                        <div class="col-12">
+                            <FluentTextField @bind-Value="Input.Name" Label="Name" />
+                            <FluentValidationMessage For="() => Input.Name" />
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-3 ">
+                    <div class="row">
+                        @if (Modus is EditMode.Edit)
+                        {
+                            <div class="col-12">
+                                <FluentDatePicker Appearance="FluentInputAppearance.Filled" Label="Letzte Änderung" @bind-Value="@Input.ZuletztGeaendert" ReadOnly />
+                            </div>
+
+                            @* <div class="col-12">
+                        <FluentTextField Appearance="FluentInputAppearance.Filled" Label="Letzter Bearbeiter" Value="@Input.BearbeiterName" ReadOnly />
+                        </div> *@
+                        }
+                    </div>
+                </div>
+            </div>
+        </FluentTab>
+        <FluentTab Label="Kunden">
+            <Content>
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <FluentSelect TOption="Land" Label="Land" Width="100%;">
+                                    <FluentOption Value="null" Selected="@(Input.KundeLandId is null)" OnSelect="(val) => Input.KundeLandId = null">--- Auswählen ---</FluentOption>
+                                    @foreach (var item in Storage.Get<Land>())
+                                    {
+                                        <FluentOption TOption="Land" Value="@item.LandId.ToString()" Selected="@(Input.KundeLandId == item.LandId)" OnSelect="(val) => Input.KundeLandId = item.LandId">@item.Name</FluentOption>
+                                    }
+                                </FluentSelect>
+                                <FluentValidationMessage For="() => Input.KundeLandId" />
+                            </div>
+                            <div class="col-md-6">
+                                <FluentSelect TOption="Sprache" Label="Sprache" Width="100%;">
+                                    <FluentOption Value="null" Selected="@(Input.KundeSprachId is null)" OnSelect="(val) => Input.KundeSprachId = null">--- Auswählen ---</FluentOption>
+                                    @foreach (var item in Storage.Get<Sprache>())
+                                    {
+                                        <FluentOption TOption="Sprache" Value="@item.SprachId.ToString()" Selected="@(Input.KundeSprachId == item.SprachId)" OnSelect="(val) => Input.KundeSprachId = item.SprachId">@item.Name</FluentOption>
+                                    }
+                                </FluentSelect>
+                                <FluentValidationMessage For="() => Input.KundeSprachId" />
+                            </div>
+                            <div class="col-md-6">
+                                <FluentSelect TOption="Lieferbedingung" Label="Lieferbedingung" Width="100%;">
+                                    <FluentOption Value="null" Selected="@(Input.KundeLieferbedingungId is null)" OnSelect="(val) => Input.KundeLieferbedingungId = null">--- Auswählen ---</FluentOption>
+                                    @foreach (var item in Storage.Get<Lieferbedingung>())
+                                    {
+                                        <FluentOption TOption="Lieferbedingung" Value="@item.LieferbedingungId.ToString()" Selected="@(Input.KundeLieferbedingungId == item.LieferbedingungId)" OnSelect="(val) => Input.KundeLieferbedingungId = item.LieferbedingungId">@item.Name</FluentOption>
+                                    }
+                                </FluentSelect>
+                                <FluentValidationMessage For="() => Input.KundeLieferbedingungId" />
+                            </div>
+                            <div class="col-md-6">
+                                <FluentSelect TOption="Zahlungsbedingung" Label="Zahlungsbedingung" Width="100%;">
+                                    <FluentOption Value="null" Selected="@(Input.KundeZahlungsbedingungId is null)" OnSelect="(val) => Input.KundeZahlungsbedingungId = null">--- Auswählen ---</FluentOption>
+                                    @foreach (var item in Storage.Get<Zahlungsbedingung>())
+                                    {
+                                        <FluentOption TOption="Zahlungsbedingung" Value="@item.ZahlungsbedingungId.ToString()" Selected="@(Input.KundeZahlungsbedingungId == item.ZahlungsbedingungId)" OnSelect="(val) => Input.KundeZahlungsbedingungId = item.ZahlungsbedingungId">@item.Name</FluentOption>
+                                    }
+                                </FluentSelect>
+                                <FluentValidationMessage For="() => Input.KundeZahlungsbedingungId" />
+                            </div>
+                            <div class="col-md-6">
+                                <FluentSelect TOption="Anrede" Label="Anrede" Width="100%;">
+                                    <FluentOption Value="null" Selected="@(Input.KundeAnredeId is null)" OnSelect="(val) => Input.KundeAnredeId = null">--- Auswählen ---</FluentOption>
+                                    @foreach (var item in Storage.Get<Anrede>())
+                                    {
+                                        <FluentOption TOption="Anrede" Value="@item.AnredeId.ToString()" Selected="@(Input.KundeAnredeId == item.AnredeId)" OnSelect="(val) => Input.KundeAnredeId = item.AnredeId">@item.Name</FluentOption>
+                                    }
+                                </FluentSelect>
+                                <FluentValidationMessage For="() => Input.KundeAnredeId" />
+                            </div>
+                            <div class="col-md-6">
+                                <FluentSelect TOption="Währung" Label="Währung" Width="100%;">
+                                    <FluentOption Value="null" Selected="@(Input.KundeWaehrungscode is null)" OnSelect="(val) => Input.KundeWaehrungscode = null">--- Auswählen ---</FluentOption>
+                                    @foreach (var item in Storage.Get<Währung>())
+                                    {
+                                        <FluentOption TOption="Währung" Value="@item.Code" Selected="@(Input.KundeWaehrungscode == item.Code)" OnSelect="(val) => Input.KundeWaehrungscode = item.Code">@item.Code</FluentOption>
+                                    }
+                                </FluentSelect>
+                                <FluentValidationMessage For="() => Input.KundeWaehrungscode" />
+                            </div>
+                            <div class="col-md-6">
+                                <FluentNumberField @bind-Value="Input.KundeKreditlimit" Label="Kreditlimit" />
+                                <FluentValidationMessage For="() => Input.KundeKreditlimit" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="d-flex flex-column gap-2 mt-2">
+                                    <FluentSwitch @bind-Value="@Input.KundeNeutralerVersand" Label="Neutraler Versand" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </Content>
+        </FluentTab>
+
+    </FluentTabs>
+</EditForm>
+@code {
+
+
+    private bool _showOptionsMenu;
+    private VoreinstellungValidator _validator = new();
+
+
+    protected override string GetListUrl() => "/Admin/Voreinstellungen";
+    protected override string GetEntityRedirectUrl() => $"/Admin/Voreinstellungen/Edit?voreinstellungId={Input!.VoreinstellungId}";
+
+    protected override async Task OnInitializedAsync()
+    {
+        using IDbController dbController = new FbController();
+
+        User = await AuthService.GetUserAsync(dbController);
+    }
+
+
+
+    [Parameter, SupplyParameterFromQuery(Name = "voreinstellungId")]
+    public override int? Identifier { get; set; }
+
+
+
+
+    protected override Task BeforeSaveAsync(IDbController dbController)
+    {
+        Input.LetzterBearbeiter = User.UserId;
+        Input.ZuletztGeaendert = DateTime.Now;
+
+        return Task.CompletedTask;
+    }
+
+}
