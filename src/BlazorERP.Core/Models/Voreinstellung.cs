@@ -11,6 +11,7 @@ public class Voreinstellung : IDbModelWithName<int?>
     public int? KundeAnredeId { get;set;}
     public string? KundeWaehrungscode { get;set;}
     public int? KundeLandId { get;set;}
+    public int? KundeSprachId { get;set;}
     public decimal KundeKreditlimit { get;set;}
     public bool KundeNeutralerVersand { get;set;}
     public int? LetzterBearbeiter { get;set;}

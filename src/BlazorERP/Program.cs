@@ -45,6 +45,7 @@ builder.Services.AddScoped<KostenstelleService>();
 builder.Services.AddScoped<ZahlungsbedingungService>();
 builder.Services.AddScoped<LieferbedingungService>();
 builder.Services.AddScoped<KundeService>();
+builder.Services.AddScoped<VoreinstellungService>();
 builder.Services.AddScoped<AuthService>();
 
 // Options

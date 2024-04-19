@@ -22,7 +22,25 @@ public partial class KundenForm
     [Parameter, SupplyParameterFromQuery(Name = "kundennummer")]
     public override string? Identifier { get; set; }
 
+    protected override async Task InitializeModelAsync(bool newEntry, IDbController dbController)
+    {
+        if (newEntry)
+        {
+            var defaults = await voreinstellungService.GetAsync(1, dbController);
 
+            if (defaults is not null)
+            {
+                Input.AnredeId = defaults.KundeAnredeId;
+                Input.NeutralerVersand = defaults.KundeNeutralerVersand;
+                Input.Waehrungscode = defaults.KundeWaehrungscode;
+                Input.SprachId = defaults.KundeSprachId;
+                Input.Kreditlimit = defaults.KundeKreditlimit;
+                Input.LandId = defaults.KundeLandId;
+                Input.LieferbedingungId = defaults.KundeLieferbedingungId;
+                Input.ZahlungsbedingungId = defaults.KundeZahlungsbedingungId;
+            }
+        }
+    }
 
     protected override Task BeforeSaveAsync(IDbController dbController)
     {
