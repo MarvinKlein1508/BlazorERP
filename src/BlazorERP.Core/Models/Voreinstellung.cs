@@ -21,6 +21,8 @@ public class Voreinstellung : IDbModelWithName<int?>
 
     public string GetName() => Name;
 
+
+    public string BearbeiterName { get; set; } = string.Empty;
     public Dictionary<string, object?> GetParameters()
     {
         return new Dictionary<string, object?>
