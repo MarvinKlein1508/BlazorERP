@@ -32,6 +32,7 @@ public class Voreinstellung : IDbModelWithName<int?>
             { "KUNDE_ANREDE_ID", KundeAnredeId },
             { "KUNDE_WAEHRUNGSCODE", KundeWaehrungscode },
             { "KUNDE_LAND_ID", KundeLandId },
+            { "KUNDE_SPRACH_ID", KundeSprachId },
             { "KUNDE_KREDITLIMIT", KundeKreditlimit },
             { "KUNDE_NEUTRALER_VERSAND", KundeNeutralerVersand },
             { "LETZTER_BEARBEITER", LetzterBearbeiter },
