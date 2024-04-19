@@ -9,6 +9,8 @@ public class Land : IDbModelWithName<int?>
     public string ISO2 { get; set; } = string.Empty;
     public string ISO3 { get; set; } = string.Empty;
     public string Vorwahl { get; set; } = string.Empty;
+
+    public bool IstEU { get; set; }
     public int? LetzterBearbeiter { get; set; }
     public DateTime ZuletztGeaendert { get; set; }
     public List<Übersetzung> Übersetzungen { get; set; } = [];
@@ -25,6 +27,7 @@ public class Land : IDbModelWithName<int?>
             { "ISO2", ISO2 },
             { "ISO3", ISO3 },
             { "VORWAHL", Vorwahl },
+            { "IST_EU", IstEU },
             { "LETZTER_BEARBEITER", LetzterBearbeiter },
             { "ZULETZT_GEAENDERT", ZuletztGeaendert },
         };

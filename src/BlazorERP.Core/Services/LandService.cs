@@ -25,6 +25,7 @@ public class LandService : IModelService<Land, int?, LandFilter>, ITranslationCo
                 ISO2,
                 ISO3,
                 VORWAHL,
+                IST_EU,
                 LETZTER_BEARBEITER,
                 ZULETZT_GEAENDERT
             )
@@ -34,6 +35,7 @@ public class LandService : IModelService<Land, int?, LandFilter>, ITranslationCo
                 @ISO2,
                 @ISO3,
                 @VORWAHL,
+                @IST_EU,
                 @LETZTER_BEARBEITER,
                 @ZULETZT_GEAENDERT
             ) RETURNING LAND_ID;
@@ -171,6 +173,7 @@ public class LandService : IModelService<Land, int?, LandFilter>, ITranslationCo
                 ISO2 = @ISO2,
                 ISO3 = @ISO3,
                 VORWAHL = @VORWAHL,
+                IST_EU = @IST_EU,
                 LETZTER_BEARBEITER = @LETZTER_BEARBEITER,
                 ZULETZT_GEAENDERT = @ZULETZT_GEAENDERT
             WHERE
