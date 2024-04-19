@@ -1,0 +1,46 @@
+﻿@page "/Admin/Gesperrt"
+@inject IJSRuntime jsRuntime
+
+
+<PageTitle>Gesperrte Seiten</PageTitle>
+
+<FluentBreadcrumb>
+    <FluentBreadcrumbItem Href="/">Start</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem>Administration</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem>Gesperrte Seiten</FluentBreadcrumbItem>
+</FluentBreadcrumb>
+
+
+<div class="row">
+    <div class="col-12">
+        @foreach (var item in ActivePages.Pages)
+        {
+            <div class="list">
+                <div class="list-details">
+                    <div class="list-item">
+                        <label>Benutzer</label>
+                        <span>@item.Username</span>
+                    </div>
+
+                    <div class="list-item">
+                        <label>Seite</label>
+                        <span>@item.Type</span>
+                    </div>
+
+                    <div class="list-item">
+                        <label>ID</label>
+                        <span>@item.PageId</span>
+                    </div>
+
+                </div>
+                <div class="list-buttons">
+                    <FluentButton @onclick="() => RemovePageAsync(item)">
+                        Freigeben
+                    </FluentButton>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+

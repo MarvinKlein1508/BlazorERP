@@ -10,7 +10,7 @@ using Microsoft.FluentUI.AspNetCore.Components;
 
 namespace BlazorERP.Core.ComponentBases;
 
-public abstract class EditPageBase<TIdentifier, TModel, TService> : ComponentBase
+public abstract class EditPageBase<TIdentifier, TModel, TService> : ActivePageBase
     where TModel : class, IDbModel<TIdentifier>, new()
     where TService : IModelService<TModel, TIdentifier>
 {
@@ -58,7 +58,7 @@ public abstract class EditPageBase<TIdentifier, TModel, TService> : ComponentBas
         if (Identifier is not null)
         {
             await LoadEditModeAsync(dbController);
-            //await CheckActivePageAsync();
+            await CheckActivePageAsync();
         }
         else
         {
@@ -185,6 +185,36 @@ public abstract class EditPageBase<TIdentifier, TModel, TService> : ComponentBas
     /// </summary>
     /// <returns></returns>
     protected abstract string GetListUrl();
+
+    public override Task CheckActivePageAsync()
+    {
+        if (User is not null)
+        {
+            var (success, page) = ActivePages.AddActivePage(new ActivePage
+            {
+                Type = GetEntityRedirectUrl(),
+                PageId = Identifier?.ToString() ?? string.Empty,
+                ModuleName = string.Empty,
+                UserId = User.UserId,
+                Username = User.GetName()
+            });
+
+            if (success)
+            {
+                Page = page;
+                BlockedPage = null;
+            }
+            else
+            {
+                BlockedPage = page;
+                Page = null;
+
+            }
+
+            IsPageBlockedByOtherUser = !success;
+        }
+        return Task.CompletedTask;
+    }
 
     protected virtual async Task ShowDeleteModalAsync()
     {
