@@ -45,33 +45,52 @@
     <FluentTabs>
         <FluentTab Label="Allgemein">
             <div class="row">
-                <div class="col-md-6 row">
-                    @if (Modus is EditMode.Edit)
-                    {
+                <div class="col-md-9">
+                    <div class="row">
+                        @if (Modus is EditMode.Edit)
+                        {
+                            <div class="col-md-12">
+                                <FluentNumberField @bind-Value="Input.LandId" Label="LandId" Disabled />
+                            </div>
+                        }
+
                         <div class="col-md-12">
-                            <FluentNumberField @bind-Value="Input.LandId" Label="LandId" Disabled />
+                            <FluentTextField @bind-Value="Input.Name" Label="Name" />
+                            <FluentValidationMessage For="() => Input.Name" />
                         </div>
-                    }
-
-                    <div class="col-md-12">
-                        <FluentTextField @bind-Value="Input.Name" Label="Name" />
-                        <FluentValidationMessage For="() => Input.Name" />
-                    </div>
-                    <div class="col-md-3">
-                        <FluentTextField @bind-Value="Input.ISO2" Label="ISO2" />
-                        <FluentValidationMessage For="() => Input.ISO2" />
-                    </div>
-                    <div class="col-md-3">
-                        <FluentTextField @bind-Value="Input.ISO3" Label="ISO3" />
-                        <FluentValidationMessage For="() => Input.ISO3" />
-                    </div>
-                    <div class="col-md-3">
-                        <FluentTextField @bind-Value="Input.Vorwahl" Label="Vorwahl" />
-                        <FluentValidationMessage For="() => Input.Vorwahl" />
+                        <div class="col-md-3">
+                            <FluentTextField @bind-Value="Input.ISO2" Label="ISO2" />
+                            <FluentValidationMessage For="() => Input.ISO2" />
+                        </div>
+                        <div class="col-md-3">
+                            <FluentTextField @bind-Value="Input.ISO3" Label="ISO3" />
+                            <FluentValidationMessage For="() => Input.ISO3" />
+                        </div>
+                        <div class="col-md-3">
+                            <FluentTextField @bind-Value="Input.Vorwahl" Label="Vorwahl" />
+                            <FluentValidationMessage For="() => Input.Vorwahl" />
+                        </div>
                     </div>
 
-                    <div class="col-12">
-                        <FluentSwitch @bind-Value="Input.IstEU" Label="EU Land" />
+                </div>
+                <div class="col-md-3">
+                    <div class="row">
+                        @if (Modus is EditMode.Edit)
+                        {
+                            <div class="col-12">
+                                <FluentDatePicker Appearance="FluentInputAppearance.Filled" Label="Letzte Änderung" @bind-Value="@Input.ZuletztGeaendert" ReadOnly />
+                            </div>
+
+                            <div class="col-12">
+                                <FluentTextField Appearance="FluentInputAppearance.Filled" Label="Letzter Bearbeiter" Value="@Input.BearbeiterName" ReadOnly />
+                            </div>
+                        }
+
+                        <div class="col-12">
+                            <div class="d-flex flex-column gap-2 mt-2">
+                                <FluentSwitch @bind-Value="Input.IstEU" Label="EU Land" />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

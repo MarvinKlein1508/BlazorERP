@@ -85,7 +85,15 @@ public class LandService : IModelService<Land, int?, LandFilter>, ITranslationCo
             return null;
         }
 
-        string sql = "SELECT * FROM LAENDER WHERE LAND_ID = @LAND_ID";
+        string sql =
+            """
+            SELECT 
+                L.*,
+                U.ANZEIGENAME AS BEARBEITER_NAME
+            FROM LAENDER L 
+            LEFT JOIN USERS U ON (u.USER_ID = L.LETZTER_BEARBEITER)
+            WHERE LAND_ID = @LAND_ID
+            """;
 
         var result = await dbController.GetFirstAsync<Land>(sql, new
         {
@@ -107,8 +115,10 @@ public class LandService : IModelService<Land, int?, LandFilter>, ITranslationCo
         $"""
         SELECT 
             FIRST {filter.Limit} SKIP {(filter.PageNumber - 1) * filter.Limit}
-                * 
-            FROM LAENDER 
+                L.*,
+                U.ANZEIGENAME AS BEARBEITER_NAME
+            FROM LAENDER L
+            LEFT JOIN USERS U ON (u.USER_ID = L.LETZTER_BEARBEITER)
             WHERE 1 = 1
             {GetFilterWhere(filter)}
             ORDER BY LAND_ID DESC

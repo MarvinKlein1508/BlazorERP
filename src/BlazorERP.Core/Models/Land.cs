@@ -12,12 +12,13 @@ public class Land : IDbModelWithName<int?>
 
     public bool IstEU { get; set; }
     public int? LetzterBearbeiter { get; set; }
-    public DateTime ZuletztGeaendert { get; set; }
+    public DateTime? ZuletztGeaendert { get; set; }
     public List<Übersetzung> Übersetzungen { get; set; } = [];
     public int? GetIdentifier() => LandId > 0 ? LandId : null;
 
     public string GetName() => Name;
 
+    public string BearbeiterName { get; set; } = string.Empty;
     public Dictionary<string, object?> GetParameters()
     {
         return new Dictionary<string, object?>
