@@ -6,7 +6,7 @@ using BlazorERP.Core.Validators.Stammdaten;
 using Microsoft.AspNetCore.Components;
 using System.Text.RegularExpressions;
 
-namespace BlazorERP.Components.Pages.Stammdaten.Kunden;
+namespace BlazorERP.Components.Pages.Stammdaten;
 
 public partial class KundenForm
 {

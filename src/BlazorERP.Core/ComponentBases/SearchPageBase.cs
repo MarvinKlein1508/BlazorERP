@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components;
 using FirebirdSql.Data.Services;
 using BlazorERP.Core.Utilities;
+using Microsoft.AspNetCore.WebUtilities;
+using System;
+using Microsoft.Extensions.Primitives;
 
 namespace BlazorERP.Core.ComponentBases;
 
@@ -32,6 +35,7 @@ public abstract class SearchPageBase<TModel, TService, TFilter> : ComponentBase
     protected int TotalItems { get; set; }
     protected int TotalPages => (int)Math.Ceiling((double)TotalItems / (double)(Filter?.Limit ?? 30));
 
+    protected Uri CurrentUri => NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
     protected override async Task OnParametersSetAsync()
     {
         if (Page <= 0)
@@ -41,7 +45,6 @@ public abstract class SearchPageBase<TModel, TService, TFilter> : ComponentBase
 
 
         await LoadAsync();
-
     }
 
     protected virtual IDbController GetDbController()
@@ -54,7 +57,11 @@ public abstract class SearchPageBase<TModel, TService, TFilter> : ComponentBase
         await Task.Yield();
         if (navigateToPage1)
         {
-            NavigationManager.NavigateTo($"{BaseUrl}?page=1");
+            var parameters = GetQueryParameter();
+            parameters.Remove("page");
+            parameters.Add("page", "1");
+
+            NavigationManager.NavigateTo($"{CurrentUri.AbsolutePath}?{BuildQueryParameters(parameters)}");
         }
         Filter.PageNumber = Page < 1 ? 1 : Page;
 
@@ -66,7 +73,25 @@ public abstract class SearchPageBase<TModel, TService, TFilter> : ComponentBase
     }
     protected virtual Task OnPageChangedAsync(int pageNumber)
     {
-        NavigationManager.NavigateTo($"{BaseUrl}?page={pageNumber}");
+        var parameters = GetQueryParameter();
+        parameters.Remove("page");
+        parameters.Add("page", pageNumber.ToString());
+
+
+        NavigationManager.NavigateTo($"{CurrentUri.AbsolutePath}?{BuildQueryParameters(parameters)}");
+
         return Task.CompletedTask;
+    }
+
+    protected Dictionary<string, StringValues> GetQueryParameter() => QueryHelpers.ParseQuery(CurrentUri.Query);
+    protected string BuildQueryParameters(Dictionary<string, StringValues> parameters)
+    {
+        if (parameters.Count == 0)
+        {
+            return string.Empty;
+        }
+
+        var queryString = string.Join("&", parameters.Select(p => $"{p.Key}={Uri.EscapeDataString(p!.Value)}"));
+        return queryString;
     }
 }
