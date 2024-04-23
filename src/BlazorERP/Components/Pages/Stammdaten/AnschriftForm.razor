@@ -1,0 +1,187 @@
+﻿@page "/Stammdaten/Anschriften/Edit"
+@using BlazorERP.Core.Validators.Admin.Hilfsdaten
+@using Microsoft.AspNetCore.Identity
+@inherits EditPageBase<int?, Anschrift, AnschriftService>
+
+<PageTitle>@FinalBreadcrumbItemName</PageTitle>
+
+<FluentBreadcrumb>
+    <FluentBreadcrumbItem Href="/">Start</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="/Stammdaten/Anschriften">Anschriften</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem>@FinalBreadcrumbItemName</FluentBreadcrumbItem>
+</FluentBreadcrumb>
+@if (Input is null)
+{
+    return;
+}
+<FluentStack HorizontalAlignment="HorizontalAlignment.End">
+    <FluentAnchor Href="/Admin/Anschriften"
+                  IconStart="@(new Icons.Regular.Size20.ArrowReply())">
+        Zurück
+    </FluentAnchor>
+
+    @if (Modus is EditMode.Edit)
+    {
+        <FluentButton id="btnOpen1" Appearance="Appearance.Accent" @onclick="@(() => _showOptionsMenu = !_showOptionsMenu)">
+            Optionen
+        </FluentButton>
+
+        <FluentMenu Anchor="btnOpen1" @bind-Open="_showOptionsMenu" VerticalThreshold="170">
+            <FluentMenuItem OnClick="ShowDeleteModalAsync">Anschrift löschen</FluentMenuItem>
+        </FluentMenu>
+    }
+
+    <FluentButton IconStart="@(new Icons.Regular.Size20.Save())"
+                  Appearance="Appearance.Accent"
+                  OnClick="SaveAsync">
+
+        Speichern
+    </FluentButton>
+</FluentStack>
+
+<EditForm Model="Input" @ref="_form">
+    <FluentValidationValidator Validator="_validator" />
+    <FluentTabs>
+        <FluentTab Label="Allgemein">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="row">
+                        @if (Modus is EditMode.Edit)
+                        {
+                            <div class="col-md-12">
+                                <FluentNumberField @bind-Value="Input.AnschriftId" Label="AnschriftId" Disabled />
+                            </div>
+                        }
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <FluentTextField @bind-Value="Input.Firma" Label="Firma" />
+                                        <FluentValidationMessage For="() => Input.Firma" />
+                                    </div>
+                                    <div class="col-12">
+                                        <FluentTextField @bind-Value="Input.Name1" Label="Name 1" />
+                                        <FluentValidationMessage For="() => Input.Name1" />
+                                    </div>
+                                    <div class="col-12">
+                                        <FluentTextField @bind-Value="Input.Name2" Label="Name 2" />
+                                        <FluentValidationMessage For="() => Input.Name2" />
+                                    </div>
+
+                                    <div class="col-12">
+                                        <FluentTextField @bind-Value="Input.Strasse" Label="Straße" />
+                                        <FluentValidationMessage For="() => Input.Strasse" />
+                                    </div>
+
+
+                                    <div class="col-md-4">
+                                        <FluentSelect TOption="Land" Label="Land" Width="100%;">
+                                            <FluentOption Value="null" Selected="@(Input.LandId is null)" OnSelect="(val) => Input.LandId = null">--- Auswählen ---</FluentOption>
+                                            @foreach (var item in Storage.Get<Land>())
+                                            {
+                                                <FluentOption TOption="Land" Value="@item.LandId.ToString()" Selected="@(Input.LandId == item.LandId)" OnSelect="(val) => Input.LandId = item.LandId">@item.Name</FluentOption>
+                                            }
+                                        </FluentSelect>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <FluentTextField @bind-Value="Input.Postleistzahl" Label="Postleitzahl" />
+                                        <FluentValidationMessage For="() => Input.Postleistzahl" />
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <FluentTextField @bind-Value="Input.Ort" Label="Ort" />
+                                        <FluentValidationMessage For="() => Input.Ort" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <FluentTextField @bind-Value="Input.Telefonnummer" Label="Telefonnummer" />
+                                        <FluentValidationMessage For="() => Input.Telefonnummer" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <FluentTextField @bind-Value="Input.Mobilnummer" Label="Mobilnummer" />
+                                        <FluentValidationMessage For="() => Input.Mobilnummer" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <FluentTextField @bind-Value="Input.Faxnummer" Label="Faxnummer" />
+                                        <FluentValidationMessage For="() => Input.Faxnummer" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <FluentTextField @bind-Value="Input.Email" Label="E-Mail" />
+                                        <FluentValidationMessage For="() => Input.Email" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <FluentSelect TOption="Sprache" Label="Sprache" Width="100%;">
+                                            <FluentOption Value="null" Selected="@(Input.SprachId is null)" OnSelect="(val) => Input.SprachId = null">--- Auswählen ---</FluentOption>
+                                            @foreach (var item in Storage.Get<Sprache>())
+                                            {
+                                                <FluentOption TOption="Sprache" Value="@item.SprachId.ToString()" Selected="@(Input.SprachId == item.SprachId)" OnSelect="(val) => Input.SprachId = item.SprachId">@item.Name</FluentOption>
+                                            }
+                                        </FluentSelect>
+                                        <FluentValidationMessage For="() => Input.SprachId" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <FluentTextField @bind-Value="Input.UmsatzsteuerIdentifikationsnummer" Label="Ust. ID-Nummer" />
+                                        <FluentValidationMessage For="() => Input.UmsatzsteuerIdentifikationsnummer" />
+                                    </div>
+                                    <div class="col-12">
+                                        <FluentTextArea @bind-Value="Input.Notiz" Label="Notiz" Class="w-100" Rows="6" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                       
+
+
+                    </div>
+                </div>
+                <div class="col-md-3 ">
+                    <div class="row">
+                        @if (Modus is EditMode.Edit)
+                        {
+                            <div class="col-12">
+                                <FluentDatePicker Appearance="FluentInputAppearance.Filled" Label="Letzte Änderung" @bind-Value="@Input.ZuletztGeaendert" ReadOnly />
+                            </div>
+
+                            <div class="col-12">
+                                <FluentTextField Appearance="FluentInputAppearance.Filled" Label="Letzter Bearbeiter" Value="@Input.BearbeiterName" ReadOnly />
+                            </div>
+
+                        }
+                    </div>
+                </div>
+            </div>
+        </FluentTab>
+    </FluentTabs>
+</EditForm>
+@code {
+
+
+    private bool _showOptionsMenu;
+    private ZahlungsbedingungValidator _validator = new();
+
+    protected override string GetListUrl() => "/Stammdaten/Anschriften";
+    protected override string GetEntityRedirectUrl() => $"/Stammdaten/Anschriften/Edit?anschriftId={Input!.AnschriftId}";
+
+
+
+    [Parameter, SupplyParameterFromQuery(Name = "anschriftId")]
+    public override int? Identifier { get; set; }
+
+
+
+    protected override Task BeforeSaveAsync(IDbController dbController)
+    {
+        Input.LetzterBearbeiter = User.UserId;
+        Input.ZuletztGeaendert = DateTime.Now;
+
+        return Task.CompletedTask;
+    }
+
+}

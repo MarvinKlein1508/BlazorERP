@@ -30,6 +30,8 @@ public class Anschrift : IDbModel<int?>
 
     public int? GetIdentifier() => AnschriftId > 0 ? AnschriftId : null;
 
+
+    public string BearbeiterName { get; set; } = string.Empty;
     public Dictionary<string, object?> GetParameters()
     {
         return new Dictionary<string, object?>
