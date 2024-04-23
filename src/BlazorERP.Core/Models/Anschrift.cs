@@ -8,7 +8,6 @@ namespace BlazorERP.Core.Models;
 public class Anschrift : IDbModel<int?>
 {
     public int AnschriftId { get; set; }
-    public AnschriftArt Art { get; set; } = AnschriftArt.Lieferanschrift;
     public string? Kundennummer { get; set; }
     public int? Lieferantennummer { get; set; }
     public string Firma { get; set; } = string.Empty;
@@ -36,7 +35,6 @@ public class Anschrift : IDbModel<int?>
         return new Dictionary<string, object?>
         {
             { "ANSCHRIFT_ID", AnschriftId },
-            { "ART", (int)Art },
             { "KUNDENNUMMER", Kundennummer },
             { "LIEFERANTENNUMMER", Lieferantennummer },
             { "FIRMA", Firma },

@@ -13,8 +13,7 @@ public class AnschriftService : IModelService<Anschrift, int?, AnschriftFilter>
         string sql =
             """
             INSERT INTO ANSCHRIFTEN
-            (
-                ART,
+            (              
                 KUNDENNUMMER,
                 LIEFERANTENNUMMER,
                 FIRMA,
@@ -37,7 +36,6 @@ public class AnschriftService : IModelService<Anschrift, int?, AnschriftFilter>
             )
             VALUES
             (
-                @ART,
                 @KUNDENNUMMER,
                 @LIEFERANTENNUMMER,
                 @FIRMA,
@@ -154,7 +152,6 @@ public class AnschriftService : IModelService<Anschrift, int?, AnschriftFilter>
         string sql =
             """
             UPDATE ANSCHRIFTEN SET 
-                ART = @ART,
                 KUNDENNUMMER = @KUNDENNUMMER,
                 LIEFERANTENNUMMER = @LIEFERANTENNUMMER,
                 FIRMA = @FIRMA,
