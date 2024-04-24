@@ -10,6 +10,7 @@ public static class Storage
     private static IConfiguration? _configuration;
     private readonly static Dictionary<Type, object> _storage = [];
 
+
     /// <summary>
     /// Only temporary until we read language from users
     /// </summary>
@@ -26,6 +27,7 @@ public static class Storage
         _storage.Add(typeof(Language), await LanguageService.GetAsync(dbController));
         //_storage.Add(typeof(Kostenstelle), await KostenstelleService.GetAsync(dbController));
         _storage.Add(typeof(Country), await CountryService.GetAsync(dbController));
+
 
         DEFAULT_LANGUAGE = 2;
     }

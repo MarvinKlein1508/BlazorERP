@@ -55,7 +55,9 @@
                             </div>
                         }
 
-                 
+                        <div class="col-12">
+                            <BlazorERP.Components.Shared.TranslationEditor Input="Input" />
+                        </div>
 
                     </div>
                 </div>
@@ -84,12 +86,6 @@
                 </div>
             </div>
         </FluentTab>
-        <FluentTab Label="Übersetzungen">
-            <Content>
-                <BlazorERP.Components.Shared.TranslationEditor Translations="Input.Translations" />
-            </Content>
-        </FluentTab>
-
     </FluentTabs>
 </EditForm>
 @code {
