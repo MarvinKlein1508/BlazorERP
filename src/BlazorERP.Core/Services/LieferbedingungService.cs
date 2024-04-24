@@ -7,9 +7,9 @@ namespace BlazorERP.Core.Services;
 
 public class LieferbedingungService : IModelService<Lieferbedingung, int?, LieferbedingungFilter>, ITranslationCode
 {
-    private readonly ÜbersetzungService _übersetzungService;
+    private readonly TranslationService _übersetzungService;
 
-    public LieferbedingungService(ÜbersetzungService übersetzungService)
+    public LieferbedingungService(TranslationService übersetzungService)
     {
         _übersetzungService = übersetzungService;
     }
@@ -71,7 +71,7 @@ public class LieferbedingungService : IModelService<Lieferbedingung, int?, Liefe
         var results = await dbController.SelectDataAsync<Lieferbedingung>(sql);
 
 
-        var übersetzungen = await ÜbersetzungService.GetAsync(GetTranslationCode(), dbController);
+        var übersetzungen = await TranslationService.GetAsync(GetTranslationCode(), dbController);
 
         foreach (var item in results)
         {

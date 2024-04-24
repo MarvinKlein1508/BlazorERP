@@ -1,15 +1,15 @@
-﻿@inject SpracheService spracheService
+﻿@inject LanguageService spracheService
 <div class="d-flex justify-content-end gap-1 mb-2">
     <InputSelect @bind-Value="_sprachId" class="fluent-select">
         <option value="">Auswählen</option>
         @foreach (var item in _sprachen)
         {
-            if (_addedIds.Contains(item.SprachId))
+            if (_addedIds.Contains(item.LanguageId))
             {
                 continue;
             }
 
-            <option value="@item.SprachId">@item.Name</option>
+            <option value="@item.LanguageId">@item.GetName(Storage.DEFAULT_LANGUAGE)</option>
         }
     </InputSelect>
 
@@ -24,7 +24,7 @@
                 {
                     <div class="d-flex gap-1">
 
-                        <FluentTextField Value="@(_sprachen.First(x => x.SprachId == item.SprachId).Name)" Class="w-auto" Disabled />
+                        <FluentTextField Value="@(_sprachen.First(x => x.LanguageId == item.LanguageId).GetName(Storage.DEFAULT_LANGUAGE))" Class="w-auto" Disabled />
                         <div class="form-group w-100">
                             <FluentTextField @bind-Value="item.ValueText" Placeholder="Übersetzung" />
                             <FluentValidationMessage For="() => item.ValueText" />
@@ -38,30 +38,30 @@
 }
 @code {
     [Parameter, EditorRequired]
-    public List<Übersetzung> Übersetzungen { get; set; } = [];
+    public List<Translation> Übersetzungen { get; set; } = [];
     private HashSet<int?> _addedIds = [];
-    private List<Sprache> _sprachen = [];
+    private List<Language> _sprachen = [];
 
     private int? _sprachId;
 
     protected override async Task OnInitializedAsync()
     {
         using IDbController dbController = new FbController();
-        _sprachen = await SpracheService.GetAsync(dbController);
+        _sprachen = await LanguageService.GetAsync(dbController);
     }
 
     protected override void OnParametersSet()
     {
-        _addedIds = Übersetzungen.Select(x => x.SprachId).ToHashSet();
+        _addedIds = Übersetzungen.Select(x => x.LanguageId).ToHashSet();
     }
 
 
 
     private void Add()
     {
-        var item = new Übersetzung
+        var item = new Translation
             {
-                SprachId = _sprachId,
+                LanguageId = _sprachId,
             };
 
         _addedIds.Add(_sprachId);
@@ -70,9 +70,9 @@
         _sprachId = null;
     }
 
-    private void Remove(Übersetzung item)
+    private void Remove(Translation item)
     {
         Übersetzungen.Remove(item);
-        _addedIds.Remove(item.SprachId);
+        _addedIds.Remove(item.LanguageId);
     }
 }

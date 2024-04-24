@@ -1,7 +1,8 @@
 ﻿
 namespace BlazorERP.Core.Filters;
 
-public class ÜbersetzungFilter : PageFilterBase
+
+public class CountryFilter : PageFilterBase
 {
     public override Dictionary<string, object?> GetParameters()
     {

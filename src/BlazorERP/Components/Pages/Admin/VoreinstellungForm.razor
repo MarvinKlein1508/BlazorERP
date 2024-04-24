@@ -3,7 +3,7 @@
 @using Microsoft.AspNetCore.Identity
 @inject AuthService authService
 @inherits EditPageBase<int?, Voreinstellung, VoreinstellungService>
-@inject SpracheService spracheService
+@inject LanguageService spracheService
 @inject IMessageService messageService
 @inject IDialogService DialogService
 <PageTitle>@FinalBreadcrumbItemName</PageTitle>
@@ -76,21 +76,21 @@
                     <div class="col-md-9">
                         <div class="row">
                             <div class="col-md-6">
-                                <FluentSelect TOption="Land" Label="Land" Width="100%;">
+                                <FluentSelect TOption="Country" Label="Land" Width="100%;">
                                     <FluentOption Value="null" Selected="@(Input.KundeLandId is null)" OnSelect="(val) => Input.KundeLandId = null">--- Auswählen ---</FluentOption>
-                                    @foreach (var item in Storage.Get<Land>())
+                                    @foreach (var item in Storage.Get<Country>())
                                     {
-                                        <FluentOption TOption="Land" Value="@item.LandId.ToString()" Selected="@(Input.KundeLandId == item.LandId)" OnSelect="(val) => Input.KundeLandId = item.LandId">@item.Name</FluentOption>
+                                        <FluentOption TOption="Country" Value="@item.CountryId.ToString()" Selected="@(Input.KundeLandId == item.CountryId)" OnSelect="(val) => Input.KundeLandId = item.CountryId">@item.ISO2</FluentOption>
                                     }
                                 </FluentSelect>
                                 <FluentValidationMessage For="() => Input.KundeLandId" />
                             </div>
                             <div class="col-md-6">
-                                <FluentSelect TOption="Sprache" Label="Sprache" Width="100%;">
+                                <FluentSelect TOption="Language" Label="Sprache" Width="100%;">
                                     <FluentOption Value="null" Selected="@(Input.KundeSprachId is null)" OnSelect="(val) => Input.KundeSprachId = null">--- Auswählen ---</FluentOption>
-                                    @foreach (var item in Storage.Get<Sprache>())
+                                    @foreach (var item in Storage.Get<Language>())
                                     {
-                                        <FluentOption TOption="Sprache" Value="@item.SprachId.ToString()" Selected="@(Input.KundeSprachId == item.SprachId)" OnSelect="(val) => Input.KundeSprachId = item.SprachId">@item.Name</FluentOption>
+                                        <FluentOption TOption="Language" Value="@item.LanguageId.ToString()" Selected="@(Input.KundeSprachId == item.LanguageId)" OnSelect="(val) => Input.KundeSprachId = item.LanguageId">@item.GetName(Storage.DEFAULT_LANGUAGE)</FluentOption>
                                     }
                                 </FluentSelect>
                                 <FluentValidationMessage For="() => Input.KundeSprachId" />

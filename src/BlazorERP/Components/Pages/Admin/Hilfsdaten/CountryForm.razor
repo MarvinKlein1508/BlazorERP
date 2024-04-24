@@ -1,14 +1,14 @@
-﻿@page "/Admin/Länder/Edit"
+﻿@page "/Admin/Countries/Edit"
 @using BlazorERP.Core.Validators.Admin.Hilfsdaten
 @using Microsoft.AspNetCore.Identity
-@inherits EditPageBase<int?, Land, LandService>
+@inherits EditPageBase<int?, Country, CountryService>
 
 <PageTitle>@FinalBreadcrumbItemName</PageTitle>
 
 <FluentBreadcrumb>
     <FluentBreadcrumbItem Href="/">Start</FluentBreadcrumbItem>
     <FluentBreadcrumbItem>Administration</FluentBreadcrumbItem>
-    <FluentBreadcrumbItem Href="/Admin/Länder">Länder</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="/Admin/Countries">Länder</FluentBreadcrumbItem>
     <FluentBreadcrumbItem>@FinalBreadcrumbItemName</FluentBreadcrumbItem>
 </FluentBreadcrumb>
 @if (Input is null)
@@ -16,7 +16,7 @@
     return;
 }
 <FluentStack HorizontalAlignment="HorizontalAlignment.End">
-    <FluentAnchor Href="/Admin/Länder"
+    <FluentAnchor Href="/Admin/Countries"
                   IconStart="@(new Icons.Regular.Size20.ArrowReply())">
         Zurück
     </FluentAnchor>
@@ -50,14 +50,11 @@
                         @if (Modus is EditMode.Edit)
                         {
                             <div class="col-md-12">
-                                <FluentNumberField @bind-Value="Input.LandId" Label="LandId" Disabled />
+                                <FluentNumberField @bind-Value="Input.CountryId" Label="LandId" Disabled />
                             </div>
                         }
 
-                        <div class="col-md-12">
-                            <FluentTextField @bind-Value="Input.Name" Label="Name" />
-                            <FluentValidationMessage For="() => Input.Name" />
-                        </div>
+      
                         <div class="col-md-3">
                             <FluentTextField @bind-Value="Input.ISO2" Label="ISO2" />
                             <FluentValidationMessage For="() => Input.ISO2" />
@@ -67,8 +64,8 @@
                             <FluentValidationMessage For="() => Input.ISO3" />
                         </div>
                         <div class="col-md-3">
-                            <FluentTextField @bind-Value="Input.Vorwahl" Label="Vorwahl" />
-                            <FluentValidationMessage For="() => Input.Vorwahl" />
+                            <FluentTextField @bind-Value="Input.DialingCode" Label="Vorwahl" />
+                            <FluentValidationMessage For="() => Input.DialingCode" />
                         </div>
                     </div>
 
@@ -78,7 +75,7 @@
                         @if (Modus is EditMode.Edit)
                         {
                             <div class="col-12">
-                                <FluentDatePicker Appearance="FluentInputAppearance.Filled" Label="Letzte Änderung" @bind-Value="@Input.ZuletztGeaendert" ReadOnly />
+                                <FluentDatePicker Appearance="FluentInputAppearance.Filled" Label="Letzte Änderung" @bind-Value="@Input.LastModified" ReadOnly />
                             </div>
 
                             <div class="col-12">
@@ -88,7 +85,8 @@
 
                         <div class="col-12">
                             <div class="d-flex flex-column gap-2 mt-2">
-                                <FluentSwitch @bind-Value="Input.IstEU" Label="EU Land" />
+                                <FluentSwitch @bind-Value="Input.IsEU" Label="EU Land" />
+                                <FluentSwitch @bind-Value="Input.IsActive" Label="Aktiv" />
                             </div>
                         </div>
                     </div>
@@ -109,18 +107,18 @@
     private bool _showOptionsMenu;
     private LandValidator _validator = new();
 
-    protected override string GetListUrl() => "/Admin/Länder";
-    protected override string GetEntityRedirectUrl() => $"/Admin/Länder/Edit?landId={Input!.LandId}";
+    protected override string GetListUrl() => "/Admin/Countries";
+    protected override string GetEntityRedirectUrl() => $"/Admin/Länder/Edit?countryId={Input!.CountryId}";
 
-    [Parameter, SupplyParameterFromQuery(Name = "landId")]
+    [Parameter, SupplyParameterFromQuery(Name = "countryId")]
     public override int? Identifier { get; set; }
 
 
 
     protected override Task BeforeSaveAsync(IDbController dbController)
     {
-        Input.LetzterBearbeiter = User.UserId;
-        Input.ZuletztGeaendert = DateTime.Now;
+        Input.LastModifiedBy = User.UserId;
+        Input.LastModified = DateTime.Now;
 
         return Task.CompletedTask;
     }

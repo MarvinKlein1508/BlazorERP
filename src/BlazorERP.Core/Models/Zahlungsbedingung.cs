@@ -28,7 +28,7 @@ public class Zahlungsbedingung : IDbModelWithName<int?>
 
     public string GetName() => Name;
 
-    public List<Übersetzung> Übersetzungen { get; set; } = [];
+    public List<Translation> Übersetzungen { get; set; } = [];
 
 
     public string BearbeiterName { get; set; } = string.Empty;

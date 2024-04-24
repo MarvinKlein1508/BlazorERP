@@ -7,9 +7,9 @@ namespace BlazorERP.Core.Services;
 
 public class ZahlungsbedingungService : IModelService<Zahlungsbedingung, int?, ZahlungsbedingungFilter>, ITranslationCode
 {
-    private readonly ÜbersetzungService _übersetzungService;
+    private readonly TranslationService _übersetzungService;
 
-    public ZahlungsbedingungService(ÜbersetzungService übersetzungService)
+    public ZahlungsbedingungService(TranslationService übersetzungService)
     {
         _übersetzungService = übersetzungService;
     }
@@ -85,7 +85,7 @@ public class ZahlungsbedingungService : IModelService<Zahlungsbedingung, int?, Z
         var results = await dbController.SelectDataAsync<Zahlungsbedingung>(sql);
 
 
-        var übersetzungen = await ÜbersetzungService.GetAsync(GetTranslationCode(), dbController);
+        var übersetzungen = await TranslationService.GetAsync(GetTranslationCode(), dbController);
 
         foreach (var item in results)
         {

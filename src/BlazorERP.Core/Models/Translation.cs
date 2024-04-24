@@ -2,10 +2,10 @@
 
 namespace BlazorERP.Core.Models;
 
-public class Übersetzung : IDbParameterizable
+public class Translation : IDbParameterizable
 {
     public string Code { get; set; } = string.Empty;
-    public int? SprachId { get; set; }
+    public int? LanguageId { get; set; }
     public int ParentId { get; set; }
     public string ValueText { get; set; } = string.Empty;
     public string ValueBlob { get; set; } = string.Empty;
@@ -15,7 +15,7 @@ public class Übersetzung : IDbParameterizable
         return new Dictionary<string, object?>
         {
             { "CODE", Code },
-            { "SPRACH_ID", SprachId },
+            { "LANGUAGE_ID", LanguageId },
             { "PARENT_ID", ParentId },
             { "VALUE_TEXT", ValueText },
             { "VALUE_BLOB", ValueBlob },

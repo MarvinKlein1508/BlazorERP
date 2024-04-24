@@ -37,9 +37,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<AbteilungService>();
 builder.Services.AddScoped<AnredeService>();
-builder.Services.AddScoped<ÜbersetzungService>();
-builder.Services.AddScoped<SpracheService>();
-builder.Services.AddScoped<LandService>();
+builder.Services.AddScoped<TranslationService>();
+builder.Services.AddScoped<LanguageService>();
+builder.Services.AddScoped<CountryService>();
 builder.Services.AddScoped<WährungService>();
 builder.Services.AddScoped<KostenstelleService>();
 builder.Services.AddScoped<ZahlungsbedingungService>();

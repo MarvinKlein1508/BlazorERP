@@ -8,9 +8,9 @@ namespace BlazorERP.Core.Services;
 
 public class AnredeService : IModelService<Anrede, int?, AnredeFilter>, ITranslationCode
 {
-    private readonly ÜbersetzungService _übersetzungService;
+    private readonly TranslationService _übersetzungService;
 
-    public AnredeService(ÜbersetzungService übersetzungService)
+    public AnredeService(TranslationService übersetzungService)
     {
         _übersetzungService = übersetzungService;
     }
@@ -62,7 +62,7 @@ public class AnredeService : IModelService<Anrede, int?, AnredeFilter>, ITransla
         var results = await dbController.SelectDataAsync<Anrede>(sql);
 
 
-        var übersetzungen = await ÜbersetzungService.GetAsync(GetTranslationCode(), dbController);
+        var übersetzungen = await TranslationService.GetAsync(GetTranslationCode(), dbController);
 
         foreach (var item in results)
         {

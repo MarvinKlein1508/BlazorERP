@@ -1,6 +1,6 @@
-﻿@page "/Admin/Länder"
+﻿@page "/Admin/Countries"
 @inject AuthService authService
-@inherits SearchPageBase<Land, LandService, LandFilter>
+@inherits SearchPageBase<Country, CountryService, CountryFilter>
 
 <PageTitle>Länder</PageTitle>
 
@@ -39,17 +39,22 @@
                         <div class="list-details">
                             <div class="list-item" hidden-when="xs sm">
                                 <label>Id</label>
-                                <span>@item.LandId</span>
+                                <span>@item.CountryId</span>
+                            </div>
+                            
+                            <div class="list-item">
+                                <label>Name</label>
+                                <span>@item.GetName(Storage.DEFAULT_LANGUAGE)</span>
                             </div>
 
                             <div class="list-item">
-                                <label>Name</label>
-                                <span>@item.GetName()</span>
+                                <label>ISO2</label>
+                                <span>@item.ISO2</span>
                             </div>
 
                             <div class="list-item">
                                 <label>Letzte Änderung</label>
-                                <span>@item.ZuletztGeaendert?.ToShortDateString()</span>
+                                <span>@item.LastModified?.ToShortDateString()</span>
                             </div>
 
                             <div class="list-item">
@@ -59,7 +64,7 @@
 
                         </div>
                         <div class="list-buttons">
-                            <FluentAnchor Href="@($"/Admin/Länder/Edit?landId={item.GetIdentifier()}")">
+                            <FluentAnchor Href="@($"/Admin/Countries/Edit?countryId={item.GetIdentifier()}")">
                                 Bearbeiten
                             </FluentAnchor>
                         </div>
@@ -80,7 +85,7 @@
                 <Pagination CurrentPageNumber="Page"
                             TotalItems="TotalItems"
                             ItemsPerPage="Filter.Limit"
-                            NavUrl="/Admin/Länder?page=" />
+                            NavUrl="/Admin/Countries?page=" />
             }
         </FluentStack>
     </FluentGridItem>
@@ -116,5 +121,5 @@
 
 @code {
     protected override bool InternalNavigation => false;
-    protected override string BaseUrl => "/Admin/Länder";
+    protected override string BaseUrl => "/Admin/Countries";
 }
