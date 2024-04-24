@@ -1,6 +1,6 @@
 ﻿@page "/Admin/Anreden"
 @inject AuthService authService
-@inherits SearchPageBase<Anrede, AnredeService, AnredeFilter>
+@inherits SearchPageBase<Salutation, SalutationService, SalutationFilter>
 
 <PageTitle>Abteilungsliste</PageTitle>
 
@@ -39,11 +39,11 @@
                         <div class="list-details">
                             <div class="list-item" hidden-when="xs sm">
                                 <label>Id</label>
-                                <span>@item.AnredeId</span>
+                                <span>@item.SalutationId</span>
                             </div>
                             <div class="list-item">
                                 <label>Name</label>
-                                <span>@item.GetName()</span>
+                                <span>@item.GetName(Storage.DEFAULT_LANGUAGE)</span>
                             </div>
                         </div>
                         <div class="list-buttons">

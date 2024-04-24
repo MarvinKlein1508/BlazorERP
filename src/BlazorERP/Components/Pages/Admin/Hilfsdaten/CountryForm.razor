@@ -105,7 +105,7 @@
 
 
     private bool _showOptionsMenu;
-    private LandValidator _validator = new();
+    private CountryValidator _validator = new();
 
     protected override string GetListUrl() => "/Admin/Countries";
     protected override string GetEntityRedirectUrl() => $"/Admin/Länder/Edit?countryId={Input!.CountryId}";

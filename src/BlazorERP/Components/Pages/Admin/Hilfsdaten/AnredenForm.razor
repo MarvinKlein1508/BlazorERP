@@ -1,7 +1,7 @@
 ﻿@page "/Admin/Anreden/Edit"
 @using BlazorERP.Core.Validators.Admin.Hilfsdaten
 @using Microsoft.AspNetCore.Identity
-@inherits EditPageBase<int?, Anrede, AnredeService>
+@inherits EditPageBase<int?, Salutation, SalutationService>
 <PageTitle>@FinalBreadcrumbItemName</PageTitle>
 
 <FluentBreadcrumb>
@@ -47,18 +47,14 @@
                 @if (Modus is EditMode.Edit)
                 {
                     <div class="col-md-12">
-                        <FluentNumberField @bind-Value="Input.AnredeId" Label="AnredeId" Disabled />
-                    </div>
-                    <div class="col-md-12">
-                        <FluentTextField @bind-Value="Input.Name" Label="Name" />
-                        <FluentValidationMessage For="() => Input.Name" />
+                        <FluentNumberField @bind-Value="Input.SalutationId" Label="AnredeId" Disabled />
                     </div>
                 }
             </div>
         </FluentTab>
         <FluentTab Label="Übersetzungen">
             <Content>
-               <BlazorERP.Components.Shared.ÜbersetzungEditor Übersetzungen="Input.Übersetzungen" />
+               <BlazorERP.Components.Shared.ÜbersetzungEditor Übersetzungen="Input.Translations" />
             </Content>
         </FluentTab>
 
@@ -68,10 +64,10 @@
 
 
     private bool _showOptionsMenu;
-    private AnredeValidator _validator = new();
+    private SalutationValidator _validator = new();
     
     protected override string GetListUrl() => "/Admin/Anreden";
-    protected override string GetEntityRedirectUrl() => $"/Admin/Anreden/Edit?anredeId={Input!.AnredeId}";
+    protected override string GetEntityRedirectUrl() => $"/Admin/Anreden/Edit?anredeId={Input!.SalutationId}";
 
  
 
@@ -81,8 +77,8 @@
 
     protected override Task BeforeSaveAsync(IDbController dbController)
     {
-        Input.LetzterBearbeiter = User.UserId;
-        Input.ZuletztGeaendert = DateTime.Now;
+        Input.LastModifiedBy = User.UserId;
+        Input.LastModified = DateTime.Now;
 
         return Task.CompletedTask;
     }

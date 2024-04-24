@@ -99,11 +99,11 @@
                                 </div>
 
                                 <div class="col-6">
-                                    <FluentSelect TOption="Anrede" Label="Anrede" Width="100%;">
+                                    <FluentSelect TOption="Salutation" Label="Anrede" Width="100%;">
                                         <FluentOption Value="null" Selected="@(Input.AnredeId is null)" OnSelect="(val) => Input.AnredeId = null">--- Auswählen ---</FluentOption>
-                                        @foreach (var item in Storage.Get<Anrede>())
+                                        @foreach (var item in Storage.Get<Salutation>())
                                         {
-                                            <FluentOption TOption="Anrede" Value="@item.AnredeId.ToString()" Selected="@(Input.AnredeId == item.AnredeId)" OnSelect="(val) => Input.AnredeId = item.AnredeId">@item.Name</FluentOption>
+                                            <FluentOption TOption="Salutation" Value="@item.SalutationId.ToString()" Selected="@(Input.AnredeId == item.SalutationId)" OnSelect="(val) => Input.AnredeId = item.SalutationId">@item.GetName(Storage.DEFAULT_LANGUAGE)</FluentOption>
                                         }
                                     </FluentSelect>
                                     <FluentValidationMessage For="() => Input.AnredeId" />

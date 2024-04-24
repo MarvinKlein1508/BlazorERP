@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace BlazorERP.Core.Validators.Admin.Hilfsdaten;
 
-public class LandValidator : AbstractValidator<Country>
+public class CountryValidator : AbstractValidator<Country>
 {
-    public LandValidator()
+    public CountryValidator()
     {
 
         RuleFor(x => x.ISO2)

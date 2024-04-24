@@ -36,7 +36,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<AbteilungService>();
-builder.Services.AddScoped<AnredeService>();
+builder.Services.AddScoped<SalutationService>();
 builder.Services.AddScoped<TranslationService>();
 builder.Services.AddScoped<LanguageService>();
 builder.Services.AddScoped<CountryService>();
