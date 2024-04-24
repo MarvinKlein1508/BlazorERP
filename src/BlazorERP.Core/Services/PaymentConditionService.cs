@@ -7,11 +7,11 @@ namespace BlazorERP.Core.Services;
 
 public class PaymentConditionService : IModelService<PaymentCondition, int?, PaymentConditionFilter>, ITranslationCode
 {
-    private readonly TranslationService _übersetzungService;
+    private readonly TranslationService _translationService;
 
-    public PaymentConditionService(TranslationService übersetzungService)
+    public PaymentConditionService(TranslationService translationService)
     {
-        _übersetzungService = übersetzungService;
+        _translationService = translationService;
     }
 
     public async Task CreateAsync(PaymentCondition input, IDbController dbController, CancellationToken cancellationToken = default)
@@ -19,42 +19,40 @@ public class PaymentConditionService : IModelService<PaymentCondition, int?, Pay
         cancellationToken.ThrowIfCancellationRequested();
         string sql =
             """
-            INSERT INTO ZAHLUNGSBEDINGUNGEN
+            INSERT INTO PAYMENT_CONDITIONS
             (
-                NAME,
-                NETTOTAGE,
-                SKONTO1_TAGE,
-                SKONTO1_PROZENT,
-                SKONTO2_TAGE,
-                SKONTO2_PROZENT,
-                IST_VORKASSE,
-                IST_BARZAHLUNG,
-                IST_ABBUCHUNG,
-                IST_RECHNUNG,
-                IST_AKTIV,
-                VERFUEGBAR_KUNDE,
-                VERFUEGBAR_LIEFERANT,
-                LETZTER_BEARBEITER,
-                ZULETZT_GEAENDERT
+                NET_DAYS,
+                DISCOUNT1_DAYS,
+                DISCOUNT1_PERCENT,
+                DISCOUNT2_DAYS,
+                DISCOUNT2_PERCENT,
+                IS_PREPAYMENT,
+                IS_CASH_PAYMENT,
+                IS_DIRECT_DEBIT,
+                IS_INVOICE,
+                IS_ACTIVE,
+                AVAILABLE_FOR_CUSTOMER,
+                AVAILABLE_FOR_SUPPLIER,
+                LAST_MODIFIED_BY,
+                LAST_MODIFIED
             )
             VALUES
             (
-                @NAME,
-                @NETTOTAGE,
-                @SKONTO1_TAGE,
-                @SKONTO1_PROZENT,
-                @SKONTO2_TAGE,
-                @SKONTO2_PROZENT,
-                @IST_VORKASSE,
-                @IST_BARZAHLUNG,
-                @IST_ABBUCHUNG,
-                @IST_RECHNUNG,
-                @IST_AKTIV,
-                @VERFUEGBAR_KUNDE,
-                @VERFUEGBAR_LIEFERANT,
-                @LETZTER_BEARBEITER,
-                @ZULETZT_GEAENDERT
-            ) RETURNING ZAHLUNGSBEDINGUNG_ID;
+                @NET_DAYS,
+                @DISCOUNT1_DAYS,
+                @DISCOUNT1_PERCENT,
+                @DISCOUNT2_DAYS,
+                @DISCOUNT2_PERCENT,
+                @IS_PREPAYMENT,
+                @IS_CASH_PAYMENT,
+                @IS_DIRECT_DEBIT,
+                @IS_INVOICE,
+                @IS_ACTIVE,
+                @AVAILABLE_FOR_CUSTOMER,
+                @AVAILABLE_FOR_SUPPLIER,
+                @LAST_MODIFIED_BY,
+                @LAST_MODIFIED
+            ) RETURNING PAYMENT_CONDITION_ID;
             """;
 
 
@@ -66,37 +64,37 @@ public class PaymentConditionService : IModelService<PaymentCondition, int?, Pay
             item.Code = GetTranslationCode();
             item.ParentId = input.PaymentConditionId;
 
-            await _übersetzungService.CreateAsync(item, dbController, cancellationToken);
+            await _translationService.CreateAsync(item, dbController, cancellationToken);
         }
 
     }
 
     public Task DeleteAsync(PaymentCondition input, IDbController dbController, CancellationToken cancellationToken = default)
     {
-        string sql = "DELETE FROM ZAHLUNGSBEDINGUNGEN WHERE ZAHLUNGSBEDINGUNG_ID = @ZAHLUNGSBEDINGUNG_ID";
+        string sql = "DELETE FROM PAYMENT_CONDITIONS WHERE PAYMENT_CONDITION_ID = @PAYMENT_CONDITION_ID";
 
         return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
     }
 
     public static async Task<List<PaymentCondition>> GetAsync(IDbController dbController)
     {
-        string sql = "SELECT * FROM ZAHLUNGSBEDINGUNGEN";
+        string sql = "SELECT * FROM PAYMENT_CONDITIONS";
 
         var results = await dbController.SelectDataAsync<PaymentCondition>(sql);
 
 
-        var übersetzungen = await TranslationService.GetAsync(GetTranslationCode(), dbController);
+        var translations = await TranslationService.GetAsync(GetTranslationCode(), dbController);
 
         foreach (var item in results)
         {
-            item.Translations = übersetzungen.Where(x => x.ParentId == item.PaymentConditionId).ToList();
+            item.Translations = translations.Where(x => x.ParentId == item.PaymentConditionId).ToList();
         }
 
         return results;
     }
-    public async Task<PaymentCondition?> GetAsync(int? identifier, IDbController dbController, CancellationToken cancellationToken = default)
+    public async Task<PaymentCondition?> GetAsync(int? paymentConditionId, IDbController dbController, CancellationToken cancellationToken = default)
     {
-        if (identifier is null)
+        if (paymentConditionId is null)
         {
             return null;
         }
@@ -104,22 +102,22 @@ public class PaymentConditionService : IModelService<PaymentCondition, int?, Pay
         string sql =
             """
             SELECT 
-                Z.*,
-                U.ANZEIGENAME AS BEARBEITER_NAME
-            FROM ZAHLUNGSBEDINGUNGEN Z
-            LEFT JOIN USERS U ON (U.USER_ID = Z.LETZTER_BEARBEITER)
+                PC.*,
+                U.DISPLAY_NAME AS BEARBEITER_NAME
+            FROM PAYMENT_CONDITIONS PC
+            LEFT JOIN USERS U ON (U.USER_ID = PC.LAST_MODIFIED_BY)
             WHERE 
-                ZAHLUNGSBEDINGUNG_ID = @ZAHLUNGSBEDINGUNG_ID
+                PAYMENT_CONDITION_ID = @PAYMENT_CONDITION_ID
             """;
 
         var result = await dbController.GetFirstAsync<PaymentCondition>(sql, new
         {
-            ZAHLUNGSBEDINGUNG_ID = identifier
+            PAYMENT_CONDITION_ID = paymentConditionId
         }, cancellationToken);
 
         if (result is not null)
         {
-            result.Translations = await _übersetzungService.GetAsync(GetTranslationCode(), result.PaymentConditionId, dbController, cancellationToken);
+            result.Translations = await _translationService.GetAsync(GetTranslationCode(), result.PaymentConditionId, dbController, cancellationToken);
         }
 
         return result;
@@ -132,23 +130,23 @@ public class PaymentConditionService : IModelService<PaymentCondition, int?, Pay
         $"""
         SELECT 
             FIRST {filter.Limit} SKIP {(filter.PageNumber - 1) * filter.Limit}
-                Z.*,
-                U.ANZEIGENAME AS BEARBEITER_NAME 
-            FROM ZAHLUNGSBEDINGUNGEN Z 
-            LEFT JOIN USERS U ON (U.USER_ID = Z.LETZTER_BEARBEITER)
+                PC.*,
+                U.DISPLAY_NAME AS BEARBEITER_NAME 
+            FROM PAYMENT_CONDITIONS PC 
+            LEFT JOIN USERS U ON (U.USER_ID = PC.LAST_MODIFIED_BY)
             WHERE 1 = 1
             {GetFilterWhere(filter)}
-            ORDER BY ZAHLUNGSBEDINGUNG_ID DESC
+            ORDER BY PAYMENT_CONDITION_ID DESC
         """;
 
         var results = await dbController.SelectDataAsync<PaymentCondition>(sql, filter.GetParameters(), cancellationToken);
         if (results.Count > 0)
         {
-            var anredeIds = results.Select(x => x.PaymentConditionId).ToArray();
-            var übersetzungen = await _übersetzungService.GetAsync(GetTranslationCode(), anredeIds, dbController, cancellationToken);
+            var paymentConditionIds = results.Select(x => x.PaymentConditionId).ToArray();
+            var translations = await _translationService.GetAsync(GetTranslationCode(), paymentConditionIds, dbController, cancellationToken);
             foreach (var item in results)
             {
-                item.Translations = übersetzungen.Where(x => x.ParentId == item.PaymentConditionId).ToList();
+                item.Translations = translations.Where(x => x.ParentId == item.PaymentConditionId).ToList();
             }
         }
 
@@ -182,7 +180,7 @@ public class PaymentConditionService : IModelService<PaymentCondition, int?, Pay
             $"""
             SELECT 
                 COUNT(*)
-            FROM ZAHLUNGSBEDINGUNGEN
+            FROM PAYMENT_CONDITIONS PC
             WHERE 1 = 1
             {GetFilterWhere(filter)}
             """;
@@ -191,43 +189,42 @@ public class PaymentConditionService : IModelService<PaymentCondition, int?, Pay
         return dbController.GetFirstAsync<int>(sql, filter.GetParameters(), cancellationToken);
     }
 
-    public static string GetTranslationCode() => "ZAHLUNGSBEDINGUNG";
+    public static string GetTranslationCode() => "PAYMENT_CONDITION";
 
     public async Task UpdateAsync(PaymentCondition input, IDbController dbController, CancellationToken cancellationToken = default)
     {
         string sql =
            """
-            UPDATE ZAHLUNGSBEDINGUNGEN SET 
-                NAME = @NAME,
-                NETTOTAGE = @NETTOTAGE,
-                SKONTO1_TAGE = @SKONTO1_TAGE,
-                SKONTO1_PROZENT = @SKONTO1_PROZENT,
-                SKONTO2_TAGE = @SKONTO2_TAGE,
-                SKONTO2_PROZENT = @SKONTO2_PROZENT,
-                IST_VORKASSE = @IST_VORKASSE,
-                IST_BARZAHLUNG = @IST_BARZAHLUNG,
-                IST_ABBUCHUNG = @IST_ABBUCHUNG,
-                IST_RECHNUNG = @IST_RECHNUNG,
-                IST_AKTIV = @IST_AKTIV,
-                VERFUEGBAR_KUNDE = @VERFUEGBAR_KUNDE,
-                VERFUEGBAR_LIEFERANT = @VERFUEGBAR_LIEFERANT,
-                LETZTER_BEARBEITER = @LETZTER_BEARBEITER,
-                ZULETZT_GEAENDERT = @ZULETZT_GEAENDERT            
+            UPDATE PAYMENT_CONDITIONS SET 
+                NET_DAYS = @NET_DAYS,
+                DISCOUNT1_DAYS = @DISCOUNT1_DAYS,
+                DISCOUNT1_PERCENT = @DISCOUNT1_PERCENT,
+                DISCOUNT2_DAYS = @DISCOUNT2_DAYS,
+                DISCOUNT2_PERCENT = @DISCOUNT2_PERCENT,
+                IS_PREPAYMENT = @IS_PREPAYMENT,
+                IS_CASH_PAYMENT = @IS_CASH_PAYMENT,
+                IS_DIRECT_DEBIT = @IS_DIRECT_DEBIT,
+                IS_INVOICE = @IS_INVOICE,
+                IS_ACTIVE = @IS_ACTIVE,
+                AVAILABLE_FOR_CUSTOMER = @AVAILABLE_FOR_CUSTOMER,
+                AVAILABLE_FOR_SUPPLIER = @AVAILABLE_FOR_SUPPLIER,
+                LAST_MODIFIED_BY = @LAST_MODIFIED_BY,
+                LAST_MODIFIED = @LAST_MODIFIED           
             WHERE
-                ZAHLUNGSBEDINGUNG_ID = @ZAHLUNGSBEDINGUNG_ID
+                PAYMENT_CONDITION_ID = @PAYMENT_CONDITION_ID
             """;
 
 
         await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
 
 
-        await _übersetzungService.ClearAsync(GetTranslationCode(), input.PaymentConditionId, dbController, cancellationToken);
+        await _translationService.ClearAsync(GetTranslationCode(), input.PaymentConditionId, dbController, cancellationToken);
         foreach (var item in input.Translations)
         {
             item.Code = GetTranslationCode();
             item.ParentId = input.PaymentConditionId;
 
-            await _übersetzungService.CreateAsync(item, dbController, cancellationToken);
+            await _translationService.CreateAsync(item, dbController, cancellationToken);
         }
     }
 }
