@@ -8,7 +8,8 @@ public class CountryFilter : PageFilterBase
     {
         return new Dictionary<string, object?>
         {
-            { "SEARCH_PHRASE", $"%{SearchPhrase}%" }
+            { "SEARCH_PHRASE", $"%{SearchPhrase}%" },
+            { "LANGUAGE_ID", LanguageId }
         };
     }
 }

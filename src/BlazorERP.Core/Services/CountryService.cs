@@ -141,15 +141,24 @@ public class CountryService : IModelService<Country, int?, CountryFilter>, ITran
     public string GetFilterWhere(CountryFilter filter)
     {
         StringBuilder sb = new();
+       
 
         if (!string.IsNullOrWhiteSpace(filter.SearchPhrase))
         {
-            sb.AppendLine(@" AND 
-(
-        UPPER(ISO2) LIKE @SEARCH_PHRASE
-)");
+            sb.AppendLine(@$" AND 
+
+        C.COUNTRY_ID IN 
+        (
+            SELECT 
+                PARENT_ID
+            FROM TRANSLATIONS T
+            WHERE   
+                T.CODE = '{GetTranslationCode()}'
+                AND UPPER(T.VALUE_TEXT) LIKE @SEARCH_PHRASE
+        )");
         }
 
+        
 
 
         string sql = sb.ToString();
@@ -163,7 +172,7 @@ public class CountryService : IModelService<Country, int?, CountryFilter>, ITran
             $"""
             SELECT 
                 COUNT(*)
-            FROM COUNTRIES
+            FROM COUNTRIES C
             WHERE 1 = 1
             {GetFilterWhere(filter)}
             """;
