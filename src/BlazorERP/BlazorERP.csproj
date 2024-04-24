@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Components\Pages\Admin\Hilfsdaten\LieferbedingungForm.razor">
+    <Content Update="Components\Pages\Admin\Hilfsdaten\DeliveryConditionForm.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
     <Content Update="Components\Pages\Admin\Hilfsdaten\PaymentConditionForm.razor">
