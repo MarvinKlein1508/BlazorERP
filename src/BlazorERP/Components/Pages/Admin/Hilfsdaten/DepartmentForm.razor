@@ -76,7 +76,7 @@
 
 
     private bool _showOptionsMenu;
-    private AbteilungValidator _validator = new();
+    private DepartmentValidator _validator = new();
 
     protected override string GetListUrl() => "/Admin/Departments";
     protected override string GetEntityRedirectUrl() => $"/Admin/Departments/Edit?departmentId={Input!.DepartmentId}";

@@ -177,13 +177,13 @@
 
                             </div>
                             <div class="col-md-6">
-                                <FluentSelect TOption="Zahlungsbedingung" Label="Zahlungsbedingung" Width="100%;">
+                                <FluentSelect TOption="PaymentCondition" Label="Zahlungsbedingung" Width="100%;">
                                     <FluentOption Value="null" Selected="@(Input.ZahlungsbedingungId is null)" OnSelect="(val) => Input.ZahlungsbedingungId = null">--- Auswählen ---</FluentOption>
-                                    @foreach (var item in Storage.Get<Zahlungsbedingung>())
+                                    @foreach (var item in Storage.Get<PaymentCondition>())
                                     {
                                         @if (item.VerfuegbarKunde || item.ZahlungsbedingungId == Input.ZahlungsbedingungId)
                                         {
-                                            <FluentOption TOption="Zahlungsbedingung" Value="@item.ZahlungsbedingungId.ToString()" Selected="@(Input.ZahlungsbedingungId == item.ZahlungsbedingungId)" OnSelect="(val) => Input.ZahlungsbedingungId = item.ZahlungsbedingungId">@item.Name</FluentOption>
+                                            <FluentOption TOption="PaymentCondition" Value="@item.ZahlungsbedingungId.ToString()" Selected="@(Input.ZahlungsbedingungId == item.ZahlungsbedingungId)" OnSelect="(val) => Input.ZahlungsbedingungId = item.ZahlungsbedingungId">@item.Name</FluentOption>
                                         }
                                     }
                                 </FluentSelect>

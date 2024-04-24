@@ -42,7 +42,7 @@ builder.Services.AddScoped<LanguageService>();
 builder.Services.AddScoped<CountryService>();
 builder.Services.AddScoped<CurrencyService>();
 builder.Services.AddScoped<KostenstelleService>();
-builder.Services.AddScoped<ZahlungsbedingungService>();
+builder.Services.AddScoped<PaymentConditionService>();
 builder.Services.AddScoped<LieferbedingungService>();
 builder.Services.AddScoped<KundeService>();
 builder.Services.AddScoped<VoreinstellungService>();

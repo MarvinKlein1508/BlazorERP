@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace BlazorERP.Core.Validators.Admin.Hilfsdaten;
 
-public class ZahlungsbedingungValidator : AbstractValidator<Zahlungsbedingung>
+public class PaymentConditionValidator : AbstractValidator<PaymentCondition>
 {
-    public ZahlungsbedingungValidator()
+    public PaymentConditionValidator()
     {
         RuleFor(x => x.Name)
             .NotEmpty();

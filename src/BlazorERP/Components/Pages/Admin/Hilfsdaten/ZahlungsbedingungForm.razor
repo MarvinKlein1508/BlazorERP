@@ -1,7 +1,7 @@
 ﻿@page "/Admin/Zahlungsbedingungen/Edit"
 @using BlazorERP.Core.Validators.Admin.Hilfsdaten
 @using Microsoft.AspNetCore.Identity
-@inherits EditPageBase<int?, Zahlungsbedingung, ZahlungsbedingungService>
+@inherits EditPageBase<int?, PaymentCondition, PaymentConditionService>
 
 <PageTitle>@FinalBreadcrumbItemName</PageTitle>
 
@@ -125,7 +125,7 @@
 
 
     private bool _showOptionsMenu;
-    private ZahlungsbedingungValidator _validator = new();
+    private PaymentConditionValidator _validator = new();
 
     protected override string GetListUrl() => "/Admin/Zahlungsbedingungen";
     protected override string GetEntityRedirectUrl() => $"/Admin/Zahlungsbedingungen/Edit?zahlungsbedingungId={Input!.ZahlungsbedingungId}";

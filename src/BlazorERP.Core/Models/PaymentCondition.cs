@@ -2,7 +2,7 @@
 
 namespace BlazorERP.Core.Models;
 
-public class Zahlungsbedingung : IDbModelWithName<int?>
+public class PaymentCondition : IDbModelWithName<int?>
 {   
     public int ZahlungsbedingungId { get; set; }
     public string Name { get; set; } = string.Empty;

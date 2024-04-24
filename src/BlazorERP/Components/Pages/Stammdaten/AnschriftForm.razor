@@ -164,7 +164,7 @@
 
 
     private bool _showOptionsMenu;
-    private ZahlungsbedingungValidator _validator = new();
+    private PaymentConditionValidator _validator = new();
 
     protected override string GetListUrl() => "/Stammdaten/Anschriften";
     protected override string GetEntityRedirectUrl() => $"/Stammdaten/Anschriften/Edit?anschriftId={Input!.AnschriftId}";

@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace BlazorERP.Core.Validators.Admin.Hilfsdaten;
 
-public class WährungValidator : AbstractValidator<Currency>
+public class CurrencyValidator : AbstractValidator<Currency>
 {
-    public WährungValidator()
+    public CurrencyValidator()
     {
         RuleFor(x => x.Code)
             .NotEmpty();

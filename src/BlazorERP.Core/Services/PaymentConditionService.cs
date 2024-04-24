@@ -5,16 +5,16 @@ using System.Text;
 
 namespace BlazorERP.Core.Services;
 
-public class ZahlungsbedingungService : IModelService<Zahlungsbedingung, int?, ZahlungsbedingungFilter>, ITranslationCode
+public class PaymentConditionService : IModelService<PaymentCondition, int?, PaymentConditionFilter>, ITranslationCode
 {
     private readonly TranslationService _übersetzungService;
 
-    public ZahlungsbedingungService(TranslationService übersetzungService)
+    public PaymentConditionService(TranslationService übersetzungService)
     {
         _übersetzungService = übersetzungService;
     }
 
-    public async Task CreateAsync(Zahlungsbedingung input, IDbController dbController, CancellationToken cancellationToken = default)
+    public async Task CreateAsync(PaymentCondition input, IDbController dbController, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         string sql =
@@ -71,18 +71,18 @@ public class ZahlungsbedingungService : IModelService<Zahlungsbedingung, int?, Z
 
     }
 
-    public Task DeleteAsync(Zahlungsbedingung input, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task DeleteAsync(PaymentCondition input, IDbController dbController, CancellationToken cancellationToken = default)
     {
         string sql = "DELETE FROM ZAHLUNGSBEDINGUNGEN WHERE ZAHLUNGSBEDINGUNG_ID = @ZAHLUNGSBEDINGUNG_ID";
 
         return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
     }
 
-    public static async Task<List<Zahlungsbedingung>> GetAsync(IDbController dbController)
+    public static async Task<List<PaymentCondition>> GetAsync(IDbController dbController)
     {
         string sql = "SELECT * FROM ZAHLUNGSBEDINGUNGEN";
 
-        var results = await dbController.SelectDataAsync<Zahlungsbedingung>(sql);
+        var results = await dbController.SelectDataAsync<PaymentCondition>(sql);
 
 
         var übersetzungen = await TranslationService.GetAsync(GetTranslationCode(), dbController);
@@ -94,7 +94,7 @@ public class ZahlungsbedingungService : IModelService<Zahlungsbedingung, int?, Z
 
         return results;
     }
-    public async Task<Zahlungsbedingung?> GetAsync(int? identifier, IDbController dbController, CancellationToken cancellationToken = default)
+    public async Task<PaymentCondition?> GetAsync(int? identifier, IDbController dbController, CancellationToken cancellationToken = default)
     {
         if (identifier is null)
         {
@@ -112,7 +112,7 @@ public class ZahlungsbedingungService : IModelService<Zahlungsbedingung, int?, Z
                 ZAHLUNGSBEDINGUNG_ID = @ZAHLUNGSBEDINGUNG_ID
             """;
 
-        var result = await dbController.GetFirstAsync<Zahlungsbedingung>(sql, new
+        var result = await dbController.GetFirstAsync<PaymentCondition>(sql, new
         {
             ZAHLUNGSBEDINGUNG_ID = identifier
         }, cancellationToken);
@@ -125,7 +125,7 @@ public class ZahlungsbedingungService : IModelService<Zahlungsbedingung, int?, Z
         return result;
     }
 
-    public async Task<List<Zahlungsbedingung>> GetAsync(ZahlungsbedingungFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
+    public async Task<List<PaymentCondition>> GetAsync(PaymentConditionFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         string sql =
@@ -141,7 +141,7 @@ public class ZahlungsbedingungService : IModelService<Zahlungsbedingung, int?, Z
             ORDER BY ZAHLUNGSBEDINGUNG_ID DESC
         """;
 
-        var results = await dbController.SelectDataAsync<Zahlungsbedingung>(sql, filter.GetParameters(), cancellationToken);
+        var results = await dbController.SelectDataAsync<PaymentCondition>(sql, filter.GetParameters(), cancellationToken);
         if (results.Count > 0)
         {
             var anredeIds = results.Select(x => x.ZahlungsbedingungId).ToArray();
@@ -157,7 +157,7 @@ public class ZahlungsbedingungService : IModelService<Zahlungsbedingung, int?, Z
 
  
 
-    public string GetFilterWhere(ZahlungsbedingungFilter filter)
+    public string GetFilterWhere(PaymentConditionFilter filter)
     {
         StringBuilder sb = new();
 
@@ -175,7 +175,7 @@ public class ZahlungsbedingungService : IModelService<Zahlungsbedingung, int?, Z
         return sql;
     }
 
-    public Task<int> GetTotalAsync(ZahlungsbedingungFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task<int> GetTotalAsync(PaymentConditionFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         string sql =
@@ -193,7 +193,7 @@ public class ZahlungsbedingungService : IModelService<Zahlungsbedingung, int?, Z
 
     public static string GetTranslationCode() => "ZAHLUNGSBEDINGUNG";
 
-    public async Task UpdateAsync(Zahlungsbedingung input, IDbController dbController, CancellationToken cancellationToken = default)
+    public async Task UpdateAsync(PaymentCondition input, IDbController dbController, CancellationToken cancellationToken = default)
     {
         string sql =
            """

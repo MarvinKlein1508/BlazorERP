@@ -104,7 +104,7 @@
 
 
     private bool _showOptionsMenu;
-    private WährungValidator _validator = new();
+    private CurrencyValidator _validator = new();
 
     protected override string GetListUrl() => "/Admin/Currencies";
     protected override string GetEntityRedirectUrl() => $"/Admin/Currencies/Edit?code={Input!.Code}";

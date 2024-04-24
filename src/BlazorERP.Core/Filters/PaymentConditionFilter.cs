@@ -1,7 +1,7 @@
 ﻿
 namespace BlazorERP.Core.Filters;
 
-public class ZahlungsbedingungFilter : PageFilterBase
+public class PaymentConditionFilter : PageFilterBase
 {
     public override Dictionary<string, object?> GetParameters()
     {
