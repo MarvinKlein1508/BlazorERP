@@ -1,4 +1,4 @@
-﻿@page "/Admin/Anreden"
+﻿@page "/Admin/Salutations"
 @inject AuthService authService
 @inherits SearchPageBase<Salutation, SalutationService, SalutationFilter>
 
@@ -17,7 +17,7 @@
 <FluentGrid Width="100%">
     <FluentGridItem xs="12">
         <FluentStack HorizontalAlignment="HorizontalAlignment.End">
-            <FluentAnchor Href="/Admin/Anreden/Edit"
+            <FluentAnchor Href="/Admin/Salutations/Edit"
                           IconStart="@(new Icons.Regular.Size20.Add().WithColor(Color.Fill))"
                           Appearance="Appearance.Accent">
                 Neue Anrede
@@ -47,7 +47,7 @@
                             </div>
                         </div>
                         <div class="list-buttons">
-                            <FluentAnchor Href="@($"/Admin/Anreden/Edit?anredeId={item.GetIdentifier()}")">
+                            <FluentAnchor Href="@($"/Admin/Salutations/Edit?salutationId={item.GetIdentifier()}")">
                                 Bearbeiten
                             </FluentAnchor>
                         </div>
@@ -94,5 +94,5 @@
 
 @code {
     protected override bool InternalNavigation => false;
-    protected override string BaseUrl => "/Admin/Anreden";
+    protected override string BaseUrl => "/Admin/Salutations";
 }

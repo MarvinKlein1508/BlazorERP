@@ -1,4 +1,4 @@
-﻿@page "/Admin/Anreden/Edit"
+﻿@page "/Admin/Salutations/Edit"
 @using BlazorERP.Core.Validators.Admin.Hilfsdaten
 @using Microsoft.AspNetCore.Identity
 @inherits EditPageBase<int?, Salutation, SalutationService>
@@ -7,7 +7,7 @@
 <FluentBreadcrumb>
     <FluentBreadcrumbItem Href="/">Start</FluentBreadcrumbItem>
     <FluentBreadcrumbItem>Administration</FluentBreadcrumbItem>
-    <FluentBreadcrumbItem Href="/Admin/Anreden">Anreden</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="/Admin/Salutations">Anreden</FluentBreadcrumbItem>
     <FluentBreadcrumbItem>@FinalBreadcrumbItemName</FluentBreadcrumbItem>
 </FluentBreadcrumb>
 @if (Input is null)
@@ -15,7 +15,7 @@
     return;
 }
 <FluentStack HorizontalAlignment="HorizontalAlignment.End">
-    <FluentAnchor Href="/Admin/Anreden"
+    <FluentAnchor Href="/Admin/Salutations"
                   IconStart="@(new Icons.Regular.Size20.ArrowReply())">
         Zurück
     </FluentAnchor>
@@ -54,7 +54,7 @@
         </FluentTab>
         <FluentTab Label="Übersetzungen">
             <Content>
-               <BlazorERP.Components.Shared.ÜbersetzungEditor Übersetzungen="Input.Translations" />
+                <BlazorERP.Components.Shared.TranslationEditor Translations="Input.Translations" />
             </Content>
         </FluentTab>
 
@@ -66,12 +66,12 @@
     private bool _showOptionsMenu;
     private SalutationValidator _validator = new();
     
-    protected override string GetListUrl() => "/Admin/Anreden";
-    protected override string GetEntityRedirectUrl() => $"/Admin/Anreden/Edit?anredeId={Input!.SalutationId}";
+    protected override string GetListUrl() => "/Admin/Salutations";
+    protected override string GetEntityRedirectUrl() => $"/Admin/Salutations/Edit?salutationId={Input!.SalutationId}";
 
  
 
-    [Parameter, SupplyParameterFromQuery(Name = "anredeId")]
+    [Parameter, SupplyParameterFromQuery(Name = "salutationId")]
     public override int? Identifier { get; set; }
 
 

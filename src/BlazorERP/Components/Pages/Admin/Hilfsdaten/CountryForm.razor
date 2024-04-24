@@ -95,7 +95,7 @@
         </FluentTab>
         <FluentTab Label="Übersetzungen">
             <Content>
-                <BlazorERP.Components.Shared.ÜbersetzungEditor Übersetzungen="Input.Translations" />
+                <BlazorERP.Components.Shared.TranslationEditor Translations="Input.Translations" />
             </Content>
         </FluentTab>
 
@@ -108,7 +108,7 @@
     private CountryValidator _validator = new();
 
     protected override string GetListUrl() => "/Admin/Countries";
-    protected override string GetEntityRedirectUrl() => $"/Admin/Länder/Edit?countryId={Input!.CountryId}";
+    protected override string GetEntityRedirectUrl() => $"/Admin/Countries/Edit?countryId={Input!.CountryId}";
 
     [Parameter, SupplyParameterFromQuery(Name = "countryId")]
     public override int? Identifier { get; set; }

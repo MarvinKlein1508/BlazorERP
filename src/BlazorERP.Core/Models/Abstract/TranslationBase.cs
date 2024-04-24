@@ -11,9 +11,9 @@ public abstract class TranslationBase
 
         if (translation is null)
         {
-            translation = Translations.First(x => x.LanguageId == Storage.DEFAULT_LANGUAGE);
+            translation = Translations.FirstOrDefault(x => x.LanguageId == Storage.DEFAULT_LANGUAGE);
         }
 
-        return translation.ValueText;
+        return translation?.ValueText ?? string.Empty;
     }
 }
