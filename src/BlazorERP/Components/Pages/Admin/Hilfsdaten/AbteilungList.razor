@@ -1,6 +1,6 @@
 ﻿@page "/Admin/Abteilungen"
 @inject AuthService authService
-@inherits SearchPageBase<Abteilung, AbteilungService, AbteilungFilter>
+@inherits SearchPageBase<Department, DepartmentService, DepartmentFilter>
 
 <PageTitle>Abteilungsliste</PageTitle>
 
@@ -42,11 +42,11 @@
                         <div class="list-details">
                             <div class="list-item" hidden-when="xs sm">
                                 <label>Id</label>
-                                <span>@item.AbteilungId</span>
+                                <span>@item.DepartmentId</span>
                             </div>
                             <div class="list-item">
                                 <label>Name</label>
-                                <span>@item.GetName()</span>
+                                <span>@item.GetName(Storage.DEFAULT_LANGUAGE)</span>
                             </div>
                         </div>
                         <div class="list-buttons">

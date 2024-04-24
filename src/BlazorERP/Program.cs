@@ -35,7 +35,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
 
 builder.Services.AddScoped<UserService>();
-builder.Services.AddScoped<AbteilungService>();
+builder.Services.AddScoped<DepartmentService>();
 builder.Services.AddScoped<SalutationService>();
 builder.Services.AddScoped<TranslationService>();
 builder.Services.AddScoped<LanguageService>();

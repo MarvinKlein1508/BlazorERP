@@ -69,11 +69,11 @@ public class CountryService : IModelService<Country, int?, CountryFilter>, ITran
         var results = await dbController.SelectDataAsync<Country>(sql);
 
 
-        var übersetzungen = await TranslationService.GetAsync(GetTranslationCode(), dbController);
+        var translations = await TranslationService.GetAsync(GetTranslationCode(), dbController);
 
         foreach (var item in results)
         {
-            item.Übersetzungen = übersetzungen.Where(x => x.ParentId == item.CountryId).ToList();
+            item.Übersetzungen = translations.Where(x => x.ParentId == item.CountryId).ToList();
         }
 
         return results;
