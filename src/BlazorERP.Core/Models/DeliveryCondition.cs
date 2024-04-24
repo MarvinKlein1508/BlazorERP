@@ -1,43 +1,38 @@
 ﻿using BlazorERP.Core.Interfaces;
+using BlazorERP.Core.Models.Abstract;
 
 namespace BlazorERP.Core.Models;
 
-public class DeliveryCondition : IDbModelWithName<int?>
+public class DeliveryCondition : TranslationBase, IDbModel<int?>
 {   
-    public int LieferbedingungId { get; set; }
-    public string Name { get; set; } = string.Empty;
-    public bool VersandMitSpedition { get; set; }
-    public bool IstAbholung { get; set; }
-    public bool VerfuegbarKunde { get; set; }
-    public bool VerfuegbarLieferant { get; set; }
-    public bool IstAktiv { get; set; }
+    public int DeliveryConditionId { get; set; }
+    public bool ShippingByCarrier { get; set; }
+    public bool IsPickup { get; set; }
+    public bool AvailableForCustomer { get; set; }
+    public bool AvailableForSupplier { get; set; }
+    public bool IsActive { get; set; }
 
-    public int? LetzterBearbeiter { get; set; }
-    public DateTime? ZuletztGeaendert { get; set; }
-
-
-    public int? GetIdentifier() => LieferbedingungId > 0 ? LieferbedingungId : null;
-
-    public string GetName() => Name;
-
-    public List<Translation> Übersetzungen { get; set; } = [];
+    public int? LastModififedBy { get; set; }
+    public DateTime? LastModified { get; set; }
 
 
+    public int? GetIdentifier() => DeliveryConditionId > 0 ? DeliveryConditionId : null;
+
+   
     public string BearbeiterName { get; set; } = string.Empty;
 
     public Dictionary<string, object?> GetParameters()
     {
         return new Dictionary<string, object?>
         {
-            { "LIEFERBEDINGUNG_ID", LieferbedingungId },
-            { "NAME", Name },
-            { "VERSAND_MIT_SPEDITION", VersandMitSpedition },
-            { "IST_ABHOLUNG", IstAbholung },
-            { "VERFUEGBAR_KUNDE", VerfuegbarKunde },
-            { "VERFUEGBAR_LIEFERANT", VerfuegbarLieferant },
-            { "IST_AKTIV", IstAktiv },
-            { "LETZTER_BEARBEITER", LetzterBearbeiter },
-            { "ZULETZT_GEAENDERT", ZuletztGeaendert },
+            { "DELIVERY_CONDITION_ID", DeliveryConditionId },
+            { "SHIPPING_BY_CARRIER", ShippingByCarrier },
+            { "IS_PICKUP", IsPickup },
+            { "AVAILABLE_FOR_CUSTOMER", AvailableForCustomer },
+            { "AVAILABLE_FOR_SUPPLIER", AvailableForSupplier },
+            { "IS_ACTIVE", IsActive },
+            { "LAST_MODIFIED_BY", LastModififedBy },
+            { "LAST_MODIFIED", LastModified },
         };
     }
 }

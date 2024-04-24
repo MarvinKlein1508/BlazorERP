@@ -45,12 +45,12 @@ public class DeliveryConditionService : IModelService<DeliveryCondition, int?, D
 
 
 
-        input.LieferbedingungId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
+        input.DeliveryConditionId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
 
         foreach (var item in input.Übersetzungen)
         {
             item.Code = GetTranslationCode();
-            item.ParentId = input.LieferbedingungId;
+            item.ParentId = input.DeliveryConditionId;
 
             await _übersetzungService.CreateAsync(item, dbController, cancellationToken);
         }
@@ -75,7 +75,7 @@ public class DeliveryConditionService : IModelService<DeliveryCondition, int?, D
 
         foreach (var item in results)
         {
-            item.Übersetzungen = übersetzungen.Where(x => x.ParentId == item.LieferbedingungId).ToList();
+            item.Übersetzungen = übersetzungen.Where(x => x.ParentId == item.DeliveryConditionId).ToList();
         }
 
         return results;
@@ -105,7 +105,7 @@ public class DeliveryConditionService : IModelService<DeliveryCondition, int?, D
 
         if (result is not null)
         {
-            result.Übersetzungen = await _übersetzungService.GetAsync(GetTranslationCode(), result.LieferbedingungId, dbController, cancellationToken);
+            result.Übersetzungen = await _übersetzungService.GetAsync(GetTranslationCode(), result.DeliveryConditionId, dbController, cancellationToken);
         }
 
         return result;
@@ -130,11 +130,11 @@ public class DeliveryConditionService : IModelService<DeliveryCondition, int?, D
         var results = await dbController.SelectDataAsync<DeliveryCondition>(sql, filter.GetParameters(), cancellationToken);
         if (results.Count > 0)
         {
-            var anredeIds = results.Select(x => x.LieferbedingungId).ToArray();
+            var anredeIds = results.Select(x => x.DeliveryConditionId).ToArray();
             var übersetzungen = await _übersetzungService.GetAsync(GetTranslationCode(), anredeIds, dbController, cancellationToken);
             foreach (var item in results)
             {
-                item.Übersetzungen = übersetzungen.Where(x => x.ParentId == item.LieferbedingungId).ToList();
+                item.Übersetzungen = übersetzungen.Where(x => x.ParentId == item.DeliveryConditionId).ToList();
             }
         }
 
@@ -200,11 +200,11 @@ public class DeliveryConditionService : IModelService<DeliveryCondition, int?, D
         await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
 
 
-        await _übersetzungService.ClearAsync(GetTranslationCode(), input.LieferbedingungId, dbController, cancellationToken);
+        await _übersetzungService.ClearAsync(GetTranslationCode(), input.DeliveryConditionId, dbController, cancellationToken);
         foreach (var item in input.Übersetzungen)
         {
             item.Code = GetTranslationCode();
-            item.ParentId = input.LieferbedingungId;
+            item.ParentId = input.DeliveryConditionId;
 
             await _übersetzungService.CreateAsync(item, dbController, cancellationToken);
         }

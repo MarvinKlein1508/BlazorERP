@@ -42,7 +42,7 @@
                         <div class="list-details">
                             <div class="list-item" hidden-when="xs sm">
                                 <label>Id</label>
-                                <span>@item.LieferbedingungId</span>
+                                <span>@item.DeliveryConditionId</span>
                             </div>
 
                             <div class="list-item">
@@ -54,7 +54,7 @@
                                 <label>Aktiv</label>
                                 <span>
                                     <FluentBadge Appearance="Appearance.Neutral">
-                                        @(item.IstAktiv ? "Ja" : "Nein")
+                                        @(item.IsActive ? "Ja" : "Nein")
                                     </FluentBadge>
                                 </span>
                             </div>

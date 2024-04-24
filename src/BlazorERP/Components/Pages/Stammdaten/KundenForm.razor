@@ -167,9 +167,9 @@
                                     <FluentOption Value="null" Selected="@(Input.LieferbedingungId is null)" OnSelect="(val) => Input.LieferbedingungId = null">--- Auswählen ---</FluentOption>
                                     @foreach (var item in Storage.Get<DeliveryCondition>())
                                     {
-                                        @if (item.VerfuegbarKunde || item.LieferbedingungId == Input.LieferbedingungId)
+                                        @if (item.AvailableForCustomer || item.DeliveryConditionId == Input.LieferbedingungId)
                                         {
-                                            <FluentOption TOption="DeliveryCondition" Value="@item.LieferbedingungId.ToString()" Selected="@(Input.LieferbedingungId == item.LieferbedingungId)" OnSelect="(val) => Input.LieferbedingungId = item.LieferbedingungId">@item.Name</FluentOption>
+                                            <FluentOption TOption="DeliveryCondition" Value="@item.DeliveryConditionId.ToString()" Selected="@(Input.LieferbedingungId == item.DeliveryConditionId)" OnSelect="(val) => Input.LieferbedingungId = item.DeliveryConditionId">@item.Name</FluentOption>
                                         }
                                     }
                                 </FluentSelect>

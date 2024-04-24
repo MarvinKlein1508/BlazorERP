@@ -50,8 +50,8 @@
                         @if (Modus is EditMode.Edit)
                         {
                             <div class="col-md-12">
-                                <FluentNumberField @bind-Value="Input.LieferbedingungId" Label="LieferbedingungId" Disabled />
-                                <FluentValidationMessage For="() => Input.LieferbedingungId" />
+                                <FluentNumberField @bind-Value="Input.DeliveryConditionId" Label="LieferbedingungId" Disabled />
+                                <FluentValidationMessage For="() => Input.DeliveryConditionId" />
                             </div>
                         }
 
@@ -67,7 +67,7 @@
                         @if (Modus is EditMode.Edit)
                         {
                             <div class="col-12">
-                                <FluentDatePicker Appearance="FluentInputAppearance.Filled" Label="Letzte Änderung" @bind-Value="@Input.ZuletztGeaendert" ReadOnly />
+                                <FluentDatePicker Appearance="FluentInputAppearance.Filled" Label="Letzte Änderung" @bind-Value="@Input.LastModified" ReadOnly />
                             </div>
 
                             <div class="col-12">
@@ -75,11 +75,11 @@
                             </div>
                             <div class="col-12">
                                 <div class="d-flex flex-column gap-2 mt-2">
-                                    <FluentSwitch @bind-Value="@Input.IstAktiv" Label="Aktiv" />
-                                    <FluentSwitch @bind-Value="@Input.VersandMitSpedition" Label="Versand mit Spedition" />
-                                    <FluentSwitch @bind-Value="@Input.IstAbholung" Label="Abholung" />
-                                    <FluentSwitch @bind-Value="@Input.VerfuegbarKunde" Label="Verfügbar für Kunden" />
-                                    <FluentSwitch @bind-Value="@Input.VerfuegbarLieferant" Label="Verfügbar für Lieferanten" />
+                                    <FluentSwitch @bind-Value="@Input.IsActive" Label="Aktiv" />
+                                    <FluentSwitch @bind-Value="@Input.ShippingByCarrier" Label="Versand mit Spedition" />
+                                    <FluentSwitch @bind-Value="@Input.IsPickup" Label="Abholung" />
+                                    <FluentSwitch @bind-Value="@Input.AvailableForCustomer" Label="Verfügbar für Kunden" />
+                                    <FluentSwitch @bind-Value="@Input.AvailableForSupplier" Label="Verfügbar für Lieferanten" />
                                 </div>
                             </div>
                         }
@@ -102,7 +102,7 @@
     private DeliveryConditionValidator _validator = new();
 
     protected override string GetListUrl() => "/Admin/Lieferbedingungen";
-    protected override string GetEntityRedirectUrl() => $"/Admin/Lieferbedingungen/Edit?lieferbedingungId={Input!.LieferbedingungId}";
+    protected override string GetEntityRedirectUrl() => $"/Admin/Lieferbedingungen/Edit?lieferbedingungId={Input!.DeliveryConditionId}";
 
 
 
@@ -113,8 +113,8 @@
 
     protected override Task BeforeSaveAsync(IDbController dbController)
     {
-        Input.LetzterBearbeiter = User.UserId;
-        Input.ZuletztGeaendert = DateTime.Now;
+        Input.LastModififedBy = User.UserId;
+        Input.LastModified = DateTime.Now;
 
         return Task.CompletedTask;
     }
