@@ -7,8 +7,8 @@ public class User : IDbModelWithName<int?>
     public int UserId { get; set; }
     public string Username { get; set; } = string.Empty;
     public string NormalizedUsername => Username.ToUpper();
-    public string Vorname { get; set; } = string.Empty;
-    public string Nachname { get; set; } = string.Empty;
+    public string Firstname { get; set; } = string.Empty;
+    public string Lastname { get; set; } = string.Empty;
 
     public Guid? ActiveDirectoryGuid { get; set; }
     public string Email { get; set; } = string.Empty;
@@ -16,10 +16,10 @@ public class User : IDbModelWithName<int?>
     public string Salt { get; set; } = string.Empty;
     public AccountType AccountType { get; set; } = AccountType.LocalAccount;
     public bool IsAdmin { get; set; }
-    public bool IsAktiv { get; set; }
+    public bool IsActive { get; set; }
 
     public int? GetIdentifier() => UserId <= 0 ? null : UserId;
-    public string GetName() => $"{Vorname} {Nachname}".Trim();
+    public string GetName() => $"{Firstname} {Lastname}".Trim();
 
     /// <summary>
     /// This property is only to compare passwords during administration processes.
@@ -33,15 +33,15 @@ public class User : IDbModelWithName<int?>
             { "USER_ID", UserId },
             { "USERNAME", Username },
             { "NORMALIZED_USERNAME", NormalizedUsername },
-            { "VORNAME", Vorname },
-            { "NACHNAME", Nachname },
-            { "ANZEIGENAME", GetName() },
+            { "FIRSTNAME", Firstname },
+            { "LASTNAME", Lastname },
+            { "DISPLAY_NAME", GetName() },
             { "ACTIVE_DIRECTORY_GUID", ActiveDirectoryGuid?.ToString() },
             { "EMAIL", Email },
             { "PASSWORD", Password },
             { "SALT", Salt },
             { "ACCOUNT_TYPE", AccountType.ToString() },
-            { "IS_AKTIV", IsAktiv },
+            { "IS_ACTIVE", IsActive },
             { "IS_ADMIN", IsAdmin },
         };
     }

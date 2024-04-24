@@ -92,12 +92,12 @@
                     </FluentGridItem>
 
                     <FluentGridItem xs="12" md="6">
-                        <FluentTextField @bind-Value="Input.Vorname" Label="Vorname" Disabled="ActiveDirectoryMode" />
-                        <FluentValidationMessage For="() => Input.Vorname" />
+                        <FluentTextField @bind-Value="Input.Firstname" Label="Vorname" Disabled="ActiveDirectoryMode" />
+                        <FluentValidationMessage For="() => Input.Firstname" />
                     </FluentGridItem>
                     <FluentGridItem xs="12" md="6">
-                        <FluentTextField @bind-Value="Input.Nachname" Label="Nachname" Disabled="ActiveDirectoryMode" />
-                        <FluentValidationMessage For="() => Input.Nachname" />
+                        <FluentTextField @bind-Value="Input.Lastname" Label="Nachname" Disabled="ActiveDirectoryMode" />
+                        <FluentValidationMessage For="() => Input.Lastname" />
                     </FluentGridItem>
 
                     @if (Modus is EditMode.Create)
@@ -117,7 +117,7 @@
                     </FluentGridItem>
 
                     <FluentGridItem xs="12">
-                        <FluentSwitch @bind-Value="Input.IsAktiv" Label="Status">
+                        <FluentSwitch @bind-Value="Input.IsActive" Label="Status">
                             <span slot="checked-message">Aktiv</span>
                             <span slot="unchecked-message">Inaktiv</span>
                         </FluentSwitch>

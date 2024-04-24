@@ -11,11 +11,11 @@ public class UserValidator : AbstractValidator<User>
             .MaximumLength(50)
             .NotEmpty();
 
-        RuleFor(x => x.Vorname)
+        RuleFor(x => x.Firstname)
             .MaximumLength(50)
             .NotEmpty();
 
-        RuleFor(x => x.Nachname)
+        RuleFor(x => x.Lastname)
             .MaximumLength(50);
 
         RuleFor(x=> x.Email)

@@ -153,9 +153,9 @@ namespace BlazorERP.Components.Pages.Account
                                 Username = Input.Username.ToUpper(),
                                 ActiveDirectoryGuid = (Guid)guid,
                                 Email = attributes["mail"],
-                                Vorname = attributes["givenName"],
-                                Nachname = attributes["sn"],
-                                IsAktiv = true,
+                                Firstname = attributes["givenName"],
+                                Lastname = attributes["sn"],
+                                IsActive = true,
                                 AccountType = AccountType.ActiveDirectory
                             };
 
@@ -165,8 +165,8 @@ namespace BlazorERP.Components.Pages.Account
                         {
                             // Update des User Objekts
                             user.Email = attributes["mail"];
-                            user.Vorname = attributes["givenName"];
-                            user.Nachname = attributes["sn"];
+                            user.Firstname = attributes["givenName"];
+                            user.Lastname = attributes["sn"];
                             user.Username = Input.Username.ToUpper();
                             await _userService.UpdateAsync(user, dbController);
                         }
