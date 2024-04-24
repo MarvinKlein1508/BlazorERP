@@ -50,40 +50,38 @@
                         @if (Modus is EditMode.Edit)
                         {
                             <div class="col-md-12">
-                                <FluentNumberField @bind-Value="Input.ZahlungsbedingungId" Label="ZahlungsbedingungId" Disabled />
-                                <FluentValidationMessage For="() => Input.ZahlungsbedingungId" />
+                                <FluentNumberField @bind-Value="Input.PaymentConditionId" Label="ZahlungsbedingungId" Disabled />
+                                <FluentValidationMessage For="() => Input.PaymentConditionId" />
                             </div>
                         }
 
-                        <div class="col-md-8">
-                            <FluentTextField @bind-Value="Input.Name" Label="Name" />
-                            <FluentValidationMessage For="() => Input.Name" />
-                        </div>
+             
 
                         <div class="col-md-4">
-                            <FluentNumberField @bind-Value="Input.Nettotage" Label="Nettotage" />
-                            <FluentValidationMessage For="() => Input.Nettotage" />
+                            <FluentNumberField @bind-Value="Input.NetDays" Label="Nettotage" />
+                            <FluentValidationMessage For="() => Input.NetDays" />
                         </div>
 
                         <div class="col-md-3">
-                            <FluentNumberField @bind-Value="Input.Skonto1Tage" Label="Tage Skonto 1" />
-                            <FluentValidationMessage For="() => Input.Skonto1Tage" />
+                            <FluentNumberField @bind-Value="Input.Discount1Days" Label="Tage Skonto 1" />
+                            <FluentValidationMessage For="() => Input.Discount1Days" />
                         </div>
 
                         <div class="col-md-3">
-                            <FluentNumberField @bind-Value="Input.Skonto1Prozent" Label="Prozent Skonto 1" />
-                            <FluentValidationMessage For="() => Input.Skonto1Prozent" />
+                            <FluentNumberField @bind-Value="Input.Discount1Percent" Label="Prozent Skonto 1" />
+                            <FluentValidationMessage For="() => Input.Discount1Percent" />
                         </div>
 
                         <div class="col-md-3">
-                            <FluentNumberField @bind-Value="Input.Skonto2Prozent" Label="Prozent Skonto 2" />
-                            <FluentValidationMessage For="() => Input.Skonto2Prozent" />
+                            <FluentNumberField @bind-Value="Input.Discount2Days" Label="Tage Skonto 2" />
+                            <FluentValidationMessage For="() => Input.Discount2Days" />
                         </div>
 
                         <div class="col-md-3">
-                            <FluentNumberField @bind-Value="Input.Skonto2Tage" Label="Tage Skonto 2" />
-                            <FluentValidationMessage For="() => Input.Skonto2Tage" />
+                            <FluentNumberField @bind-Value="Input.Discount2Percent" Label="Prozent Skonto 2" />
+                            <FluentValidationMessage For="() => Input.Discount2Percent" />
                         </div>
+
                     </div>
                 </div>
                 <div class="col-md-3 ">
@@ -91,7 +89,7 @@
                         @if (Modus is EditMode.Edit)
                         {
                             <div class="col-12">
-                                <FluentDatePicker Appearance="FluentInputAppearance.Filled" Label="Letzte Änderung" @bind-Value="@Input.ZuletztGeaendert" ReadOnly />
+                                <FluentDatePicker Appearance="FluentInputAppearance.Filled" Label="Letzte Änderung" @bind-Value="@Input.LastModified" ReadOnly />
                             </div>
 
                             <div class="col-12">
@@ -99,13 +97,13 @@
                             </div>
                             <div class="col-12">
                                 <div class="d-flex flex-column gap-2 mt-2">
-                                    <FluentSwitch @bind-Value="@Input.IstAktiv" Label="Aktiv" />
-                                    <FluentSwitch @bind-Value="@Input.IstVorkasse" Label="Vorkasse" />
-                                    <FluentSwitch @bind-Value="@Input.IstBarzahlung" Label="Barzahlung" />
-                                    <FluentSwitch @bind-Value="@Input.IstAbbuchung" Label="Abbuchung" />
-                                    <FluentSwitch @bind-Value="@Input.IstRechnung" Label="Rechnung" />
-                                    <FluentSwitch @bind-Value="@Input.VerfuegbarKunde" Label="Verfügbar für Kunden" />
-                                    <FluentSwitch @bind-Value="@Input.VerfuegbarLieferant" Label="Verfügbar für Lieferanten" />
+                                    <FluentSwitch @bind-Value="@Input.IsActive" Label="Aktiv" />
+                                    <FluentSwitch @bind-Value="@Input.IsPrepayment" Label="Vorkasse" />
+                                    <FluentSwitch @bind-Value="@Input.IsCashPayment" Label="Barzahlung" />
+                                    <FluentSwitch @bind-Value="@Input.IsDirectDebit" Label="Abbuchung" />
+                                    <FluentSwitch @bind-Value="@Input.IsInvoice" Label="Rechnung" />
+                                    <FluentSwitch @bind-Value="@Input.AvailableForCustomer" Label="Verfügbar für Kunden" />
+                                    <FluentSwitch @bind-Value="@Input.AvailableForSupplier" Label="Verfügbar für Lieferanten" />
                                 </div>
                             </div>
                         }
@@ -128,7 +126,7 @@
     private PaymentConditionValidator _validator = new();
 
     protected override string GetListUrl() => "/Admin/Zahlungsbedingungen";
-    protected override string GetEntityRedirectUrl() => $"/Admin/Zahlungsbedingungen/Edit?zahlungsbedingungId={Input!.ZahlungsbedingungId}";
+    protected override string GetEntityRedirectUrl() => $"/Admin/Zahlungsbedingungen/Edit?zahlungsbedingungId={Input!.PaymentConditionId}";
 
 
 
@@ -139,8 +137,8 @@
 
     protected override Task BeforeSaveAsync(IDbController dbController)
     {
-        Input.LetzterBearbeiter = User.UserId;
-        Input.ZuletztGeaendert = DateTime.Now;
+        Input.LastModifiedBy = User.UserId;
+        Input.LastModified = DateTime.Now;
 
         return Task.CompletedTask;
     }

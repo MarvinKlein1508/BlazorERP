@@ -1,34 +1,33 @@
 ﻿using BlazorERP.Core.Interfaces;
+using BlazorERP.Core.Models.Abstract;
 
 namespace BlazorERP.Core.Models;
 
-public class PaymentCondition : IDbModelWithName<int?>
+public class PaymentCondition : TranslationBase, IDbModel<int?>
 {   
-    public int ZahlungsbedingungId { get; set; }
-    public string Name { get; set; } = string.Empty;
-    public int Nettotage { get; set; }
-    public int Skonto1Tage { get; set; }
-    public decimal Skonto1Prozent { get; set; }
-    public int Skonto2Tage { get; set; }
-    public decimal Skonto2Prozent { get; set; }
-    public bool IstVorkasse { get; set; }
-    public bool IstBarzahlung { get; set; }
-    public bool IstAbbuchung { get; set; }
-    public bool IstRechnung { get; set; }
-    public bool IstAktiv { get; set; }
+    public int PaymentConditionId { get; set; }
+    public int NetDays { get; set; }
+    public int Discount1Days { get; set; }
+    public decimal Discount1Percent { get; set; }
+    public int Discount2Days { get; set; }
+    public decimal Discount2Percent { get; set; }
+    public bool IsPrepayment { get; set; }
+    public bool IsCashPayment { get; set; }
+    public bool IsDirectDebit { get; set; }
+    public bool IsInvoice { get; set; }
+    public bool IsActive { get; set; }
 
-    public bool VerfuegbarKunde { get; set; }
-    public bool VerfuegbarLieferant { get; set; }
+    public bool AvailableForCustomer { get; set; }
+    public bool AvailableForSupplier { get; set; }
 
-    public int? LetzterBearbeiter { get; set; }
-    public DateTime? ZuletztGeaendert { get; set; }
+    public int? LastModifiedBy { get; set; }
+    public DateTime? LastModified { get; set; }
 
 
-    public int? GetIdentifier() => ZahlungsbedingungId > 0 ? ZahlungsbedingungId : null;
+    public int? GetIdentifier() => PaymentConditionId > 0 ? PaymentConditionId : null;
 
-    public string GetName() => Name;
 
-    public List<Translation> Übersetzungen { get; set; } = [];
+    
 
 
     public string BearbeiterName { get; set; } = string.Empty;
@@ -37,22 +36,21 @@ public class PaymentCondition : IDbModelWithName<int?>
     {
         return new Dictionary<string, object?>
         {
-            { "ZAHLUNGSBEDINGUNG_ID", ZahlungsbedingungId },
-            { "NAME", Name },
-            { "NETTOTAGE", Nettotage },
-            { "SKONTO1_TAGE", Skonto1Tage },
-            { "SKONTO1_PROZENT", Skonto1Prozent },
-            { "SKONTO2_TAGE", Skonto2Tage },
-            { "SKONTO2_PROZENT", Skonto2Prozent },
-            { "IST_VORKASSE", IstVorkasse },
-            { "IST_BARZAHLUNG", IstBarzahlung },
-            { "IST_ABBUCHUNG", IstAbbuchung },
-            { "IST_RECHNUNG", IstRechnung },
-            { "IST_AKTIV", IstAktiv },
-            { "VERFUEGBAR_KUNDE", VerfuegbarKunde },
-            { "VERFUEGBAR_LIEFERANT", VerfuegbarLieferant },
-            { "LETZTER_BEARBEITER", LetzterBearbeiter },
-            { "ZULETZT_GEAENDERT", ZuletztGeaendert },
+            { "PAYMENT_CONDITION_ID", PaymentConditionId },
+            { "NET_DAYS", NetDays },
+            { "DISCOUNT1_DAYS", Discount1Days },
+            { "DISCOUNT1_PERCENT", Discount1Percent },
+            { "DISCOUNT2_DAYS", Discount2Days },
+            { "DISCOUNT2_PERCENT", Discount2Percent },
+            { "IS_PREPAYMENT", IsPrepayment },
+            { "IS_CASH_PAYMENT", IsCashPayment },
+            { "IS_DIRECT_DEBIT", IsDirectDebit },
+            { "IS_INVOICE", IsInvoice },
+            { "IS_ACTIVE", IsActive },
+            { "AVAILABLE_FOR_CUSTOMER", AvailableForCustomer },
+            { "AVAILABLE_FOR_SUPPLIER", AvailableForSupplier },
+            { "LAST_MODIFIED_BY", LastModifiedBy },
+            { "LAST_MODIFIED", LastModified },
         };
     }
 }

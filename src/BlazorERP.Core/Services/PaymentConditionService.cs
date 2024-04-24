@@ -59,12 +59,12 @@ public class PaymentConditionService : IModelService<PaymentCondition, int?, Pay
 
 
 
-        input.ZahlungsbedingungId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
+        input.PaymentConditionId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
 
-        foreach (var item in input.Übersetzungen)
+        foreach (var item in input.Translations)
         {
             item.Code = GetTranslationCode();
-            item.ParentId = input.ZahlungsbedingungId;
+            item.ParentId = input.PaymentConditionId;
 
             await _übersetzungService.CreateAsync(item, dbController, cancellationToken);
         }
@@ -89,7 +89,7 @@ public class PaymentConditionService : IModelService<PaymentCondition, int?, Pay
 
         foreach (var item in results)
         {
-            item.Übersetzungen = übersetzungen.Where(x => x.ParentId == item.ZahlungsbedingungId).ToList();
+            item.Translations = übersetzungen.Where(x => x.ParentId == item.PaymentConditionId).ToList();
         }
 
         return results;
@@ -119,7 +119,7 @@ public class PaymentConditionService : IModelService<PaymentCondition, int?, Pay
 
         if (result is not null)
         {
-            result.Übersetzungen = await _übersetzungService.GetAsync(GetTranslationCode(), result.ZahlungsbedingungId, dbController, cancellationToken);
+            result.Translations = await _übersetzungService.GetAsync(GetTranslationCode(), result.PaymentConditionId, dbController, cancellationToken);
         }
 
         return result;
@@ -144,11 +144,11 @@ public class PaymentConditionService : IModelService<PaymentCondition, int?, Pay
         var results = await dbController.SelectDataAsync<PaymentCondition>(sql, filter.GetParameters(), cancellationToken);
         if (results.Count > 0)
         {
-            var anredeIds = results.Select(x => x.ZahlungsbedingungId).ToArray();
+            var anredeIds = results.Select(x => x.PaymentConditionId).ToArray();
             var übersetzungen = await _übersetzungService.GetAsync(GetTranslationCode(), anredeIds, dbController, cancellationToken);
             foreach (var item in results)
             {
-                item.Übersetzungen = übersetzungen.Where(x => x.ParentId == item.ZahlungsbedingungId).ToList();
+                item.Translations = übersetzungen.Where(x => x.ParentId == item.PaymentConditionId).ToList();
             }
         }
 
@@ -221,11 +221,11 @@ public class PaymentConditionService : IModelService<PaymentCondition, int?, Pay
         await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
 
 
-        await _übersetzungService.ClearAsync(GetTranslationCode(), input.ZahlungsbedingungId, dbController, cancellationToken);
-        foreach (var item in input.Übersetzungen)
+        await _übersetzungService.ClearAsync(GetTranslationCode(), input.PaymentConditionId, dbController, cancellationToken);
+        foreach (var item in input.Translations)
         {
             item.Code = GetTranslationCode();
-            item.ParentId = input.ZahlungsbedingungId;
+            item.ParentId = input.PaymentConditionId;
 
             await _übersetzungService.CreateAsync(item, dbController, cancellationToken);
         }

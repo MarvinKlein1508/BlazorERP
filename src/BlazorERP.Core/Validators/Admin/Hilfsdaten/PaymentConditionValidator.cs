@@ -7,25 +7,21 @@ public class PaymentConditionValidator : AbstractValidator<PaymentCondition>
 {
     public PaymentConditionValidator()
     {
-        RuleFor(x => x.Name)
-            .NotEmpty();
+     
 
-        RuleFor(x => x.Name)
-            .MaximumLength(50);
-
-        RuleFor(x => x.Nettotage)
+        RuleFor(x => x.NetDays)
             .GreaterThanOrEqualTo(0);
 
-        RuleFor(x => x.Skonto1Tage)
+        RuleFor(x => x.Discount1Days)
             .GreaterThanOrEqualTo(0);
 
-        RuleFor(x => x.Skonto2Tage)
+        RuleFor(x => x.Discount2Days)
             .GreaterThanOrEqualTo(0);
 
-        RuleFor(x => x.Skonto1Prozent)
+        RuleFor(x => x.Discount1Percent)
             .GreaterThanOrEqualTo(0);
 
-        RuleFor(x => x.Skonto2Prozent)
+        RuleFor(x => x.Discount2Percent)
             .GreaterThanOrEqualTo(0);
 
     }

@@ -42,19 +42,19 @@
                         <div class="list-details">
                             <div class="list-item" hidden-when="xs sm">
                                 <label>Id</label>
-                                <span>@item.ZahlungsbedingungId</span>
+                                <span>@item.PaymentConditionId</span>
                             </div>
 
                             <div class="list-item">
                                 <label>Name</label>
-                                <span>@item.GetName()</span>
+                                <span>@item.GetName(Storage.DEFAULT_LANGUAGE)</span>
                             </div>
 
                             <div class="list-item">
                                 <label>Aktiv</label>
                                 <span>
                                     <FluentBadge Appearance="Appearance.Neutral">
-                                        @(item.IstAktiv ? "Ja" : "Nein")
+                                        @(item.IsActive ? "Ja" : "Nein")
                                     </FluentBadge>
                                 </span>
                             </div>

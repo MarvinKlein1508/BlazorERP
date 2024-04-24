@@ -110,7 +110,7 @@
                                     <FluentOption Value="null" Selected="@(Input.KundeZahlungsbedingungId is null)" OnSelect="(val) => Input.KundeZahlungsbedingungId = null">--- Auswählen ---</FluentOption>
                                     @foreach (var item in Storage.Get<PaymentCondition>())
                                     {
-                                        <FluentOption TOption="PaymentCondition" Value="@item.ZahlungsbedingungId.ToString()" Selected="@(Input.KundeZahlungsbedingungId == item.ZahlungsbedingungId)" OnSelect="(val) => Input.KundeZahlungsbedingungId = item.ZahlungsbedingungId">@item.Name</FluentOption>
+                                        <FluentOption TOption="PaymentCondition" Value="@item.PaymentConditionId.ToString()" Selected="@(Input.KundeZahlungsbedingungId == item.PaymentConditionId)" OnSelect="(val) => Input.KundeZahlungsbedingungId = item.PaymentConditionId">@item.GetName(Storage.DEFAULT_LANGUAGE)</FluentOption>
                                     }
                                 </FluentSelect>
                                 <FluentValidationMessage For="() => Input.KundeZahlungsbedingungId" />
