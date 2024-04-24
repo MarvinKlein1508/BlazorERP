@@ -1,4 +1,4 @@
-﻿@page "/Admin/Lieferbedingungen"
+﻿@page "/Admin/DeliveryConditions"
 @inject AuthService authService
 @inherits SearchPageBase<DeliveryCondition, DeliveryConditionService, DeliveryConditionFilter>
 
@@ -17,7 +17,7 @@
 <FluentGrid Width="100%">
     <FluentGridItem xs="12">
         <FluentStack HorizontalAlignment="HorizontalAlignment.End">
-            <FluentAnchor Href="/Admin/Lieferbedingungen/Edit"
+            <FluentAnchor Href="/Admin/DeliveryConditions/Edit"
                           IconStart="@(new Icons.Regular.Size20.Add().WithColor(Color.Fill))"
                           Appearance="Appearance.Accent">
                 Neue Lieferbedingung
@@ -60,7 +60,7 @@
                             </div>
                         </div>
                         <div class="list-buttons">
-                            <FluentAnchor Href="@($"/Admin/Lieferbedingungen/Edit?lieferbedingungId={item.GetIdentifier()}")">
+                            <FluentAnchor Href="@($"/Admin/DeliveryConditions/Edit?deliveryConditionId={item.GetIdentifier()}")">
                                 Bearbeiten
                             </FluentAnchor>
                         </div>
@@ -81,7 +81,7 @@
                 <Pagination CurrentPageNumber="Page"
                             TotalItems="TotalItems"
                             ItemsPerPage="Filter.Limit"
-                            NavUrl="/Admin/Lieferbedingungen?page=" />
+                            NavUrl="/Admin/DeliveryConditions?page=" />
             }
         </FluentStack>
     </FluentGridItem>
@@ -106,5 +106,5 @@
 
 @code {
     protected override bool InternalNavigation => false;
-    protected override string BaseUrl => "/Admin/Lieferbedingungen";
+    protected override string BaseUrl => "/Admin/DeliveryConditions";
 }

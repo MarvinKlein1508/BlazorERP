@@ -1,4 +1,4 @@
-﻿@page "/Admin/Lieferbedingungen/Edit"
+﻿@page "/Admin/DeliveryConditions/Edit"
 @using BlazorERP.Core.Validators.Admin.Hilfsdaten
 @using Microsoft.AspNetCore.Identity
 @inherits EditPageBase<int?, DeliveryCondition, DeliveryConditionService>
@@ -8,7 +8,7 @@
 <FluentBreadcrumb>
     <FluentBreadcrumbItem Href="/">Start</FluentBreadcrumbItem>
     <FluentBreadcrumbItem>Administration</FluentBreadcrumbItem>
-    <FluentBreadcrumbItem Href="/Admin/Lieferbedingungen">Lieferbedingungen</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="/Admin/DeliveryConditions">Lieferbedingungen</FluentBreadcrumbItem>
     <FluentBreadcrumbItem>@FinalBreadcrumbItemName</FluentBreadcrumbItem>
 </FluentBreadcrumb>
 @if (Input is null)
@@ -16,7 +16,7 @@
     return;
 }
 <FluentStack HorizontalAlignment="HorizontalAlignment.End">
-    <FluentAnchor Href="/Admin/Lieferbedingungen"
+    <FluentAnchor Href="/Admin/DeliveryConditions"
                   IconStart="@(new Icons.Regular.Size20.ArrowReply())">
         Zurück
     </FluentAnchor>
@@ -98,12 +98,12 @@
     private bool _showOptionsMenu;
     private DeliveryConditionValidator _validator = new();
 
-    protected override string GetListUrl() => "/Admin/Lieferbedingungen";
-    protected override string GetEntityRedirectUrl() => $"/Admin/Lieferbedingungen/Edit?lieferbedingungId={Input!.DeliveryConditionId}";
+    protected override string GetListUrl() => "/Admin/DeliveryConditions";
+    protected override string GetEntityRedirectUrl() => $"/Admin/DeliveryConditions/Edit?deliveryConditionId={Input!.DeliveryConditionId}";
 
 
 
-    [Parameter, SupplyParameterFromQuery(Name = "lieferbedingungId")]
+    [Parameter, SupplyParameterFromQuery(Name = "deliveryConditionId")]
     public override int? Identifier { get; set; }
 
 
