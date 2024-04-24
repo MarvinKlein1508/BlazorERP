@@ -132,3 +132,7 @@ fluent-text-field, fluent-number-field, fluent-select{
     .input-group fluent-text-field {
         flex: 1;
     }
+
+fluent-text-field.main-language::part(control) {
+    font-weight: inherit;
+}

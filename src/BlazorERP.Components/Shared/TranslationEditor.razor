@@ -30,7 +30,8 @@
                 {
                     <div class="d-flex gap-1">
 
-                        <FluentTextField Value="@(_languages.First(x => x.LanguageId == item.LanguageId).GetName(Storage.DEFAULT_LANGUAGE))" Class="w-auto" Disabled />
+                        <FluentTextField Value="@(_languages.First(x => x.LanguageId == item.LanguageId).GetName(Storage.DEFAULT_LANGUAGE))" Class="@(item.LanguageId == Storage.DEFAULT_LANGUAGE ? "w-auto main-language fw-bold" : "w-auto")" Disabled />
+                        
                         <div class="form-group w-100">
                             <FluentTextField @bind-Value="item.ValueText" Placeholder="Übersetzung" />
                             <FluentValidationMessage For="() => item.ValueText" />
