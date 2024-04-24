@@ -1,4 +1,4 @@
-﻿@page "/Admin/Zahlungsbedingungen/Edit"
+﻿@page "/Admin/PaymentConditions/Edit"
 @using BlazorERP.Core.Validators.Admin.Hilfsdaten
 @using Microsoft.AspNetCore.Identity
 @inherits EditPageBase<int?, PaymentCondition, PaymentConditionService>
@@ -8,7 +8,7 @@
 <FluentBreadcrumb>
     <FluentBreadcrumbItem Href="/">Start</FluentBreadcrumbItem>
     <FluentBreadcrumbItem>Administration</FluentBreadcrumbItem>
-    <FluentBreadcrumbItem Href="/Admin/Zahlungsbedingungen">Zahlungsbedingungen</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="/Admin/PaymentConditions">Zahlungsbedingungen</FluentBreadcrumbItem>
     <FluentBreadcrumbItem>@FinalBreadcrumbItemName</FluentBreadcrumbItem>
 </FluentBreadcrumb>
 @if (Input is null)
@@ -16,7 +16,7 @@
     return;
 }
 <FluentStack HorizontalAlignment="HorizontalAlignment.End">
-    <FluentAnchor Href="/Admin/Zahlungsbedingungen"
+    <FluentAnchor Href="/Admin/PaymentConditions"
                   IconStart="@(new Icons.Regular.Size20.ArrowReply())">
         Zurück
     </FluentAnchor>
@@ -125,12 +125,12 @@
     private bool _showOptionsMenu;
     private PaymentConditionValidator _validator = new();
 
-    protected override string GetListUrl() => "/Admin/Zahlungsbedingungen";
-    protected override string GetEntityRedirectUrl() => $"/Admin/Zahlungsbedingungen/Edit?zahlungsbedingungId={Input!.PaymentConditionId}";
+    protected override string GetListUrl() => "/Admin/PaymentConditions";
+    protected override string GetEntityRedirectUrl() => $"/Admin/PaymentConditions/Edit?paymentConditionId={Input!.PaymentConditionId}";
 
 
 
-    [Parameter, SupplyParameterFromQuery(Name = "zahlungsbedingungId")]
+    [Parameter, SupplyParameterFromQuery(Name = "paymentConditionId")]
     public override int? Identifier { get; set; }
 
 

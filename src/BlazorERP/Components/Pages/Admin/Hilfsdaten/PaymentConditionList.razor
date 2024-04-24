@@ -1,4 +1,4 @@
-﻿@page "/Admin/Zahlungsbedingungen"
+﻿@page "/Admin/PaymentConditions"
 @inject AuthService authService
 @inherits SearchPageBase<PaymentCondition, PaymentConditionService, PaymentConditionFilter>
 
@@ -17,7 +17,7 @@
 <FluentGrid Width="100%">
     <FluentGridItem xs="12">
         <FluentStack HorizontalAlignment="HorizontalAlignment.End">
-            <FluentAnchor Href="/Admin/Zahlungsbedingungen/Edit"
+            <FluentAnchor Href="/Admin/PaymentConditions/Edit"
                           IconStart="@(new Icons.Regular.Size20.Add().WithColor(Color.Fill))"
                           Appearance="Appearance.Accent">
                 Neue Zahlungsbedingung
@@ -60,7 +60,7 @@
                             </div>
                         </div>
                         <div class="list-buttons">
-                            <FluentAnchor Href="@($"/Admin/Zahlungsbedingungen/Edit?zahlungsbedingungId={item.GetIdentifier()}")">
+                            <FluentAnchor Href="@($"/Admin/PaymentConditions/Edit?paymentConditionId={item.GetIdentifier()}")">
                                 Bearbeiten
                             </FluentAnchor>
                         </div>
@@ -117,5 +117,5 @@
 
 @code {
     protected override bool InternalNavigation => false;
-    protected override string BaseUrl => "/Admin/Zahlungsbedingungen";
+    protected override string BaseUrl => "/Admin/PaymentConditions";
 }
