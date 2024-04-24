@@ -1,4 +1,4 @@
-﻿@page "/Admin/Abteilungen"
+﻿@page "/Admin/Departments"
 @inject AuthService authService
 @inherits SearchPageBase<Department, DepartmentService, DepartmentFilter>
 
@@ -17,7 +17,7 @@
 <FluentGrid Width="100%">
     <FluentGridItem xs="12">
         <FluentStack HorizontalAlignment="HorizontalAlignment.End">
-            <FluentAnchor Href="/Admin/Abteilungen/Edit"
+            <FluentAnchor Href="/Admin/Departments/Edit"
                           IconStart="@(new Icons.Regular.Size20.Add().WithColor(Color.Fill))"
                           Appearance="Appearance.Accent">
                 Neue Abteilung
@@ -50,7 +50,7 @@
                             </div>
                         </div>
                         <div class="list-buttons">
-                            <FluentAnchor Href="@($"/Admin/Abteilungen/Edit?abteilungId={item.GetIdentifier()}")">
+                            <FluentAnchor Href="@($"/Admin/Departments/Edit?departmentId={item.GetIdentifier()}")">
                                 Bearbeiten
                             </FluentAnchor>
                         </div>
@@ -107,5 +107,5 @@
 
 @code {
     protected override bool InternalNavigation => false;
-    protected override string BaseUrl => "/Admin/Abteilungen";
+    protected override string BaseUrl => "/Admin/Departments";
 }

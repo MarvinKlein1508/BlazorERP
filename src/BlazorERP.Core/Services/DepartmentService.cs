@@ -34,9 +34,15 @@ public class DepartmentService : IModelService<Department, int?, DepartmentFilte
             ) RETURNING DEPARTMENT_ID;
             """;
 
-
-
         input.DepartmentId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
+
+        foreach (var item in input.Translations)
+        {
+            item.Code = GetTranslationCode();
+            item.ParentId = input.DepartmentId;
+
+            await _translationService.CreateAsync(item, dbController, cancellationToken);
+        }
     }
 
     public Task DeleteAsync(Department input, IDbController dbController, CancellationToken cancellationToken = default)
@@ -131,7 +137,7 @@ public class DepartmentService : IModelService<Department, int?, DepartmentFilte
         return dbController.GetFirstAsync<int>(sql, filter.GetParameters(), cancellationToken);
     }
 
-    public Task UpdateAsync(Department input, IDbController dbController, CancellationToken cancellationToken = default)
+    public async Task UpdateAsync(Department input, IDbController dbController, CancellationToken cancellationToken = default)
     {
         string sql =
             """
@@ -143,6 +149,15 @@ public class DepartmentService : IModelService<Department, int?, DepartmentFilte
                 DEPARTMENT_ID = @DEPARTMENT_ID
             """;
 
-        return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
+        await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
+
+        await _translationService.ClearAsync(GetTranslationCode(), input.DepartmentId, dbController, cancellationToken);
+        foreach (var item in input.Translations)
+        {
+            item.Code = GetTranslationCode();
+            item.ParentId = input.DepartmentId;
+
+            await _translationService.CreateAsync(item, dbController, cancellationToken);
+        }
     }
 }
