@@ -163,13 +163,13 @@
                     <div class="col-md-9">
                         <div class="row">
                             <div class="col-md-6">
-                                <FluentSelect TOption="Lieferbedingung" Label="Lieferbedingung" Width="100%;">
+                                <FluentSelect TOption="DeliveryCondition" Label="Lieferbedingung" Width="100%;">
                                     <FluentOption Value="null" Selected="@(Input.LieferbedingungId is null)" OnSelect="(val) => Input.LieferbedingungId = null">--- Auswählen ---</FluentOption>
-                                    @foreach (var item in Storage.Get<Lieferbedingung>())
+                                    @foreach (var item in Storage.Get<DeliveryCondition>())
                                     {
                                         @if (item.VerfuegbarKunde || item.LieferbedingungId == Input.LieferbedingungId)
                                         {
-                                            <FluentOption TOption="Lieferbedingung" Value="@item.LieferbedingungId.ToString()" Selected="@(Input.LieferbedingungId == item.LieferbedingungId)" OnSelect="(val) => Input.LieferbedingungId = item.LieferbedingungId">@item.Name</FluentOption>
+                                            <FluentOption TOption="DeliveryCondition" Value="@item.LieferbedingungId.ToString()" Selected="@(Input.LieferbedingungId == item.LieferbedingungId)" OnSelect="(val) => Input.LieferbedingungId = item.LieferbedingungId">@item.Name</FluentOption>
                                         }
                                     }
                                 </FluentSelect>

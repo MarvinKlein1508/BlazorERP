@@ -1,7 +1,7 @@
 ﻿@page "/Admin/Lieferbedingungen/Edit"
 @using BlazorERP.Core.Validators.Admin.Hilfsdaten
 @using Microsoft.AspNetCore.Identity
-@inherits EditPageBase<int?, Lieferbedingung, LieferbedingungService>
+@inherits EditPageBase<int?, DeliveryCondition, DeliveryConditionService>
 
 <PageTitle>@FinalBreadcrumbItemName</PageTitle>
 
@@ -99,7 +99,7 @@
 
 
     private bool _showOptionsMenu;
-    private LieferbedingungValidator _validator = new();
+    private DeliveryConditionValidator _validator = new();
 
     protected override string GetListUrl() => "/Admin/Lieferbedingungen";
     protected override string GetEntityRedirectUrl() => $"/Admin/Lieferbedingungen/Edit?lieferbedingungId={Input!.LieferbedingungId}";

@@ -1,7 +1,7 @@
 ﻿
 namespace BlazorERP.Core.Filters;
 
-public class LieferbedingungFilter : PageFilterBase
+public class DeliveryConditionFilter : PageFilterBase
 {
     public override Dictionary<string, object?> GetParameters()
     {

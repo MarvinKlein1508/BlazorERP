@@ -2,7 +2,7 @@
 
 namespace BlazorERP.Core.Models;
 
-public class Lieferbedingung : IDbModelWithName<int?>
+public class DeliveryCondition : IDbModelWithName<int?>
 {   
     public int LieferbedingungId { get; set; }
     public string Name { get; set; } = string.Empty;

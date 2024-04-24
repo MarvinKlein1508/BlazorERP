@@ -5,16 +5,16 @@ using System.Text;
 
 namespace BlazorERP.Core.Services;
 
-public class LieferbedingungService : IModelService<Lieferbedingung, int?, LieferbedingungFilter>, ITranslationCode
+public class DeliveryConditionService : IModelService<DeliveryCondition, int?, DeliveryConditionFilter>, ITranslationCode
 {
     private readonly TranslationService _übersetzungService;
 
-    public LieferbedingungService(TranslationService übersetzungService)
+    public DeliveryConditionService(TranslationService übersetzungService)
     {
         _übersetzungService = übersetzungService;
     }
 
-    public async Task CreateAsync(Lieferbedingung input, IDbController dbController, CancellationToken cancellationToken = default)
+    public async Task CreateAsync(DeliveryCondition input, IDbController dbController, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         string sql =
@@ -57,18 +57,18 @@ public class LieferbedingungService : IModelService<Lieferbedingung, int?, Liefe
 
     }
 
-    public Task DeleteAsync(Lieferbedingung input, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task DeleteAsync(DeliveryCondition input, IDbController dbController, CancellationToken cancellationToken = default)
     {
         string sql = "DELETE FROM LIEFERBEDINGUNGEN WHERE LIEFERBEDINGUNG_ID = @LIEFERBEDINGUNG_ID";
 
         return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
     }
 
-    public static async Task<List<Lieferbedingung>> GetAsync(IDbController dbController)
+    public static async Task<List<DeliveryCondition>> GetAsync(IDbController dbController)
     {
         string sql = "SELECT * FROM LIEFERBEDINGUNGEN";
 
-        var results = await dbController.SelectDataAsync<Lieferbedingung>(sql);
+        var results = await dbController.SelectDataAsync<DeliveryCondition>(sql);
 
 
         var übersetzungen = await TranslationService.GetAsync(GetTranslationCode(), dbController);
@@ -80,7 +80,7 @@ public class LieferbedingungService : IModelService<Lieferbedingung, int?, Liefe
 
         return results;
     }
-    public async Task<Lieferbedingung?> GetAsync(int? identifier, IDbController dbController, CancellationToken cancellationToken = default)
+    public async Task<DeliveryCondition?> GetAsync(int? identifier, IDbController dbController, CancellationToken cancellationToken = default)
     {
         if (identifier is null)
         {
@@ -98,7 +98,7 @@ public class LieferbedingungService : IModelService<Lieferbedingung, int?, Liefe
                 LIEFERBEDINGUNG_ID = @LIEFERBEDINGUNG_ID
             """;
 
-        var result = await dbController.GetFirstAsync<Lieferbedingung>(sql, new
+        var result = await dbController.GetFirstAsync<DeliveryCondition>(sql, new
         {
             LIEFERBEDINGUNG_ID = identifier
         }, cancellationToken);
@@ -111,7 +111,7 @@ public class LieferbedingungService : IModelService<Lieferbedingung, int?, Liefe
         return result;
     }
 
-    public async Task<List<Lieferbedingung>> GetAsync(LieferbedingungFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
+    public async Task<List<DeliveryCondition>> GetAsync(DeliveryConditionFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         string sql =
@@ -127,7 +127,7 @@ public class LieferbedingungService : IModelService<Lieferbedingung, int?, Liefe
             ORDER BY LIEFERBEDINGUNG_ID DESC
         """;
 
-        var results = await dbController.SelectDataAsync<Lieferbedingung>(sql, filter.GetParameters(), cancellationToken);
+        var results = await dbController.SelectDataAsync<DeliveryCondition>(sql, filter.GetParameters(), cancellationToken);
         if (results.Count > 0)
         {
             var anredeIds = results.Select(x => x.LieferbedingungId).ToArray();
@@ -143,7 +143,7 @@ public class LieferbedingungService : IModelService<Lieferbedingung, int?, Liefe
 
  
 
-    public string GetFilterWhere(LieferbedingungFilter filter)
+    public string GetFilterWhere(DeliveryConditionFilter filter)
     {
         StringBuilder sb = new();
 
@@ -161,7 +161,7 @@ public class LieferbedingungService : IModelService<Lieferbedingung, int?, Liefe
         return sql;
     }
 
-    public Task<int> GetTotalAsync(LieferbedingungFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task<int> GetTotalAsync(DeliveryConditionFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         string sql =
@@ -179,7 +179,7 @@ public class LieferbedingungService : IModelService<Lieferbedingung, int?, Liefe
 
     public static string GetTranslationCode() => "LIEFERBEDINGUNG";
 
-    public async Task UpdateAsync(Lieferbedingung input, IDbController dbController, CancellationToken cancellationToken = default)
+    public async Task UpdateAsync(DeliveryCondition input, IDbController dbController, CancellationToken cancellationToken = default)
     {
         string sql =
            """

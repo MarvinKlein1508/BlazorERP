@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace BlazorERP.Core.Validators.Admin.Hilfsdaten;
 
-public class LieferbedingungValidator : AbstractValidator<Lieferbedingung>
+public class DeliveryConditionValidator : AbstractValidator<DeliveryCondition>
 {
-    public LieferbedingungValidator()
+    public DeliveryConditionValidator()
     {
         RuleFor(x => x.Name)
             .NotEmpty();
