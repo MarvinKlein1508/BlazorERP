@@ -58,22 +58,22 @@
 
 
                                     <div class="col-md-4">
-                                        <FluentNumberField @bind-Value="Input.Wechselkurs" Label="Wechselkurs" />
-                                        <FluentValidationMessage For="() => Input.Wechselkurs" />
+                                        <FluentNumberField @bind-Value="Input.ExchangeRate" Label="Wechselkurs" />
+                                        <FluentValidationMessage For="() => Input.ExchangeRate" />
                                     </div>
                                     <div class="col-md-4">
-                                        <FluentNumberField @bind-Value="Input.Kurs" Label="Kurs" />
-                                        <FluentValidationMessage For="() => Input.Kurs" />
+                                        <FluentNumberField @bind-Value="Input.Rate" Label="Kurs" />
+                                        <FluentValidationMessage For="() => Input.Rate" />
                                     </div>
 
                                     <div class="col-md-4">
-                                        <FluentDatePicker Label="Kurs Vom" @bind-Value="@Input.KursVom" />
-                                        <FluentValidationMessage For="() => Input.KursVom" />
+                                        <FluentDatePicker Label="Kurs Vom" @bind-Value="@Input.RateDate" />
+                                        <FluentValidationMessage For="() => Input.RateDate" />
                                     </div>
 
                                     <div class="col-md-3">
-                                        <FluentNumberField @bind-Value="Input.Nachkommastellen" Label="Nachkommastellen" />
-                                        <FluentValidationMessage For="() => Input.Nachkommastellen" />
+                                        <FluentNumberField @bind-Value="Input.DecimalPlaces" Label="Nachkommastellen" />
+                                        <FluentValidationMessage For="() => Input.DecimalPlaces" />
                                     </div>
                                 }
                             </div>
@@ -83,7 +83,7 @@
                                 @if (Modus is EditMode.Edit)
                                 {
                                     <div class="col-12">
-                                        <FluentDatePicker Appearance="FluentInputAppearance.Filled" Label="Letzte Änderung" @bind-Value="@Input.ZuletztGeaendert" ReadOnly />
+                                        <FluentDatePicker Appearance="FluentInputAppearance.Filled" Label="Letzte Änderung" @bind-Value="@Input.LastModified" ReadOnly />
                                     </div>
 
                                     <div class="col-12">
@@ -119,8 +119,8 @@
 
     protected override Task BeforeSaveAsync(IDbController dbController)
     {
-        Input.LetzterBearbeiter = User.UserId;
-        Input.ZuletztGeaendert = DateTime.Now;
+        Input.LastModifiedBy = User.UserId;
+        Input.LastModified = DateTime.Now;
 
         return Task.CompletedTask;
     }

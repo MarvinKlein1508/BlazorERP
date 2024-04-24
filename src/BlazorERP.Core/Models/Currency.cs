@@ -2,18 +2,17 @@
 
 namespace BlazorERP.Core.Models;
 
-public class Currency : IDbModelWithName<string?>
+public class Currency : IDbModel<string?>
 {
     public string Code { get; set; } = string.Empty;
-    public decimal Kurs { get; set; }
-    public decimal Wechselkurs { get; set; }
-    public bool MussRunden { get; set; }
-    public int Nachkommastellen { get; set; }
-    public DateTime? KursVom { get; set; }
-    public int? LetzterBearbeiter { get; set; }
-    public DateTime? ZuletztGeaendert { get; set; }
+    public decimal Rate { get; set; }
+    public decimal ExchangeRate { get; set; }
+    public bool MustRound { get; set; }
+    public int DecimalPlaces { get; set; }
+    public DateTime? RateDate { get; set; }
+    public int? LastModifiedBy { get; set; }
+    public DateTime? LastModified { get; set; }
     public string? GetIdentifier() => string.IsNullOrWhiteSpace(Code) ? null : Code;
-    public string GetName() => Code;
 
     public string BearbeiterName { get; set; } = string.Empty;
 
@@ -22,13 +21,13 @@ public class Currency : IDbModelWithName<string?>
         return new Dictionary<string, object?>
         {
             { "CODE", Code },
-            { "KURS", Code },
-            { "WECHSELKURS", Code },
-            { "MUSS_RUNDEN", Code },
-            { "NACHKOMMASTELLEN", Code },
-            { "KURS_VOM", KursVom },
-            { "LETZTER_BEARBEITER", LetzterBearbeiter },
-            { "ZULETZT_GEAENDERT", ZuletztGeaendert },
+            { "RATE", Rate },
+            { "EXCHANGE_RATE", ExchangeRate },
+            { "MUST_ROUND", MustRound },
+            { "DECIMAL_PLACES", DecimalPlaces },
+            { "RATE_DATE", RateDate },
+            { "LAST_MODIFIED_BY", LastModifiedBy },
+            { "LAST_MODIFIED", LastModified },
         };
     }
 }

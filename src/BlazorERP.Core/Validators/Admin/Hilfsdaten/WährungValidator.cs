@@ -13,7 +13,7 @@ public class WährungValidator : AbstractValidator<Currency>
         RuleFor(x => x.Code)
             .MaximumLength(3);
 
-        RuleFor(x => x.Nachkommastellen)
+        RuleFor(x => x.DecimalPlaces)
             .GreaterThanOrEqualTo(0);
     }
 }
