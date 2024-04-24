@@ -11,5 +11,8 @@ public class AbstractTranslationValidator<TModel> : AbstractValidator<TModel> wh
         RuleFor(x => x.Translations)
             .Must(x => x.Any(x => x.LanguageId == Storage.DEFAULT_LANGUAGE))
             .WithMessage("Bitte fügen Sie einen Namen für die Default Sprache hinzu.");
+
+        RuleForEach(x => x.Translations)
+            .SetValidator(new TranslationValidator());
     }
 }
