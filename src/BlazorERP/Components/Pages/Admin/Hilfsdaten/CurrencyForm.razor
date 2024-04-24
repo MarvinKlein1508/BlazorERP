@@ -1,4 +1,4 @@
-﻿@page "/Admin/Währungen/Edit"
+﻿@page "/Admin/Currencies/Edit"
 @using BlazorERP.Core.Validators.Admin.Hilfsdaten
 @using Microsoft.AspNetCore.Identity
 @inherits EditPageBase<string?, Currency, CurrencyService>
@@ -8,7 +8,7 @@
 <FluentBreadcrumb>
     <FluentBreadcrumbItem Href="/">Start</FluentBreadcrumbItem>
     <FluentBreadcrumbItem>Administration</FluentBreadcrumbItem>
-    <FluentBreadcrumbItem Href="/Admin/Währungen">Währungen</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="/Admin/Currencies">Währungen</FluentBreadcrumbItem>
     <FluentBreadcrumbItem>@FinalBreadcrumbItemName</FluentBreadcrumbItem>
 </FluentBreadcrumb>
 @if (Input is null)
@@ -16,7 +16,7 @@
     return;
 }
 <FluentStack HorizontalAlignment="HorizontalAlignment.End">
-    <FluentAnchor Href="/Admin/Währungen"
+    <FluentAnchor Href="/Admin/Currencies"
                   IconStart="@(new Icons.Regular.Size20.ArrowReply())">
         Zurück
     </FluentAnchor>
@@ -106,8 +106,8 @@
     private bool _showOptionsMenu;
     private WährungValidator _validator = new();
 
-    protected override string GetListUrl() => "/Admin/Währungen";
-    protected override string GetEntityRedirectUrl() => $"/Admin/Währungen/Edit?code={Input!.Code}";
+    protected override string GetListUrl() => "/Admin/Currencies";
+    protected override string GetEntityRedirectUrl() => $"/Admin/Currencies/Edit?code={Input!.Code}";
 
    
 

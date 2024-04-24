@@ -1,4 +1,4 @@
-﻿@page "/Admin/Währungen"
+﻿@page "/Admin/Currencies"
 @inject AuthService authService
 @inherits SearchPageBase<Currency, CurrencyService, CurrencyFilter>
 
@@ -46,7 +46,7 @@
                             </div>
                         </div>
                         <div class="list-buttons">
-                            <FluentAnchor Href="@($"/Admin/Währungen/Edit?code={item.GetIdentifier()}")">
+                            <FluentAnchor Href="@($"/Admin/Currencies/Edit?code={item.GetIdentifier()}")">
                                 Bearbeiten
                             </FluentAnchor>
                         </div>
@@ -67,7 +67,7 @@
                 <Pagination CurrentPageNumber="Page"
                             TotalItems="TotalItems"
                             ItemsPerPage="Filter.Limit"
-                            NavUrl="/Admin/Währungen?page=" />
+                            NavUrl="/Admin/Currencies?page=" />
             }
         </FluentStack>
     </FluentGridItem>
