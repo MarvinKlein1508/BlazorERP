@@ -169,7 +169,7 @@
                                     {
                                         @if (item.AvailableForCustomer || item.DeliveryConditionId == Input.LieferbedingungId)
                                         {
-                                            <FluentOption TOption="DeliveryCondition" Value="@item.DeliveryConditionId.ToString()" Selected="@(Input.LieferbedingungId == item.DeliveryConditionId)" OnSelect="(val) => Input.LieferbedingungId = item.DeliveryConditionId">@item.Name</FluentOption>
+                                            <FluentOption TOption="DeliveryCondition" Value="@item.DeliveryConditionId.ToString()" Selected="@(Input.LieferbedingungId == item.DeliveryConditionId)" OnSelect="(val) => Input.LieferbedingungId = item.DeliveryConditionId">@item.GetName(Storage.DEFAULT_LANGUAGE)</FluentOption>
                                         }
                                     }
                                 </FluentSelect>

@@ -7,11 +7,7 @@ public class DeliveryConditionValidator : AbstractValidator<DeliveryCondition>
 {
     public DeliveryConditionValidator()
     {
-        RuleFor(x => x.Name)
-            .NotEmpty();
-
-        RuleFor(x => x.Name)
-            .MaximumLength(50);
+        
 
     }
 }

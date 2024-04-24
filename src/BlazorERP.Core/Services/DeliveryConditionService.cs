@@ -7,11 +7,11 @@ namespace BlazorERP.Core.Services;
 
 public class DeliveryConditionService : IModelService<DeliveryCondition, int?, DeliveryConditionFilter>, ITranslationCode
 {
-    private readonly TranslationService _übersetzungService;
+    private readonly TranslationService _translationService;
 
-    public DeliveryConditionService(TranslationService übersetzungService)
+    public DeliveryConditionService(TranslationService translationService)
     {
-        _übersetzungService = übersetzungService;
+        _translationService = translationService;
     }
 
     public async Task CreateAsync(DeliveryCondition input, IDbController dbController, CancellationToken cancellationToken = default)
@@ -19,70 +19,68 @@ public class DeliveryConditionService : IModelService<DeliveryCondition, int?, D
         cancellationToken.ThrowIfCancellationRequested();
         string sql =
             """
-            INSERT INTO LIEFERBEDINGUNGEN
+            INSERT INTO DELIVERY_CONDITIONS
             (
-                NAME,
-                VERSAND_MIT_SPEDITION,
-                IST_ABHOLUNG,
-                VERFUEGBAR_KUNDE,
-                VERFUEGBAR_LIEFERANT,
-                IST_AKTIV,
-                LETZTER_BEARBEITER,
-                ZULETZT_GEAENDERT
+                SHIPPING_BY_CARRIER,
+                IS_PICKUP,
+                AVAILABLE_FOR_CUSTOMER,
+                AVAILABLE_FOR_SUPPLIER,
+                IS_ACTIVE,
+                LAST_MODIFIED_BY,
+                LAST_MODIFIED
             )
             VALUES
             (
-                @NAME,
-                @VERSAND_MIT_SPEDITION,
-                @IST_ABHOLUNG,
-                @VERFUEGBAR_KUNDE,
-                @VERFUEGBAR_LIEFERANT,
-                @IST_AKTIV,
-                @LETZTER_BEARBEITER,
-                @ZULETZT_GEAENDERT
-            ) RETURNING LIEFERBEDINGUNG_ID;
+                @SHIPPING_BY_CARRIER,
+                @IS_PICKUP,
+                @AVAILABLE_FOR_CUSTOMER,
+                @AVAILABLE_FOR_SUPPLIER,
+                @IS_ACTIVE,
+                @LAST_MODIFIED_BY,
+                @LAST_MODIFIED
+            ) RETURNING DELIVERY_CONDITION_ID;
             """;
 
 
 
         input.DeliveryConditionId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
 
-        foreach (var item in input.Übersetzungen)
+        foreach (var item in input.Translations)
         {
             item.Code = GetTranslationCode();
             item.ParentId = input.DeliveryConditionId;
 
-            await _übersetzungService.CreateAsync(item, dbController, cancellationToken);
+            await _translationService.CreateAsync(item, dbController, cancellationToken);
         }
 
     }
 
     public Task DeleteAsync(DeliveryCondition input, IDbController dbController, CancellationToken cancellationToken = default)
     {
-        string sql = "DELETE FROM LIEFERBEDINGUNGEN WHERE LIEFERBEDINGUNG_ID = @LIEFERBEDINGUNG_ID";
+        string sql = "DELETE FROM DELIVERY_CONDITIONS WHERE LIEFERBEDINGUNG_ID = @LIEFERBEDINGUNG_ID";
 
         return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
     }
 
     public static async Task<List<DeliveryCondition>> GetAsync(IDbController dbController)
     {
-        string sql = "SELECT * FROM LIEFERBEDINGUNGEN";
+        string sql = "SELECT * FROM DELIVERY_CONDITIONS";
 
         var results = await dbController.SelectDataAsync<DeliveryCondition>(sql);
 
 
-        var übersetzungen = await TranslationService.GetAsync(GetTranslationCode(), dbController);
+        var translations = await TranslationService.GetAsync(GetTranslationCode(), dbController);
 
         foreach (var item in results)
         {
-            item.Übersetzungen = übersetzungen.Where(x => x.ParentId == item.DeliveryConditionId).ToList();
+            item.Translations = translations.Where(x => x.ParentId == item.DeliveryConditionId).ToList();
         }
 
         return results;
     }
-    public async Task<DeliveryCondition?> GetAsync(int? identifier, IDbController dbController, CancellationToken cancellationToken = default)
+    public async Task<DeliveryCondition?> GetAsync(int? deliveryConditionId, IDbController dbController, CancellationToken cancellationToken = default)
     {
-        if (identifier is null)
+        if (deliveryConditionId is null)
         {
             return null;
         }
@@ -90,22 +88,22 @@ public class DeliveryConditionService : IModelService<DeliveryCondition, int?, D
         string sql =
             """
             SELECT 
-                L.*,
-                U.ANZEIGENAME AS BEARBEITER_NAME
-            FROM LIEFERBEDINGUNGEN L
-            LEFT JOIN USERS U ON (U.USER_ID = L.LETZTER_BEARBEITER)
+                DC.*,
+                U.DISPLAY_NAME AS BEARBEITER_NAME
+            FROM DELIVERY_CONDITIONS DC
+            LEFT JOIN USERS U ON (U.USER_ID = DC.LAST_MODIFIED_BY)
             WHERE 
-                LIEFERBEDINGUNG_ID = @LIEFERBEDINGUNG_ID
+                DELIVERY_CONDITION_ID = @DELIVERY_CONDITION_ID
             """;
 
         var result = await dbController.GetFirstAsync<DeliveryCondition>(sql, new
         {
-            LIEFERBEDINGUNG_ID = identifier
+            DELIVERY_CONDITION_ID = deliveryConditionId
         }, cancellationToken);
 
         if (result is not null)
         {
-            result.Übersetzungen = await _übersetzungService.GetAsync(GetTranslationCode(), result.DeliveryConditionId, dbController, cancellationToken);
+            result.Translations = await _translationService.GetAsync(GetTranslationCode(), result.DeliveryConditionId, dbController, cancellationToken);
         }
 
         return result;
@@ -118,23 +116,23 @@ public class DeliveryConditionService : IModelService<DeliveryCondition, int?, D
         $"""
         SELECT 
             FIRST {filter.Limit} SKIP {(filter.PageNumber - 1) * filter.Limit}
-                L.*,
-                U.ANZEIGENAME AS BEARBEITER_NAME 
-            FROM LIEFERBEDINGUNGEN L 
-            LEFT JOIN USERS U ON (U.USER_ID = L.LETZTER_BEARBEITER)
+                DC.*,
+                U.DISPLAY_NAME AS BEARBEITER_NAME 
+            FROM DELIVERY_CONDITIONS DC 
+            LEFT JOIN USERS U ON (U.USER_ID = DC.LAST_MODIFIED_BY)
             WHERE 1 = 1
             {GetFilterWhere(filter)}
-            ORDER BY LIEFERBEDINGUNG_ID DESC
+            ORDER BY DELIVERY_CONDITION_ID DESC
         """;
 
         var results = await dbController.SelectDataAsync<DeliveryCondition>(sql, filter.GetParameters(), cancellationToken);
         if (results.Count > 0)
         {
-            var anredeIds = results.Select(x => x.DeliveryConditionId).ToArray();
-            var übersetzungen = await _übersetzungService.GetAsync(GetTranslationCode(), anredeIds, dbController, cancellationToken);
+            var deliveryConditionIds = results.Select(x => x.DeliveryConditionId).ToArray();
+            var tranlations = await _translationService.GetAsync(GetTranslationCode(), deliveryConditionIds, dbController, cancellationToken);
             foreach (var item in results)
             {
-                item.Übersetzungen = übersetzungen.Where(x => x.ParentId == item.DeliveryConditionId).ToList();
+                item.Translations = tranlations.Where(x => x.ParentId == item.DeliveryConditionId).ToList();
             }
         }
 
@@ -168,7 +166,7 @@ public class DeliveryConditionService : IModelService<DeliveryCondition, int?, D
             $"""
             SELECT 
                 COUNT(*)
-            FROM LIEFERBEDINGUNGEN
+            FROM DELIVERY_CONDITIONS
             WHERE 1 = 1
             {GetFilterWhere(filter)}
             """;
@@ -177,36 +175,35 @@ public class DeliveryConditionService : IModelService<DeliveryCondition, int?, D
         return dbController.GetFirstAsync<int>(sql, filter.GetParameters(), cancellationToken);
     }
 
-    public static string GetTranslationCode() => "LIEFERBEDINGUNG";
+    public static string GetTranslationCode() => "DELIVERY_CONDITION";
 
     public async Task UpdateAsync(DeliveryCondition input, IDbController dbController, CancellationToken cancellationToken = default)
     {
         string sql =
            """
-            UPDATE LIEFERBEDINGUNGEN SET 
-                NAME = @NAME,
-                VERSAND_MIT_SPEDITION = @VERSAND_MIT_SPEDITION,
-                IST_ABHOLUNG = @IST_ABHOLUNG,
-                VERFUEGBAR_KUNDE = @VERFUEGBAR_KUNDE,
-                VERFUEGBAR_LIEFERANT = @VERFUEGBAR_LIEFERANT,
-                IST_AKTIV = @IST_AKTIV,
-                LETZTER_BEARBEITER = @LETZTER_BEARBEITER,
-                ZULETZT_GEAENDERT = @ZULETZT_GEAENDERT            
+            UPDATE DELIVERY_CONDITIONS SET 
+                SHIPPING_BY_CARRIER = @SHIPPING_BY_CARRIER,
+                IS_PICKUP = @IS_PICKUP,
+                AVAILABLE_FOR_CUSTOMER = @AVAILABLE_FOR_CUSTOMER,
+                AVAILABLE_FOR_SUPPLIER = @AVAILABLE_FOR_SUPPLIER,
+                IS_ACTIVE = @IS_ACTIVE,
+                LAST_MODIFIED_BY = @LAST_MODIFIED_BY,
+                LAST_MODIFIED = @LAST_MODIFIED
             WHERE
-                LIEFERBEDINGUNG_ID = @LIEFERBEDINGUNG_ID
+                DELIVERY_CONDITION_ID = @DELIVERY_CONDITION_ID
             """;
 
 
         await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
 
 
-        await _übersetzungService.ClearAsync(GetTranslationCode(), input.DeliveryConditionId, dbController, cancellationToken);
-        foreach (var item in input.Übersetzungen)
+        await _translationService.ClearAsync(GetTranslationCode(), input.DeliveryConditionId, dbController, cancellationToken);
+        foreach (var item in input.Translations)
         {
             item.Code = GetTranslationCode();
             item.ParentId = input.DeliveryConditionId;
 
-            await _übersetzungService.CreateAsync(item, dbController, cancellationToken);
+            await _translationService.CreateAsync(item, dbController, cancellationToken);
         }
     }
 }
