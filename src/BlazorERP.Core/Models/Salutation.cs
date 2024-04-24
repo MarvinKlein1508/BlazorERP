@@ -1,23 +1,17 @@
 ﻿using BlazorERP.Core.Interfaces;
+using BlazorERP.Core.Models.Abstract;
 
 namespace BlazorERP.Core.Models;
 
-public class Salutation : IDbModel<int?>
+public class Salutation : TranslationBase, IDbModel<int?>
 {   
     public int SalutationId { get; set; }
     public int? LastModifiedBy { get; set; }
     public DateTime LastModified { get; set; }
 
-
     public int? GetIdentifier() => SalutationId > 0 ? SalutationId : null;
 
-    public string GetName(int languageId)
-    {
-        var translation = Translations.First(x => x.LanguageId == languageId);
-        return translation.ValueText;
-    }
-
-    public List<Translation> Translations { get; set; } = [];
+    
 
     public Dictionary<string, object?> GetParameters()
     {

@@ -45,7 +45,7 @@ public class CountryService : IModelService<Country, int?, CountryFilter>, ITran
 
         input.CountryId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
 
-        foreach (var item in input.Übersetzungen)
+        foreach (var item in input.Translations)
         {
             item.Code = GetTranslationCode();
             item.ParentId = input.CountryId;
@@ -73,7 +73,7 @@ public class CountryService : IModelService<Country, int?, CountryFilter>, ITran
 
         foreach (var item in results)
         {
-            item.Übersetzungen = translations.Where(x => x.ParentId == item.CountryId).ToList();
+            item.Translations = translations.Where(x => x.ParentId == item.CountryId).ToList();
         }
 
         return results;
@@ -102,7 +102,7 @@ public class CountryService : IModelService<Country, int?, CountryFilter>, ITran
 
         if (result is not null)
         {
-            result.Übersetzungen = await _translationService.GetAsync(GetTranslationCode(), result.CountryId, dbController, cancellationToken);
+            result.Translations = await _translationService.GetAsync(GetTranslationCode(), result.CountryId, dbController, cancellationToken);
         }
 
         return result;
@@ -127,11 +127,11 @@ public class CountryService : IModelService<Country, int?, CountryFilter>, ITran
         var results = await dbController.SelectDataAsync<Country>(sql, filter.GetParameters(), cancellationToken);
         if (results.Count > 0)
         {
-            var landIds = results.Select(x => x.CountryId).ToArray();
-            var übersetzungen = await _translationService.GetAsync(GetTranslationCode(), landIds, dbController, cancellationToken);
+            var countryIds = results.Select(x => x.CountryId).ToArray();
+            var translations = await _translationService.GetAsync(GetTranslationCode(), countryIds, dbController, cancellationToken);
             foreach (var item in results)
             {
-                item.Übersetzungen = übersetzungen.Where(x => x.ParentId == item.CountryId).ToList();
+                item.Translations = translations.Where(x => x.ParentId == item.CountryId).ToList();
             }
         }
 
@@ -195,7 +195,7 @@ public class CountryService : IModelService<Country, int?, CountryFilter>, ITran
 
 
         await _translationService.ClearAsync(GetTranslationCode(), input.CountryId, dbController, cancellationToken);
-        foreach (var item in input.Übersetzungen)
+        foreach (var item in input.Translations)
         {
             item.Code = GetTranslationCode();
             item.ParentId = input.CountryId;

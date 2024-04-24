@@ -1,8 +1,9 @@
 ﻿using BlazorERP.Core.Interfaces;
+using BlazorERP.Core.Models.Abstract;
 
 namespace BlazorERP.Core.Models;
 
-public class Country : IDbModel<int?>
+public class Country : TranslationBase, IDbModel<int?>
 {
     public int CountryId { get; set; }
     public string ISO2 { get; set; } = string.Empty;
@@ -13,15 +14,10 @@ public class Country : IDbModel<int?>
     public bool IsActive { get; set; }
     public int? LastModifiedBy { get; set; }
     public DateTime? LastModified { get; set; }
-    public List<Translation> Übersetzungen { get; set; } = [];
+
     public int? GetIdentifier() => CountryId > 0 ? CountryId : null;
 
 
-    public string GetName(int languageId)
-    {
-        var translation = Übersetzungen.First(x => x.LanguageId == languageId);
-        return translation.ValueText;
-    }
 
     public string BearbeiterName { get; set; } = string.Empty;
     public Dictionary<string, object?> GetParameters()

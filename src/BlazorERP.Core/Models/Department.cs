@@ -1,8 +1,9 @@
 ﻿using BlazorERP.Core.Interfaces;
+using BlazorERP.Core.Models.Abstract;
 
 namespace BlazorERP.Core.Models;
 
-public class Department : IDbModel<int?>
+public class Department : TranslationBase, IDbModel<int?>
 {
     public int DepartmentId { get; set; }
     public string ActiveDirectoryGroupCN { get; set; } = string.Empty;
@@ -12,13 +13,7 @@ public class Department : IDbModel<int?>
 
     public int? GetIdentifier() => DepartmentId <= 0 ? null : DepartmentId;
 
-    public List<Translation> Translations { get; set; } = [];
 
-    public string GetName(int languageId)
-    {
-        var translation = Translations.First(x => x.LanguageId == languageId);
-        return translation.ValueText;
-    }
 
     public Dictionary<string, object?> GetParameters()
     {
