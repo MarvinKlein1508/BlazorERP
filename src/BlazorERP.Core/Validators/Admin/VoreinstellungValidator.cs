@@ -13,7 +13,7 @@ public class VoreinstellungValidator : AbstractValidator<Configuration>
         RuleFor(x => x.Name)
             .MaximumLength(50);
 
-        RuleFor(x => x.KundeKreditlimit)
+        RuleFor(x => x.CustomerCreditLimit)
             .GreaterThanOrEqualTo(0);
 
     }

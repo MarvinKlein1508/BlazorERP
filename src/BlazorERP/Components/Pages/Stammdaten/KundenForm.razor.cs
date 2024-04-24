@@ -30,14 +30,14 @@ public partial class KundenForm
 
             if (defaults is not null)
             {
-                Input.AnredeId = defaults.KundeAnredeId;
-                Input.NeutralerVersand = defaults.KundeNeutralerVersand;
-                Input.Waehrungscode = defaults.KundeWaehrungscode;
-                Input.SprachId = defaults.KundeSprachId;
-                Input.Kreditlimit = defaults.KundeKreditlimit;
-                Input.LandId = defaults.KundeLandId;
-                Input.LieferbedingungId = defaults.KundeLieferbedingungId;
-                Input.ZahlungsbedingungId = defaults.KundeZahlungsbedingungId;
+                Input.AnredeId = defaults.CustomerSalutationId;
+                Input.NeutralerVersand = defaults.CustomerNeutralShipping;
+                Input.Waehrungscode = defaults.CustomerCurrencyCode;
+                Input.SprachId = defaults.CustomerLanguageId;
+                Input.Kreditlimit = defaults.CustomerCreditLimit;
+                Input.LandId = defaults.CustomerCountryId;
+                Input.LieferbedingungId = defaults.CustomerDeliveryConditionId;
+                Input.ZahlungsbedingungId = defaults.CustomerPaymentConditionId;
             }
         }
     }

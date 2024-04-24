@@ -12,34 +12,36 @@ public class ConfigurationService : IModelService<Configuration, int?, Configura
         cancellationToken.ThrowIfCancellationRequested();
         string sql =
             """
-            INSERT INTO VOREINSTELLUNGEN
+            INSERT INTO CONFIGURATION
             (
                 NAME,
-                KUNDE_LIEFERBEDINGUNG_ID,
-                KUNDE_ZAHLUNGSBEDINGUNG_ID,
-                KUNDE_ANREDE_ID,
-                KUNDE_WAEHRUNGSCODE,
-                KUNDE_LAND_ID,
-                KUNDE_SPRACH_ID,
-                KUNDE_KREDITLIMIT,
-                KUNDE_NEUTRALER_VERSAND,
-                LETZTER_BEARBEITER,
-                ZULETZT_GEAENDERT
+                DEFAULT_LANGUAGE_ID,
+                CUSTOMER_DELIVERY_CONDITION_ID,
+                CUSTOMER_PAYMENT_CONDITION_ID,
+                CUSTOMER_SALUTATION_ID,
+                CUSTOMER_CURRENCY_CODE,
+                CUSTOMER_COUNTRY_ID,
+                CUSTOMER_LANGUAGE_ID,
+                CUSTOMER_CREDIT_LIMIT,
+                CUSTOMER_NEUTRAL_SHIPPING,
+                LAST_MODIFIED_BY,
+                LAST_MODIFIED
             )
             VALUES
             (
                 @NAME,
-                @KUNDE_LIEFERBEDINGUNG_ID,
-                @KUNDE_ZAHLUNGSBEDINGUNG_ID,
-                @KUNDE_ANREDE_ID,
-                @KUNDE_WAEHRUNGSCODE,
-                @KUNDE_LAND_ID,
-                @KUNDE_SPRACH_ID,
-                @KUNDE_KREDITLIMIT,
-                @KUNDE_NEUTRALER_VERSAND,
-                @LETZTER_BEARBEITER,
-                @ZULETZT_GEAENDERT
-            ) RETURNING VOREINSTELLUNG_ID;
+                @DEFAULT_LANGUAGE_ID,
+                @CUSTOMER_DELIVERY_CONDITION_ID,
+                @CUSTOMER_PAYMENT_CONDITION_ID,
+                @CUSTOMER_SALUTATION_ID,
+                @CUSTOMER_CURRENCY_CODE,
+                @CUSTOMER_COUNTRY_ID,
+                @CUSTOMER_LANGUAGE_ID,
+                @CUSTOMER_CREDIT_LIMIT,
+                @CUSTOMER_NEUTRAL_SHIPPING,
+                @LAST_MODIFIED_BY,
+                @LAST_MODIFIED
+            ) RETURNING CONFIGURATION_ID;
             """;
 
         input.ConfigurationId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
@@ -47,14 +49,14 @@ public class ConfigurationService : IModelService<Configuration, int?, Configura
 
     public Task DeleteAsync(Configuration input, IDbController dbController, CancellationToken cancellationToken = default)
     {
-        string sql = "DELETE FROM VOREINSTELLUNGEN WHERE VOREINSTELLUNG_ID = @VOREINSTELLUNG_ID";
+        string sql = "DELETE FROM CONFIGURATION WHERE CONFIGURATION_ID = @CONFIGURATION_ID";
 
         return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
     }
 
-    public Task<Configuration?> GetAsync(int? identifier, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task<Configuration?> GetAsync(int? configurationId, IDbController dbController, CancellationToken cancellationToken = default)
     {
-        if (identifier is null)
+        if (configurationId is null)
         {
             return Task.FromResult<Configuration?>(null);
         }
@@ -62,17 +64,17 @@ public class ConfigurationService : IModelService<Configuration, int?, Configura
         string sql =
             """
             SELECT 
-                V.*,
-                U.ANZEIGENAME AS BEARBEITER_NAME
-            FROM VOREINSTELLUNGEN V
-            LEFT JOIN USERS U ON (U.USER_ID = V.LETZTER_BEARBEITER)
+                C.*,
+                U.DISPLAY_NAME AS BEARBEITER_NAME
+            FROM CONFIGURATION C
+            LEFT JOIN USERS U ON (U.USER_ID = C.LAST_MODIFIED_BY)
             WHERE 
-                VOREINSTELLUNG_ID = @VOREINSTELLUNG_ID
+                CONFIGURATION_ID = @CONFIGURATION_ID
             """;
 
         return dbController.GetFirstAsync<Configuration>(sql, new
         {
-            VOREINSTELLUNG_ID = identifier
+            CONFIGURATION_ID = configurationId
         }, cancellationToken);
     }
 
@@ -83,13 +85,13 @@ public class ConfigurationService : IModelService<Configuration, int?, Configura
         $"""
         SELECT 
             FIRST {filter.Limit} SKIP {(filter.PageNumber - 1) * filter.Limit}
-                V.*,
-                U.ANZEIGENAME AS BEARBEITER_NAME
-            FROM VOREINSTELLUNGEN V
-            LEFT JOIN USERS U ON (U.USER_ID = V.LETZTER_BEARBEITER)
+                C.*,
+                U.DISPLAY_NAME AS BEARBEITER_NAME
+            FROM CONFIGURATION C
+            LEFT JOIN USERS U ON (U.USER_ID = C.LAST_MODIFIED_BY)
             WHERE 1 = 1
             {GetFilterWhere(filter)}
-            ORDER BY VOREINSTELLUNG_ID DESC
+            ORDER BY CONFIGURATION_ID DESC
         """;
 
         return dbController.SelectDataAsync<Configuration>(sql, filter.GetParameters(), cancellationToken);
@@ -122,7 +124,7 @@ public class ConfigurationService : IModelService<Configuration, int?, Configura
             $"""
             SELECT 
                 COUNT(*)
-            FROM VOREINSTELLUNGEN
+            FROM CONFIGURATION
             WHERE 1 = 1
             {GetFilterWhere(filter)}
             """;
@@ -136,20 +138,21 @@ public class ConfigurationService : IModelService<Configuration, int?, Configura
     {
         string sql =
            """
-            UPDATE VOREINSTELLUNGEN SET 
+            UPDATE CONFIGURATION SET 
                 NAME = @NAME,
-                KUNDE_LIEFERBEDINGUNG_ID = @KUNDE_LIEFERBEDINGUNG_ID,
-                KUNDE_ZAHLUNGSBEDINGUNG_ID = @KUNDE_ZAHLUNGSBEDINGUNG_ID,
-                KUNDE_ANREDE_ID = @KUNDE_ANREDE_ID,
-                KUNDE_WAEHRUNGSCODE = @KUNDE_WAEHRUNGSCODE,
-                KUNDE_LAND_ID = @KUNDE_LAND_ID,
-                KUNDE_SPRACH_ID = @KUNDE_SPRACH_ID,
-                KUNDE_KREDITLIMIT = @KUNDE_KREDITLIMIT,
-                KUNDE_NEUTRALER_VERSAND = @KUNDE_NEUTRALER_VERSAND,
-                LETZTER_BEARBEITER = @LETZTER_BEARBEITER,
-                ZULETZT_GEAENDERT = @ZULETZT_GEAENDERT
+                DEFAULT_LANGUAGE_ID = @DEFAULT_LANGUAGE_ID,
+                CUSTOMER_DELIVERY_CONDITION_ID = @CUSTOMER_DELIVERY_CONDITION_ID,
+                CUSTOMER_PAYMENT_CONDITION_ID = @CUSTOMER_PAYMENT_CONDITION_ID,
+                CUSTOMER_SALUTATION_ID = @CUSTOMER_SALUTATION_ID,
+                CUSTOMER_CURRENCY_CODE = @CUSTOMER_CURRENCY_CODE,
+                CUSTOMER_COUNTRY_ID = @CUSTOMER_COUNTRY_ID,
+                CUSTOMER_LANGUAGE_ID = @CUSTOMER_LANGUAGE_ID,
+                CUSTOMER_CREDIT_LIMIT = @CUSTOMER_CREDIT_LIMIT,
+                CUSTOMER_NEUTRAL_SHIPPING = @CUSTOMER_NEUTRAL_SHIPPING,
+                LAST_MODIFIED_BY = @LAST_MODIFIED_BY,
+                LAST_MODIFIED = @LAST_MODIFIED
             WHERE
-                VOREINSTELLUNG_ID = @VOREINSTELLUNG_ID
+                CONFIGURATION_ID = @CONFIGURATION_ID
             """;
 
 
