@@ -5,9 +5,9 @@ using System.Text;
 
 namespace BlazorERP.Core.Services;
 
-public class VoreinstellungService : IModelService<Voreinstellung, int?, VoreinstellungFilter>
+public class ConfigurationService : IModelService<Configuration, int?, ConfigurationFilter>
 {
-    public async Task CreateAsync(Voreinstellung input, IDbController dbController, CancellationToken cancellationToken = default)
+    public async Task CreateAsync(Configuration input, IDbController dbController, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         string sql =
@@ -42,21 +42,21 @@ public class VoreinstellungService : IModelService<Voreinstellung, int?, Voreins
             ) RETURNING VOREINSTELLUNG_ID;
             """;
 
-        input.VoreinstellungId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
+        input.ConfigurationId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
     }
 
-    public Task DeleteAsync(Voreinstellung input, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task DeleteAsync(Configuration input, IDbController dbController, CancellationToken cancellationToken = default)
     {
         string sql = "DELETE FROM VOREINSTELLUNGEN WHERE VOREINSTELLUNG_ID = @VOREINSTELLUNG_ID";
 
         return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
     }
 
-    public Task<Voreinstellung?> GetAsync(int? identifier, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task<Configuration?> GetAsync(int? identifier, IDbController dbController, CancellationToken cancellationToken = default)
     {
         if (identifier is null)
         {
-            return Task.FromResult<Voreinstellung?>(null);
+            return Task.FromResult<Configuration?>(null);
         }
 
         string sql =
@@ -70,13 +70,13 @@ public class VoreinstellungService : IModelService<Voreinstellung, int?, Voreins
                 VOREINSTELLUNG_ID = @VOREINSTELLUNG_ID
             """;
 
-        return dbController.GetFirstAsync<Voreinstellung>(sql, new
+        return dbController.GetFirstAsync<Configuration>(sql, new
         {
             VOREINSTELLUNG_ID = identifier
         }, cancellationToken);
     }
 
-    public Task<List<Voreinstellung>> GetAsync(VoreinstellungFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task<List<Configuration>> GetAsync(ConfigurationFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         string sql =
@@ -92,12 +92,12 @@ public class VoreinstellungService : IModelService<Voreinstellung, int?, Voreins
             ORDER BY VOREINSTELLUNG_ID DESC
         """;
 
-        return dbController.SelectDataAsync<Voreinstellung>(sql, filter.GetParameters(), cancellationToken);
+        return dbController.SelectDataAsync<Configuration>(sql, filter.GetParameters(), cancellationToken);
     }
 
  
 
-    public string GetFilterWhere(VoreinstellungFilter filter)
+    public string GetFilterWhere(ConfigurationFilter filter)
     {
         StringBuilder sb = new();
 
@@ -115,7 +115,7 @@ public class VoreinstellungService : IModelService<Voreinstellung, int?, Voreins
         return sql;
     }
 
-    public Task<int> GetTotalAsync(VoreinstellungFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task<int> GetTotalAsync(ConfigurationFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         string sql =
@@ -132,7 +132,7 @@ public class VoreinstellungService : IModelService<Voreinstellung, int?, Voreins
     }
 
 
-    public async Task UpdateAsync(Voreinstellung input, IDbController dbController, CancellationToken cancellationToken = default)
+    public async Task UpdateAsync(Configuration input, IDbController dbController, CancellationToken cancellationToken = default)
     {
         string sql =
            """

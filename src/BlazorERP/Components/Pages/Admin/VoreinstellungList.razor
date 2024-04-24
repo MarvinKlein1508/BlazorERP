@@ -1,6 +1,6 @@
 ﻿@page "/Admin/Voreinstellungen"
 @inject AuthService authService
-@inherits SearchPageBase<Voreinstellung, VoreinstellungService, VoreinstellungFilter>
+@inherits SearchPageBase<Configuration, ConfigurationService, ConfigurationFilter>
 
 <PageTitle>Voreinstellungen</PageTitle>
 
@@ -30,7 +30,7 @@
                         <div class="list-details">
                             <div class="list-item" hidden-when="xs sm">
                                 <label>Id</label>
-                                <span>@item.VoreinstellungId</span>
+                                <span>@item.ConfigurationId</span>
                             </div>
 
                             <div class="list-item">

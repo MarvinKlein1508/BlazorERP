@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace BlazorERP.Core.Validators.Admin;
 
-public class VoreinstellungValidator : AbstractValidator<Voreinstellung>
+public class VoreinstellungValidator : AbstractValidator<Configuration>
 {
     public VoreinstellungValidator()
     {

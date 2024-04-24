@@ -2,7 +2,7 @@
 @using BlazorERP.Core.Validators.Admin
 @using Microsoft.AspNetCore.Identity
 @inject AuthService authService
-@inherits EditPageBase<int?, Voreinstellung, VoreinstellungService>
+@inherits EditPageBase<int?, Configuration, ConfigurationService>
 @inject LanguageService spracheService
 @inject IMessageService messageService
 @inject IDialogService DialogService
@@ -42,8 +42,8 @@
                         @if (Modus is EditMode.Edit)
                         {
                             <div class="col-12">
-                                <FluentNumberField @bind-Value="Input.VoreinstellungId" Label="VoreinstellungId" Disabled />
-                                <FluentValidationMessage For="() => Input.VoreinstellungId" />
+                                <FluentNumberField @bind-Value="Input.ConfigurationId" Label="VoreinstellungId" Disabled />
+                                <FluentValidationMessage For="() => Input.ConfigurationId" />
                             </div>
                         }
 
@@ -164,7 +164,7 @@
 
 
     protected override string GetListUrl() => "/Admin/Voreinstellungen";
-    protected override string GetEntityRedirectUrl() => $"/Admin/Voreinstellungen/Edit?voreinstellungId={Input!.VoreinstellungId}";
+    protected override string GetEntityRedirectUrl() => $"/Admin/Voreinstellungen/Edit?voreinstellungId={Input!.ConfigurationId}";
 
     protected override async Task OnInitializedAsync()
     {
