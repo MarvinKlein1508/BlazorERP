@@ -2,7 +2,7 @@
 
 namespace BlazorERP.Core.Models;
 
-public class Währung : IDbModelWithName<string?>
+public class Currency : IDbModelWithName<string?>
 {
     public string Code { get; set; } = string.Empty;
     public decimal Kurs { get; set; }

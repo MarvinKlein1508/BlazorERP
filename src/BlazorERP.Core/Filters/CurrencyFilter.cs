@@ -1,7 +1,7 @@
 ﻿
 namespace BlazorERP.Core.Filters;
 
-public class WährungFilter : PageFilterBase
+public class CurrencyFilter : PageFilterBase
 {
     public override Dictionary<string, object?> GetParameters()
     {

@@ -126,11 +126,11 @@
                                 <FluentValidationMessage For="() => Input.KundeAnredeId" />
                             </div>
                             <div class="col-md-6">
-                                <FluentSelect TOption="Währung" Label="Währung" Width="100%;">
+                                <FluentSelect TOption="Currency" Label="Währung" Width="100%;">
                                     <FluentOption Value="null" Selected="@(Input.KundeWaehrungscode is null)" OnSelect="(val) => Input.KundeWaehrungscode = null">--- Auswählen ---</FluentOption>
-                                    @foreach (var item in Storage.Get<Währung>())
+                                    @foreach (var item in Storage.Get<Currency>())
                                     {
-                                        <FluentOption TOption="Währung" Value="@item.Code" Selected="@(Input.KundeWaehrungscode == item.Code)" OnSelect="(val) => Input.KundeWaehrungscode = item.Code">@item.Code</FluentOption>
+                                        <FluentOption TOption="Currency" Value="@item.Code" Selected="@(Input.KundeWaehrungscode == item.Code)" OnSelect="(val) => Input.KundeWaehrungscode = item.Code">@item.Code</FluentOption>
                                     }
                                 </FluentSelect>
                                 <FluentValidationMessage For="() => Input.KundeWaehrungscode" />

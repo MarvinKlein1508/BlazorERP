@@ -40,7 +40,7 @@ builder.Services.AddScoped<SalutationService>();
 builder.Services.AddScoped<TranslationService>();
 builder.Services.AddScoped<LanguageService>();
 builder.Services.AddScoped<CountryService>();
-builder.Services.AddScoped<WährungService>();
+builder.Services.AddScoped<CurrencyService>();
 builder.Services.AddScoped<KostenstelleService>();
 builder.Services.AddScoped<ZahlungsbedingungService>();
 builder.Services.AddScoped<LieferbedingungService>();

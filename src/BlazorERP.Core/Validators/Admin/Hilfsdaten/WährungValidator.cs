@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace BlazorERP.Core.Validators.Admin.Hilfsdaten;
 
-public class WährungValidator : AbstractValidator<Währung>
+public class WährungValidator : AbstractValidator<Currency>
 {
     public WährungValidator()
     {
