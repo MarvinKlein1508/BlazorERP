@@ -12,7 +12,7 @@ public partial class KundenForm
 {
 
     private bool _showOptionsMenu;
-    private KundeValidator _validator = new();
+    private CustomerValidator _validator = new();
 
     protected override string GetListUrl() => "/Stammdaten/Kunden";
     protected override string GetEntityRedirectUrl() => $"/Stammdaten/Kunden/Edit?kundennummer={Input!.Kundennummer}";

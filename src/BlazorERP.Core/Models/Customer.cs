@@ -2,7 +2,7 @@
 
 namespace BlazorERP.Core.Models;
 
-public class Kunde : IDbModelWithName<string?>
+public class Customer : IDbModelWithName<string?>
 {
     public string Kundennummer { get; set; } = string.Empty;
     public string Firma { get; set; } = string.Empty;

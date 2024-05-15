@@ -5,9 +5,9 @@ using System.Text;
 
 namespace BlazorERP.Core.Services;
 
-public class KundeService : IModelService<Kunde, string?, KundeFilter>
+public class CustomerService : IModelService<Customer, string?, CustomerFilter>
 {
-    public async Task CreateAsync(Kunde input, IDbController dbController, CancellationToken cancellationToken = default)
+    public async Task CreateAsync(Customer input, IDbController dbController, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         string sql =
@@ -79,29 +79,29 @@ public class KundeService : IModelService<Kunde, string?, KundeFilter>
         input.Kundennummer = (await dbController.GetFirstAsync<string>(sql, input.GetParameters(), cancellationToken))!;
     }
 
-    public Task DeleteAsync(Kunde input, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task DeleteAsync(Customer input, IDbController dbController, CancellationToken cancellationToken = default)
     {
         string sql = "DELETE FROM KUNDEN WHERE KUNDENNUMMER = @KUNDENNUMMER";
 
         return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
     }
 
-    public Task<Kunde?> GetAsync(string? identifier, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task<Customer?> GetAsync(string? identifier, IDbController dbController, CancellationToken cancellationToken = default)
     {
         if (identifier is null)
         {
-            return Task.FromResult<Kunde?>(null);
+            return Task.FromResult<Customer?>(null);
         }
 
         string sql = "SELECT * FROM KUNDEN WHERE KUNDENNUMMER = @KUNDENNUMMER";
 
-        return dbController.GetFirstAsync<Kunde>(sql, new
+        return dbController.GetFirstAsync<Customer>(sql, new
         {
             KUNDENNUMMER = identifier
         }, cancellationToken);
     }
 
-    public Task<List<Kunde>> GetAsync(KundeFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task<List<Customer>> GetAsync(CustomerFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         string sql =
@@ -115,12 +115,12 @@ public class KundeService : IModelService<Kunde, string?, KundeFilter>
             ORDER BY KUNDENNUMMER DESC
         """;
 
-        return dbController.SelectDataAsync<Kunde>(sql, filter.GetParameters(), cancellationToken);
+        return dbController.SelectDataAsync<Customer>(sql, filter.GetParameters(), cancellationToken);
     }
 
  
 
-    public string GetFilterWhere(KundeFilter filter)
+    public string GetFilterWhere(CustomerFilter filter)
     {
         StringBuilder sb = new();
 
@@ -140,7 +140,7 @@ public class KundeService : IModelService<Kunde, string?, KundeFilter>
         return sql;
     }
 
-    public Task<int> GetTotalAsync(KundeFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task<int> GetTotalAsync(CustomerFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         string sql =
@@ -156,7 +156,7 @@ public class KundeService : IModelService<Kunde, string?, KundeFilter>
         return dbController.GetFirstAsync<int>(sql, filter.GetParameters(), cancellationToken);
     }
 
-    public async Task UpdateAsync(Kunde input, IDbController dbController, CancellationToken cancellationToken = default)
+    public async Task UpdateAsync(Customer input, IDbController dbController, CancellationToken cancellationToken = default)
     {
         string sql =
            """

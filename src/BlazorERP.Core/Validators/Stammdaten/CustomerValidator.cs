@@ -4,9 +4,9 @@ using FluentValidation.Results;
 
 namespace BlazorERP.Core.Validators.Stammdaten;
 
-public class KundeValidator : AbstractValidator<Kunde>
+public class CustomerValidator : AbstractValidator<Customer>
 {
-    public KundeValidator()
+    public CustomerValidator()
     {
         RuleFor(x => x.Firma)
                 .NotEmpty()

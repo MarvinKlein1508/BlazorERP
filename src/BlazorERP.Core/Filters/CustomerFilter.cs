@@ -1,7 +1,7 @@
 ﻿
 namespace BlazorERP.Core.Filters;
 
-public class KundeFilter : PageFilterBase
+public class CustomerFilter : PageFilterBase
 {
     public override Dictionary<string, object?> GetParameters()
     {

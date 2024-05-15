@@ -44,7 +44,7 @@ builder.Services.AddScoped<CurrencyService>();
 builder.Services.AddScoped<KostenstelleService>();
 builder.Services.AddScoped<PaymentConditionService>();
 builder.Services.AddScoped<DeliveryConditionService>();
-builder.Services.AddScoped<KundeService>();
+builder.Services.AddScoped<CustomerService>();
 builder.Services.AddScoped<ConfigurationService>();
 builder.Services.AddScoped<NumberRangeService>();
 builder.Services.AddScoped<AnschriftService>();
