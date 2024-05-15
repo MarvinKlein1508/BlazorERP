@@ -1,47 +1,48 @@
 ﻿using BlazorERP.Core.Interfaces;
+using System.Net;
 
 namespace BlazorERP.Core.Models;
 
 public class Customer : IDbModelWithName<string?>
 {
-    public string Kundennummer { get; set; } = string.Empty;
-    public string Firma { get; set; } = string.Empty;
+    public string CustomerNumber { get; set; } = string.Empty;
+    public string Company { get; set; } = string.Empty;
     public string Name1 { get; set; } = string.Empty;
     public string Name2 { get; set; } = string.Empty;
 
-    public DateTime? Anlagedatum { get; set; }
-    public int? SprachId { get; set; }
-    public int? LandId { get; set; }
-    public string Strasse { get; set; } = string.Empty;
-    public string Postleitzahl { get; set; } = string.Empty;
-    public string Ort { get; set; } = string.Empty;
+    public DateTime? CreationDate { get; set; }
+    public int? LanguageId { get; set; }
+    public int? CountryId { get; set; }
+    public string Street { get; set; } = string.Empty;
+    public string PostalCode { get; set; } = string.Empty;
+    public string City { get; set; } = string.Empty;
 
-    public string Telefonnummer { get; set; } = string.Empty;
-    public string Mobilnummer { get; set; } = string.Empty;
-    public string Faxnummer { get; set; } = string.Empty;
+    public string PhoneNumber { get; set; } = string.Empty;
+    public string MobileNumber { get; set; } = string.Empty;
+    public string FaxNumber { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string Website { get; set; } = string.Empty;
-    public string Notiz { get; set; } = string.Empty;
-    public int? AnredeId { get; set; }
-    public int? ZahlungsbedingungId { get; set; }
-    public int? LieferbedingungId { get; set; }
-    public string UmsatzsteuerIdentifikationsnummer { get; set; } = string.Empty;
-    public decimal Kreditlimit { get; set; }
+    public string Note { get; set; } = string.Empty;
+    public int? SalutationId { get; set; }
+    public int? PaymentConditionId { get; set; }
+    public int? DeliveryConditionId { get; set; }
+    public string VatIdentificationNumber { get; set; } = string.Empty;
+    public decimal CreditLimit { get; set; }
     public string IBAN { get; set; } = string.Empty;
     public string BIC { get; set; } = string.Empty;
-    public bool IstGesperrt { get; set; }
-    public bool NeutralerVersand { get; set; }
-    public string? Waehrungscode { get; set; }
-    public int? LetzterBearbeiter { get; set; }
-    public DateTime? ZuletztGeaendert { get; set; }
+    public bool IsBlocked { get; set; }
+    public bool NeutralShipping { get; set; }
+    public string? CurrencyCode { get; set; }
+    public int? LastModifiedBy { get; set; }
+    public DateTime? LastModified { get; set; }
 
-    public string? GetIdentifier() => string.IsNullOrWhiteSpace(Kundennummer) ? null : Kundennummer;
+    public string? GetIdentifier() => string.IsNullOrWhiteSpace(CustomerNumber) ? null : CustomerNumber;
 
     public string GetName()
     {
-        if(!string.IsNullOrWhiteSpace(Firma))
+        if(!string.IsNullOrWhiteSpace(Company))
         {
-            return Firma;
+            return Company;
         }
 
         if(!string.IsNullOrWhiteSpace(Name1))
@@ -56,34 +57,34 @@ public class Customer : IDbModelWithName<string?>
     {
         return new Dictionary<string, object?>
         {
-            { "KUNDENNUMMER", Kundennummer },
-            { "FIRMA", Firma },
+            { "CUSTOMER_NUMBER", CustomerNumber },
+            { "COMPANY", Company },
             { "NAME1", Name1 },
             { "NAME2", Name2 },
-            { "ANLAGEDATUM", Anlagedatum },
-            { "SPRACH_ID", SprachId },
-            { "LAND_ID", LandId },
-            { "STRASSE", Strasse },
-            { "POSTLEITZAHL", Postleitzahl },
-            { "ORT", Ort },
-            { "TELEFONNUMMER", Telefonnummer },
-            { "MOBILNUMMER", Mobilnummer },
-            { "FAXNUMMER", Faxnummer },
+            { "CREATION_DATE", CreationDate },
+            { "LANGUAGE_ID", LanguageId },
+            { "COUNTRY_ID", CountryId },
+            { "STREET", Street },
+            { "POSTAL_CODE", PostalCode },
+            { "CITY", City },
+            { "PHONE_NUMBER", PhoneNumber },
+            { "MOBILE_NUMBER", MobileNumber },
+            { "FAX_NUMBER", FaxNumber },
             { "EMAIL", Email },
             { "WEBSITE", Website },
-            { "NOTIZ", Notiz },
-            { "ANREDE_ID", AnredeId },
-            { "ZAHLUNGSBEDINGUNG_ID", ZahlungsbedingungId },
-            { "LIEFERBEDINGUNG_ID", LieferbedingungId },
-            { "UMSATZSTEUER_IDENTIFIKATIONSNUMMER", UmsatzsteuerIdentifikationsnummer },
-            { "KREDITLIMIT", Kreditlimit },
+            { "NOTE", Note },
+            { "SALUTATION_ID", SalutationId },
+            { "PAYMENT_CONDITION_ID", PaymentConditionId },
+            { "DELIVERY_CONDITION_ID", DeliveryConditionId },
+            { "VAT_IDENTIFICATION_NUMBER", VatIdentificationNumber },
+            { "CREDIT_LIMIT", CreditLimit },
             { "IBAN", IBAN },
             { "BIC", BIC },
-            { "IST_GESPERRT", IstGesperrt },
-            { "NEUTRALER_VERSAND", NeutralerVersand },
-            { "WAEHRUNGSCODE", Waehrungscode },
-            { "LETZTER_BEARBEITER", LetzterBearbeiter },
-            { "ZULETZT_GEAENDERT", ZuletztGeaendert },
+            { "IS_BLOCKED", IsBlocked },
+            { "NEUTRAL_SHIPPING", NeutralShipping },
+            { "CURRENCY_CODE", CurrencyCode },
+            { "LAST_MODIFIED_BY", LastModifiedBy },
+            { "LAST_MODIFIED", LastModified },
         };
     }
 }

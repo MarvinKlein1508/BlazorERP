@@ -8,16 +8,16 @@ public class CustomerValidator : AbstractValidator<Customer>
 {
     public CustomerValidator()
     {
-        RuleFor(x => x.Firma)
+        RuleFor(x => x.Company)
                 .NotEmpty()
                 .When(x => string.IsNullOrWhiteSpace(x.Name1));
 
-        RuleFor(x => x.Firma)
+        RuleFor(x => x.Company)
             .MaximumLength(60);
 
         RuleFor(x => x.Name1)
                 .NotEmpty()
-                .When(x => string.IsNullOrWhiteSpace(x.Firma));
+                .When(x => string.IsNullOrWhiteSpace(x.Company));
 
         RuleFor(x => x.Name1)
             .MaximumLength(60);
@@ -25,41 +25,41 @@ public class CustomerValidator : AbstractValidator<Customer>
         RuleFor(x => x.Name2)
             .MaximumLength(60);
 
-        RuleFor(x => x.Strasse)
+        RuleFor(x => x.Street)
             .MaximumLength(50)
             .NotEmpty();
 
-        RuleFor(x => x.Ort)
+        RuleFor(x => x.City)
             .MaximumLength(40)
             .NotEmpty();
 
-        RuleFor(x => x.LandId)
+        RuleFor(x => x.CountryId)
             .NotNull()
             .WithMessage("Wählen Sie ein Land aus.");
 
-        RuleFor(x => x.Postleitzahl)
+        RuleFor(x => x.PostalCode)
             .MaximumLength(8)
             .NotEmpty();
 
-        RuleFor(x => x.SprachId)
+        RuleFor(x => x.LanguageId)
             .NotNull()
             .WithMessage("Wählen Sie eine Sprache aus.");
 
-        RuleFor(x => x.Waehrungscode)
+        RuleFor(x => x.CurrencyCode)
             .NotNull()
             .WithMessage("Wählen Sie eine Währung aus.");
 
-        RuleFor(x => x.AnredeId)
+        RuleFor(x => x.SalutationId)
             .NotNull()
             .WithMessage("Wählen Sie eine Anrede aus.");
 
-        RuleFor(x => x.Telefonnummer)
+        RuleFor(x => x.PhoneNumber)
             .MaximumLength(30);
 
-        RuleFor(x => x.Mobilnummer)
+        RuleFor(x => x.MobileNumber)
             .MaximumLength(30);
 
-        RuleFor(x => x.Faxnummer)
+        RuleFor(x => x.FaxNumber)
             .MaximumLength(30);
 
        
@@ -72,20 +72,19 @@ public class CustomerValidator : AbstractValidator<Customer>
             .MaximumLength(60);
 
       
-
-        RuleFor(x => x.LieferbedingungId)
-            .NotNull()
-            .WithMessage("Wählen Sie eine Lieferbedingung aus.");
-
-        RuleFor(x => x.ZahlungsbedingungId)
+        RuleFor(x => x.PaymentConditionId)
             .NotNull()
             .WithMessage("Wählen Sie eine Zahlungsbedingung aus.");
 
-       
-        RuleFor(kund => kund.Kreditlimit)
+        RuleFor(x => x.DeliveryConditionId)
+            .NotNull()
+            .WithMessage("Wählen Sie eine Lieferbedingung aus.");
+
+
+        RuleFor(kund => kund.CreditLimit)
             .GreaterThanOrEqualTo(0);
 
-        RuleFor(kund => kund.UmsatzsteuerIdentifikationsnummer)
+        RuleFor(kund => kund.VatIdentificationNumber)
             .MaximumLength(30);
 
         RuleFor(x => x.IBAN)
@@ -94,7 +93,7 @@ public class CustomerValidator : AbstractValidator<Customer>
         RuleFor(x => x.BIC)
             .MaximumLength(15);
 
-        RuleFor(x => x.Notiz)
+        RuleFor(x => x.Note)
             .MaximumLength(1000);
     }
 }

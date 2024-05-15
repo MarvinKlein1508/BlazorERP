@@ -12,76 +12,76 @@ public class CustomerService : IModelService<Customer, string?, CustomerFilter>
         cancellationToken.ThrowIfCancellationRequested();
         string sql =
             """
-            INSERT INTO KUNDEN
+            INSERT INTO CUSTOMERS
             (
-                KUNDENNUMMER,
-                FIRMA,
+                CUSTOMER_NUMBER,
+                COMPANY,
                 NAME1,
                 NAME2,
-                ANLAGEDATUM,
-                SPRACH_ID,
-                LAND_ID,
-                STRASSE,
-                POSTLEITZAHL,
-                ORT,
-                TELEFONNUMMER,
-                MOBILNUMMER,
-                FAXNUMMER,
+                CREATION_DATE,
+                LANGUAGE_ID,
+                COUNTRY_ID,
+                STREET,
+                POSTAL_CODE,
+                CITY,
+                PHONE_NUMBER,
+                MOBILE_NUMBER,
+                FAX_NUMBER,
                 EMAIL,
                 WEBSITE,
-                NOTIZ,
-                ANREDE_ID,
-                ZAHLUNGSBEDINGUNG_ID,
-                LIEFERBEDINGUNG_ID,
-                UMSATZSTEUER_IDENTIFIKATIONSNUMMER,
-                KREDITLIMIT,
+                NOTE,
+                SALUTATION_ID,
+                PAYMENT_CONDITION_ID,
+                DELIVERY_CONDITION_ID,
+                VAT_IDENTIFICATION_NUMBER,
+                CREDIT_LIMIT,
                 IBAN,
                 BIC,
-                IST_GESPERRT,
-                NEUTRALER_VERSAND,
-                WAEHRUNGSCODE,
-                LETZTER_BEARBEITER,
-                ZULETZT_GEAENDERT
+                IS_BLOCKED,
+                NEUTRAL_SHIPPING,
+                CURRENCY_CODE,
+                LAST_MODIFIED_BY,
+                LAST_MODIFIED
             )
             VALUES
             (
-                @KUNDENNUMMER,
-                @FIRMA,
+                @CUSTOMER_NUMBER,
+                @COMPANY,
                 @NAME1,
                 @NAME2,
-                @ANLAGEDATUM,
-                @SPRACH_ID,
-                @LAND_ID,
-                @STRASSE,
-                @POSTLEITZAHL,
-                @ORT,
-                @TELEFONNUMMER,
-                @MOBILNUMMER,
-                @FAXNUMMER,
+                @CREATION_DATE,
+                @LANGUAGE_ID,
+                @COUNTRY_ID,
+                @STREET,
+                @POSTAL_CODE,
+                @CITY,
+                @PHONE_NUMBER,
+                @MOBILE_NUMBER,
+                @FAX_NUMBER,
                 @EMAIL,
                 @WEBSITE,
-                @NOTIZ,
-                @ANREDE_ID,
-                @ZAHLUNGSBEDINGUNG_ID,
-                @LIEFERBEDINGUNG_ID,
-                @UMSATZSTEUER_IDENTIFIKATIONSNUMMER,
-                @KREDITLIMIT,
+                @NOTE,
+                @SALUTATION_ID,
+                @PAYMENT_CONDITION_ID,
+                @DELIVERY_CONDITION_ID,
+                @VAT_IDENTIFICATION_NUMBER,
+                @CREDIT_LIMIT,
                 @IBAN,
                 @BIC,
-                @IST_GESPERRT,
-                @NEUTRALER_VERSAND,
-                @WAEHRUNGSCODE,
-                @LETZTER_BEARBEITER,
-                @ZULETZT_GEAENDERT
-            ) RETURNING KUNDENNUMMER;
+                @IS_BLOCKED,
+                @NEUTRAL_SHIPPING,
+                @CURRENCY_CODE,
+                @LAST_MODIFIED_BY,
+                @LAST_MODIFIED
+            ) RETURNING CUSTOMER_NUMBER;
             """;
 
-        input.Kundennummer = (await dbController.GetFirstAsync<string>(sql, input.GetParameters(), cancellationToken))!;
+        input.CustomerNumber = (await dbController.GetFirstAsync<string>(sql, input.GetParameters(), cancellationToken))!;
     }
 
     public Task DeleteAsync(Customer input, IDbController dbController, CancellationToken cancellationToken = default)
     {
-        string sql = "DELETE FROM KUNDEN WHERE KUNDENNUMMER = @KUNDENNUMMER";
+        string sql = "DELETE FROM CUSTOMERS WHERE CUSTOMER_NUMBER = @CUSTOMER_NUMBER";
 
         return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
     }
@@ -93,11 +93,11 @@ public class CustomerService : IModelService<Customer, string?, CustomerFilter>
             return Task.FromResult<Customer?>(null);
         }
 
-        string sql = "SELECT * FROM KUNDEN WHERE KUNDENNUMMER = @KUNDENNUMMER";
+        string sql = "SELECT * FROM CUSTOMERS WHERE CUSTOMER_NUMBER = @CUSTOMER_NUMBER";
 
         return dbController.GetFirstAsync<Customer>(sql, new
         {
-            KUNDENNUMMER = identifier
+            CUSTOMER_NUMBER = identifier
         }, cancellationToken);
     }
 
@@ -109,10 +109,10 @@ public class CustomerService : IModelService<Customer, string?, CustomerFilter>
         SELECT 
             FIRST {filter.Limit} SKIP {(filter.PageNumber - 1) * filter.Limit}
                 * 
-            FROM KUNDEN 
+            FROM CUSTOMERS 
             WHERE 1 = 1
             {GetFilterWhere(filter)}
-            ORDER BY KUNDENNUMMER DESC
+            ORDER BY CUSTOMER_NUMBER DESC
         """;
 
         return dbController.SelectDataAsync<Customer>(sql, filter.GetParameters(), cancellationToken);
@@ -128,7 +128,7 @@ public class CustomerService : IModelService<Customer, string?, CustomerFilter>
         {
             sb.AppendLine(@" AND 
 (
-        UPPER(FIRMA) LIKE @SEARCH_PHRASE
+        UPPER(COMPANY) LIKE @SEARCH_PHRASE
     OR  UPPER(NAME1) LIKE @SEARCH_PHRASE
     OR  UPPER(NAME2) LIKE @SEARCH_PHRASE
 )");
@@ -147,7 +147,7 @@ public class CustomerService : IModelService<Customer, string?, CustomerFilter>
             $"""
             SELECT 
                 COUNT(*)
-            FROM KUNDEN
+            FROM CUSTOMERS
             WHERE 1 = 1
             {GetFilterWhere(filter)}
             """;
@@ -160,36 +160,36 @@ public class CustomerService : IModelService<Customer, string?, CustomerFilter>
     {
         string sql =
            """
-            UPDATE KUNDEN SET 
-                FIRMA = @FIRMA,
+            UPDATE CUSTOMERS SET 
+                COMPANY = @COMPANY,
                 NAME1 = @NAME1,
                 NAME2 = @NAME2,
-                ANLAGEDATUM = @ANLAGEDATUM,
-                SPRACH_ID = @SPRACH_ID,
-                LAND_ID = @LAND_ID,
-                STRASSE = @STRASSE,
-                POSTLEITZAHL = @POSTLEITZAHL,
-                ORT = @ORT,
-                TELEFONNUMMER = @TELEFONNUMMER,
-                MOBILNUMMER = @MOBILNUMMER,
-                FAXNUMMER = @FAXNUMMER,
+                CREATION_DATE = @CREATION_DATE,
+                LANGUAGE_ID = @LANGUAGE_ID,
+                COUNTRY_ID = @COUNTRY_ID,
+                STREET = @STREET,
+                POSTAL_CODE = @POSTAL_CODE,
+                CITY = @CITY,
+                PHONE_NUMBER = @PHONE_NUMBER,
+                MOBILE_NUMBER = @MOBILE_NUMBER,
+                FAX_NUMBER = @FAX_NUMBER,
                 EMAIL = @EMAIL,
                 WEBSITE = @WEBSITE,
-                NOTIZ = @NOTIZ,
-                ANREDE_ID = @ANREDE_ID,
-                ZAHLUNGSBEDINGUNG_ID = @ZAHLUNGSBEDINGUNG_ID,
-                LIEFERBEDINGUNG_ID = @LIEFERBEDINGUNG_ID,
-                UMSATZSTEUER_IDENTIFIKATIONSNUMMER = @UMSATZSTEUER_IDENTIFIKATIONSNUMMER,
-                KREDITLIMIT = @KREDITLIMIT,
+                NOTE = @NOTE,
+                SALUTATION_ID = @SALUTATION_ID,
+                PAYMENT_CONDITION_ID = @PAYMENT_CONDITION_ID,
+                DELIVERY_CONDITION_ID = @DELIVERY_CONDITION_ID,
+                VAT_IDENTIFICATION_NUMBER = @VAT_IDENTIFICATION_NUMBER,
+                CREDIT_LIMIT = @CREDIT_LIMIT,
                 IBAN = @IBAN,
                 BIC = @BIC,
-                IST_GESPERRT = @IST_GESPERRT,
-                NEUTRALER_VERSAND = @NEUTRALER_VERSAND,
-                WAEHRUNGSCODE = @WAEHRUNGSCODE,
-                LETZTER_BEARBEITER = @LETZTER_BEARBEITER,
-                ZULETZT_GEAENDERT = @ZULETZT_GEAENDERT
+                IS_BLOCKED = @IS_BLOCKED,
+                NEUTRAL_SHIPPING = @NEUTRAL_SHIPPING,
+                CURRENCY_CODE = @CURRENCY_CODE,
+                LAST_MODIFIED_BY = @LAST_MODIFIED_BY,
+                LAST_MODIFIED = @LAST_MODIFIED
             WHERE
-                KUNDENNUMMER = @KUNDENNUMMER
+                CUSTOMER_NUMBER = @CUSTOMER_NUMBER
             """;
 
 

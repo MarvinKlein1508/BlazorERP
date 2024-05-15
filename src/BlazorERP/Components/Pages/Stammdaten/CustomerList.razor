@@ -1,4 +1,4 @@
-﻿@page "/Stammdaten/Kunden"
+﻿@page "/Customers"
 @inject AuthService authService
 @inherits SearchPageBase<Customer, CustomerService, CustomerFilter>
 
@@ -15,7 +15,7 @@
 <FluentGrid Width="100%">
     <FluentGridItem xs="12">
         <FluentStack HorizontalAlignment="HorizontalAlignment.End">
-            <FluentAnchor Href="/Stammdaten/Kunden/Edit"
+            <FluentAnchor Href="/Customers/Edit"
                           IconStart="@(new Icons.Regular.Size20.Add().WithColor(Color.Fill))"
                           Appearance="Appearance.Accent">
                 Neuer Kunde
@@ -37,7 +37,7 @@
                         <div class="list-details">
                             <div class="list-item">
                                 <label>Kundennummer</label>
-                                <span>@item.Kundennummer</span>
+                                <span>@item.CustomerNumber</span>
                             </div>
 
                             <div class="list-item">
@@ -47,7 +47,7 @@
 
                         </div>
                         <div class="list-buttons">
-                            <FluentAnchor Href="@($"/Stammdaten/Kunden/Edit?kundennummer={item.GetIdentifier()}")">
+                            <FluentAnchor Href="@($"/Customers/Edit?customerNumber={item.GetIdentifier()}")">
                                 Bearbeiten
                             </FluentAnchor>
                         </div>
@@ -68,7 +68,7 @@
                 <Pagination CurrentPageNumber="Page"
                             TotalItems="TotalItems"
                             ItemsPerPage="Filter.Limit"
-                            NavUrl="/Stammdaten/Kunden?page=" />
+                            NavUrl="/Customers?page=" />
             }
         </FluentStack>
     </FluentGridItem>

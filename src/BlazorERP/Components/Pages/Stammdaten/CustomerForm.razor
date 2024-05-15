@@ -1,6 +1,8 @@
-﻿@page "/Stammdaten/Kunden/Edit"
+﻿@page "/Customers/Edit"
 @using BlazorERP.Core.Validators.Admin.Hilfsdaten
+@using BlazorERP.Core.Validators.Stammdaten
 @using Microsoft.AspNetCore.Identity
+@using System.Text.RegularExpressions
 @inherits EditPageBase<string?, Customer, CustomerService>
 @inject ConfigurationService voreinstellungService
 
@@ -9,7 +11,7 @@
 <FluentBreadcrumb>
     <FluentBreadcrumbItem Href="/">Start</FluentBreadcrumbItem>
     <FluentBreadcrumbItem>Administration</FluentBreadcrumbItem>
-    <FluentBreadcrumbItem Href="/Stammdaten/Kunden">Kunden</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="/Data/Customers">Kunden</FluentBreadcrumbItem>
     <FluentBreadcrumbItem>@FinalBreadcrumbItemName</FluentBreadcrumbItem>
 </FluentBreadcrumb>
 @if (Input is null)
@@ -17,7 +19,7 @@
     return;
 }
 <FluentStack HorizontalAlignment="HorizontalAlignment.End">
-    <FluentAnchor Href="/Stammdaten/Kunden"
+    <FluentAnchor Href="/Data/Customers"
                   IconStart="@(new Icons.Regular.Size20.ArrowReply())">
         Zurück
     </FluentAnchor>
@@ -49,8 +51,8 @@
                 <div class="col-md-9">
                     <div class="row">
                         <div class="col-md-6">
-                            <FluentTextField @bind-Value="Input.Firma" Label="Firma" />
-                            <FluentValidationMessage For="() => Input.Firma" />
+                            <FluentTextField @bind-Value="Input.Company" Label="Firma" />
+                            <FluentValidationMessage For="() => Input.Company" />
 
                             <FluentTextField @bind-Value="Input.Name1" Label="Name1" />
                             <FluentValidationMessage For="() => Input.Name1" />
@@ -58,29 +60,29 @@
                             <FluentTextField @bind-Value="Input.Name2" Label="Name2" />
                             <FluentValidationMessage For="() => Input.Name2" />
 
-                            <FluentTextField @bind-Value="Input.Strasse" Label="Straße" />
-                            <FluentValidationMessage For="() => Input.Strasse" />
+                            <FluentTextField @bind-Value="Input.Street" Label="Straße" />
+                            <FluentValidationMessage For="() => Input.Street" />
 
                             <div class="row">
                                 <div class="col-md-4">
                                     <FluentSelect TOption="Country" Label="Land" Width="100%;">
-                                        <FluentOption Value="null" Selected="@(Input.LandId is null)" OnSelect="(val) => Input.LandId = null">--- Auswählen ---</FluentOption>
+                                        <FluentOption Value="null" Selected="@(Input.CountryId is null)" OnSelect="(val) => Input.CountryId = null">--- Auswählen ---</FluentOption>
                                         @foreach (var item in Storage.Get<Country>())
                                         {
-                                            <FluentOption TOption="Country" Value="@item.CountryId.ToString()" Selected="@(Input.LandId == item.CountryId)" OnSelect="(val) => Input.LandId = item.CountryId">@item.ISO2</FluentOption>
+                                            <FluentOption TOption="Country" Value="@item.CountryId.ToString()" Selected="@(Input.CountryId == item.CountryId)" OnSelect="(val) => Input.CountryId = item.CountryId">@item.ISO2</FluentOption>
                                         }
                                     </FluentSelect>
 
-                                    <p>Land: @Input.LandId</p>
+                                    <p>Land: @Input.CountryId</p>
 
                                 </div>
                                 <div class="col-md-4">
-                                    <FluentTextField @bind-Value="Input.Postleitzahl" Label="Postleitzahl" />
-                                    <FluentValidationMessage For="() => Input.Postleitzahl" />
+                                    <FluentTextField @bind-Value="Input.PostalCode" Label="Postleitzahl" />
+                                    <FluentValidationMessage For="() => Input.PostalCode" />
                                 </div>
                                 <div class="col-md-4">
-                                    <FluentTextField @bind-Value="Input.Ort" Label="Postleitzahl" />
-                                    <FluentValidationMessage For="() => Input.Ort" />
+                                    <FluentTextField @bind-Value="Input.City" Label="Ort" />
+                                    <FluentValidationMessage For="() => Input.City" />
                                 </div>
                             </div>
                         </div>
@@ -89,32 +91,32 @@
                             <div class="row">
                                 <div class="col-6">
                                     <FluentSelect TOption="Language" Label="Sprache" Width="100%;">
-                                        <FluentOption Value="null" Selected="@(Input.SprachId is null)" OnSelect="(val) => Input.SprachId = null">--- Auswählen ---</FluentOption>
+                                        <FluentOption Value="null" Selected="@(Input.LanguageId is null)" OnSelect="(val) => Input.LanguageId = null">--- Auswählen ---</FluentOption>
                                         @foreach (var item in Storage.Get<Language>())
                                         {
-                                            <FluentOption TOption="Language" Value="@item.LanguageId.ToString()" Selected="@(Input.SprachId == item.LanguageId)" OnSelect="(val) => Input.SprachId = item.LanguageId">@item.GetName(Storage.DEFAULT_LANGUAGE)</FluentOption>
+                                            <FluentOption TOption="Language" Value="@item.LanguageId.ToString()" Selected="@(Input.LanguageId == item.LanguageId)" OnSelect="(val) => Input.LanguageId = item.LanguageId">@item.GetName(Storage.DEFAULT_LANGUAGE)</FluentOption>
                                         }
                                     </FluentSelect>
-                                    <FluentValidationMessage For="() => Input.SprachId" />
+                                    <FluentValidationMessage For="() => Input.LanguageId" />
                                 </div>
 
                                 <div class="col-6">
                                     <FluentSelect TOption="Salutation" Label="Anrede" Width="100%;">
-                                        <FluentOption Value="null" Selected="@(Input.AnredeId is null)" OnSelect="(val) => Input.AnredeId = null">--- Auswählen ---</FluentOption>
+                                        <FluentOption Value="null" Selected="@(Input.SalutationId is null)" OnSelect="(val) => Input.SalutationId = null">--- Auswählen ---</FluentOption>
                                         @foreach (var item in Storage.Get<Salutation>())
                                         {
-                                            <FluentOption TOption="Salutation" Value="@item.SalutationId.ToString()" Selected="@(Input.AnredeId == item.SalutationId)" OnSelect="(val) => Input.AnredeId = item.SalutationId">@item.GetName(Storage.DEFAULT_LANGUAGE)</FluentOption>
+                                            <FluentOption TOption="Salutation" Value="@item.SalutationId.ToString()" Selected="@(Input.SalutationId == item.SalutationId)" OnSelect="(val) => Input.SalutationId = item.SalutationId">@item.GetName(Storage.DEFAULT_LANGUAGE)</FluentOption>
                                         }
                                     </FluentSelect>
-                                    <FluentValidationMessage For="() => Input.AnredeId" />
+                                    <FluentValidationMessage For="() => Input.SalutationId" />
                                 </div>
                                 <div class="col-md-6">
-                                    <FluentTextField @bind-Value="Input.Telefonnummer" Label="Telefonnummer" />
-                                    <FluentValidationMessage For="() => Input.Telefonnummer" />
+                                    <FluentTextField @bind-Value="Input.PhoneNumber" Label="Telefonnummer" />
+                                    <FluentValidationMessage For="() => Input.PhoneNumber" />
                                 </div>
                                 <div class="col-md-6">
-                                    <FluentTextField @bind-Value="Input.Mobilnummer" Label="Mobilnummer" />
-                                    <FluentValidationMessage For="() => Input.Mobilnummer" />
+                                    <FluentTextField @bind-Value="Input.MobileNumber" Label="Mobilnummer" />
+                                    <FluentValidationMessage For="() => Input.MobileNumber" />
                                 </div>
 
                                 <div class="col-md-6">
@@ -132,8 +134,8 @@
                                     <FluentValidationMessage For="() => Input.Website" />
                                 </div>
                                 <div class="col-12">
-                                    <FluentTextArea @bind-Value="Input.Notiz" Label="Notiz" Class="w-100" Rows="6" />
-                                    <FluentValidationMessage For="() => Input.Notiz" />
+                                    <FluentTextArea @bind-Value="Input.Note" Label="Notiz" Class="w-100" Rows="6" />
+                                    <FluentValidationMessage For="() => Input.Note" />
                                 </div>
                             </div>
 
@@ -145,11 +147,11 @@
                         @if (Modus is EditMode.Edit)
                         {
                             <div class="col-12">
-                                <FluentTextField Value="@Input.Anlagedatum?.ToShortDateString()" Appearance="FluentInputAppearance.Filled" Label="Anlagedatum" ReadOnly />
+                                <FluentTextField Value="@Input.CreationDate?.ToShortDateString()" Appearance="FluentInputAppearance.Filled" Label="Anlagedatum" ReadOnly />
                             </div>
                             <div class="col-12">
                                 <div class="d-flex flex-column gap-2 mt-2">
-                                    <FluentSwitch @bind-Value="@Input.IstGesperrt" Label="Gesperrt" />
+                                    <FluentSwitch @bind-Value="@Input.IsBlocked" Label="Gesperrt" />
                                 </div>
                             </div>
                         }
@@ -164,52 +166,52 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <FluentSelect TOption="DeliveryCondition" Label="Lieferbedingung" Width="100%;">
-                                    <FluentOption Value="null" Selected="@(Input.LieferbedingungId is null)" OnSelect="(val) => Input.LieferbedingungId = null">--- Auswählen ---</FluentOption>
+                                    <FluentOption Value="null" Selected="@(Input.DeliveryConditionId is null)" OnSelect="(val) => Input.DeliveryConditionId = null">--- Auswählen ---</FluentOption>
                                     @foreach (var item in Storage.Get<DeliveryCondition>())
                                     {
-                                        @if (item.AvailableForCustomer || item.DeliveryConditionId == Input.LieferbedingungId)
+                                        @if (item.AvailableForCustomer || item.DeliveryConditionId == Input.DeliveryConditionId)
                                         {
-                                            <FluentOption TOption="DeliveryCondition" Value="@item.DeliveryConditionId.ToString()" Selected="@(Input.LieferbedingungId == item.DeliveryConditionId)" OnSelect="(val) => Input.LieferbedingungId = item.DeliveryConditionId">@item.GetName(Storage.DEFAULT_LANGUAGE)</FluentOption>
+                                            <FluentOption TOption="DeliveryCondition" Value="@item.DeliveryConditionId.ToString()" Selected="@(Input.DeliveryConditionId == item.DeliveryConditionId)" OnSelect="(val) => Input.DeliveryConditionId = item.DeliveryConditionId">@item.GetName(Storage.DEFAULT_LANGUAGE)</FluentOption>
                                         }
                                     }
                                 </FluentSelect>
-                                <FluentValidationMessage For="() => Input.LieferbedingungId" />
+                                <FluentValidationMessage For="() => Input.DeliveryConditionId" />
 
                             </div>
                             <div class="col-md-6">
                                 <FluentSelect TOption="PaymentCondition" Label="Zahlungsbedingung" Width="100%;">
-                                    <FluentOption Value="null" Selected="@(Input.ZahlungsbedingungId is null)" OnSelect="(val) => Input.ZahlungsbedingungId = null">--- Auswählen ---</FluentOption>
+                                    <FluentOption Value="null" Selected="@(Input.PaymentConditionId is null)" OnSelect="(val) => Input.PaymentConditionId = null">--- Auswählen ---</FluentOption>
                                     @foreach (var item in Storage.Get<PaymentCondition>())
                                     {
-                                        @if (item.AvailableForCustomer || item.PaymentConditionId == Input.ZahlungsbedingungId)
+                                        @if (item.AvailableForCustomer || item.PaymentConditionId == Input.PaymentConditionId)
                                         {
-                                            <FluentOption TOption="PaymentCondition" Value="@item.PaymentConditionId.ToString()" Selected="@(Input.ZahlungsbedingungId == item.PaymentConditionId)" OnSelect="(val) => Input.ZahlungsbedingungId = item.PaymentConditionId">@item.GetName(Storage.DEFAULT_LANGUAGE)</FluentOption>
+                                            <FluentOption TOption="PaymentCondition" Value="@item.PaymentConditionId.ToString()" Selected="@(Input.PaymentConditionId == item.PaymentConditionId)" OnSelect="(val) => Input.PaymentConditionId = item.PaymentConditionId">@item.GetName(Storage.DEFAULT_LANGUAGE)</FluentOption>
                                         }
                                     }
                                 </FluentSelect>
-                                <FluentValidationMessage For="() => Input.ZahlungsbedingungId" />
+                                <FluentValidationMessage For="() => Input.PaymentConditionId" />
                             </div>
                             <div class="col-md-6">
                                 <FluentSelect TOption="Currency" Label="Währung" Width="100%;">
-                                    <FluentOption Value="null" Selected="@(Input.Waehrungscode is null)" OnSelect="(val) => Input.Waehrungscode = null">--- Auswählen ---</FluentOption>
+                                    <FluentOption Value="null" Selected="@(Input.CurrencyCode is null)" OnSelect="(val) => Input.CurrencyCode = null">--- Auswählen ---</FluentOption>
                                     @foreach (var item in Storage.Get<Currency>())
                                     {
-                                        <FluentOption TOption="Currency" Value="@item.Code.ToString()" Selected="@(Input.Waehrungscode == item.Code)" OnSelect="(val) => Input.Waehrungscode = item.Code">@item.Code</FluentOption>
+                                        <FluentOption TOption="Currency" Value="@item.Code.ToString()" Selected="@(Input.CurrencyCode == item.Code)" OnSelect="(val) => Input.CurrencyCode = item.Code">@item.Code</FluentOption>
                                     }
                                 </FluentSelect>
-                                <FluentValidationMessage For="() => Input.Waehrungscode" />
+                                <FluentValidationMessage For="() => Input.CurrencyCode" />
                             </div>
                             <div class="col-md-6">
-                                <FluentNumberField @bind-Value="Input.Kreditlimit" Label="Kreditlimit" />
-                                <FluentValidationMessage For="() => Input.Kreditlimit" />
+                                <FluentNumberField @bind-Value="Input.CreditLimit" Label="Kreditlimit" />
+                                <FluentValidationMessage For="() => Input.CreditLimit" />
                             </div>
 
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <FluentTextField @bind-Value="Input.UmsatzsteuerIdentifikationsnummer" Label="Ust. ID-Nummer" />
+                                    <FluentTextField @bind-Value="Input.VatIdentificationNumber" Label="Ust. ID-Nummer" />
                                     <FluentButton Appearance="Appearance.Accent" IconStart="@(new Icons.Regular.Size20.BuildingBank().WithColor(Color.Fill))" />
                                 </div>
-                                <FluentValidationMessage For="() => Input.UmsatzsteuerIdentifikationsnummer" />
+                                <FluentValidationMessage For="() => Input.VatIdentificationNumber" />
                             </div>
 
                             <div class="col-md-6">
@@ -240,3 +242,60 @@
         </FluentTab>
     </FluentTabs>
 </EditForm>
+
+@code {
+    private bool _showOptionsMenu;
+    private CustomerValidator _validator = new();
+
+    protected override string GetListUrl() => "/Customers/Edit";
+    protected override string GetEntityRedirectUrl() => $"/Customers/Edit?customerNumber={Input!.GetIdentifier()}";
+
+
+
+    [Parameter, SupplyParameterFromQuery(Name = "customerNumber")]
+    public override string? Identifier { get; set; }
+
+    protected override async Task InitializeModelAsync(bool newEntry, IDbController dbController)
+    {
+        if (newEntry)
+        {
+            var defaults = await voreinstellungService.GetAsync(1, dbController);
+
+            if (defaults is not null)
+            {
+                Input.SalutationId = defaults.CustomerSalutationId;
+                Input.NeutralShipping = defaults.CustomerNeutralShipping;
+                Input.CurrencyCode = defaults.CustomerCurrencyCode;
+                Input.LanguageId = defaults.CustomerLanguageId;
+                Input.CreditLimit = defaults.CustomerCreditLimit;
+                Input.CountryId = defaults.CustomerCountryId;
+                Input.PaymentConditionId = defaults.CustomerPaymentConditionId;
+                Input.DeliveryConditionId = defaults.CustomerDeliveryConditionId;
+            }
+        }
+    }
+
+    protected override Task BeforeSaveAsync(IDbController dbController)
+    {
+        if (Modus is EditMode.Create)
+        {
+            Input.CreationDate = DateTime.Now;
+        }
+
+        Input.LastModifiedBy = User.UserId;
+        Input.LastModified = DateTime.Now;
+
+        return Task.CompletedTask;
+    }
+
+    private void OnEmailChanged(string email)
+    {
+        Input.Email = email;
+        string domain = Regex.Replace(email, @".*@", "");
+
+        if (string.IsNullOrWhiteSpace(Input.Website))
+        {
+            Input.Website = domain;
+        }
+    }
+                                    }
