@@ -18,8 +18,6 @@ public abstract class SearchPageBase<TModel, TService, TFilter> : ComponentBase
     protected EditForm? _form;
     protected bool _isLoading;
 
-    protected abstract string BaseUrl { get; }
-    protected abstract bool InternalNavigation { get; }
     [Parameter, SupplyParameterFromForm]
     public TFilter Filter { get; set; } = new();
     [Inject]

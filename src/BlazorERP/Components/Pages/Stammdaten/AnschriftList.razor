@@ -90,8 +90,6 @@
 </FluentGrid>
 
 @code {
-    protected override bool InternalNavigation => false;
-    protected override string BaseUrl => "/Stammdaten/Anschriften";
 
     [Parameter, SupplyParameterFromQuery(Name = "kundennummer")]
     public string? Kundennummer { get; set; } 
