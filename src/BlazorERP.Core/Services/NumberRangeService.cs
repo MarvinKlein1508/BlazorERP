@@ -12,30 +12,30 @@ public class NumberRangeService : IModelService<NumberRange, int?, NumberRangeFi
         cancellationToken.ThrowIfCancellationRequested();
         string sql =
             """
-            INSERT INTO NUMMERNKREISE
+            INSERT INTO NUMBER_RANGES
             (
                 NAME,
-                KUNDE_VON,
-                KUNDE_BIS,
-                LETZTER_BEARBEITER,
-                ZULETZT_GEAENDERT
+                CUSTOMER_FROM,
+                CUSTOMER_TO,
+                LAST_MODIFIED_BY,
+                LAST_MODIFIED
             )
             VALUES
             (
                 @NAME,
-                @KUNDE_VON,
-                @KUNDE_BIS,
-                @LETZTER_BEARBEITER,
-                @ZULETZT_GEAENDERT
-            ) RETURNING NUMMERNKREIS_ID;
+                @CUSTOMER_FROM,
+                @CUSTOMER_TO,
+                @LAST_MODIFIED_BY,
+                @LAST_MODIFIED
+            ) RETURNING NUMBER_RANGE_ID;
             """;
 
-        input.NummernkreisId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
+        input.NumberRangeId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
     }
 
     public Task DeleteAsync(NumberRange input, IDbController dbController, CancellationToken cancellationToken = default)
     {
-        string sql = "DELETE FROM NUMMERNKREISE WHERE NUMMERNKREIS_ID = @NUMMERNKREIS_ID";
+        string sql = "DELETE FROM NUMBER_RANGES WHERE NUMBER_RANGE_ID = @NUMBER_RANGE_ID";
 
         return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
     }
@@ -51,16 +51,16 @@ public class NumberRangeService : IModelService<NumberRange, int?, NumberRangeFi
             """
             SELECT 
                 N.*,
-                U.ANZEIGENAME AS BEARBEITER_NAME
-            FROM NUMMERNKREISE N
-            LEFT JOIN USERS U ON (U.USER_ID = N.LETZTER_BEARBEITER)
+                U.DISPLAY_NAME AS BEARBEITER_NAME
+            FROM NUMBER_RANGES N
+            LEFT JOIN USERS U ON (U.USER_ID = N.LAST_MODIFIED_BY)
             WHERE 
-                NUMMERNKREIS_ID = @NUMMERNKREIS_ID
+                NUMBER_RANGE_ID = @NUMBER_RANGE_ID
             """;
 
         return dbController.GetFirstAsync<NumberRange>(sql, new
         {
-            NUMMERNKREIS_ID = identifier
+            NUMBER_RANGE_ID = identifier
         }, cancellationToken);
     }
 
@@ -72,12 +72,12 @@ public class NumberRangeService : IModelService<NumberRange, int?, NumberRangeFi
         SELECT 
             FIRST {filter.Limit} SKIP {(filter.PageNumber - 1) * filter.Limit}
                 N.*,
-                U.ANZEIGENAME AS BEARBEITER_NAME
-            FROM NUMMERNKREISE N
-            LEFT JOIN USERS U ON (U.USER_ID = N.LETZTER_BEARBEITER)
+                U.DISPLAY_NAME AS BEARBEITER_NAME
+            FROM NUMBER_RANGES N
+            LEFT JOIN USERS U ON (U.USER_ID = N.LAST_MODIFIED_BY)
             WHERE 1 = 1
             {GetFilterWhere(filter)}
-            ORDER BY NUMMERNKREIS_ID DESC
+            ORDER BY NUMBER_RANGE_ID DESC
         """;
 
         return dbController.SelectDataAsync<NumberRange>(sql, filter.GetParameters(), cancellationToken);
@@ -110,7 +110,7 @@ public class NumberRangeService : IModelService<NumberRange, int?, NumberRangeFi
             $"""
             SELECT 
                 COUNT(*)
-            FROM NUMMERNKREISE
+            FROM NUMBER_RANGES
             WHERE 1 = 1
             {GetFilterWhere(filter)}
             """;
@@ -124,14 +124,14 @@ public class NumberRangeService : IModelService<NumberRange, int?, NumberRangeFi
     {
         string sql =
            """
-            UPDATE NUMMERNKREISE SET 
+            UPDATE NUMBER_RANGES SET 
                 NAME = @NAME,
-                KUNDE_VON = @KUNDE_VON,
-                KUNDE_BIS = @KUNDE_BIS,
-                LETZTER_BEARBEITER = @LETZTER_BEARBEITER,
-                ZULETZT_GEAENDERT = @ZULETZT_GEAENDERT
+                CUSTOMER_FROM = @CUSTOMER_FROM,
+                CUSTOMER_TO = @CUSTOMER_TO,
+                LAST_MODIFIED_BY = @LAST_MODIFIED_BY,
+                LAST_MODIFIED = @LAST_MODIFIED
             WHERE
-                NUMMERNKREIS_ID = @NUMMERNKREIS_ID
+                NUMBER_RANGE_ID = @NUMBER_RANGE_ID
             """;
 
 

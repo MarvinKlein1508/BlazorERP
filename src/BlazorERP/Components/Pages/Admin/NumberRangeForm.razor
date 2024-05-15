@@ -1,4 +1,4 @@
-﻿@page "/Admin/Nummernkreise/Edit"
+﻿@page "/Admin/NumberRanges/Edit"
 @using BlazorERP.Core.Validators.Admin
 @using Microsoft.AspNetCore.Identity
 @inject AuthService authService
@@ -11,7 +11,7 @@
 <FluentBreadcrumb>
     <FluentBreadcrumbItem Href="/">Start</FluentBreadcrumbItem>
     <FluentBreadcrumbItem>Administration</FluentBreadcrumbItem>
-    <FluentBreadcrumbItem Href="/Admin/Nummernkreise">Nummernkreise</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="/Admin/NumberRanges">Nummernkreise</FluentBreadcrumbItem>
     <FluentBreadcrumbItem>@FinalBreadcrumbItemName</FluentBreadcrumbItem>
 </FluentBreadcrumb>
 @if (Input is null)
@@ -19,7 +19,7 @@
     return;
 }
 <FluentStack HorizontalAlignment="HorizontalAlignment.End">
-    <FluentAnchor Href="/Admin/Nummernkreise"
+    <FluentAnchor Href="/Admin/NumberRanges"
                   IconStart="@(new Icons.Regular.Size20.ArrowReply())">
         Zurück
     </FluentAnchor>
@@ -42,8 +42,8 @@
                         @if (Modus is EditMode.Edit)
                         {
                             <div class="col-12">
-                                <FluentNumberField @bind-Value="Input.NummernkreisId" Label="NummernkreisId" Disabled />
-                                <FluentValidationMessage For="() => Input.NummernkreisId" />
+                                <FluentNumberField @bind-Value="Input.NumberRangeId" Label="NummernkreisId" Disabled />
+                                <FluentValidationMessage For="() => Input.NumberRangeId" />
                             </div>
                         }
 
@@ -59,7 +59,7 @@
                         @if (Modus is EditMode.Edit)
                         {
                             <div class="col-12">
-                                <FluentDatePicker Appearance="FluentInputAppearance.Filled" Label="Letzte Änderung" @bind-Value="@Input.ZuletztGeaendert" ReadOnly />
+                                <FluentDatePicker Appearance="FluentInputAppearance.Filled" Label="Letzte Änderung" @bind-Value="@Input.LastModified" ReadOnly />
                             </div>
 
                             <div class="col-12">
@@ -76,13 +76,13 @@
                     <div class="col-md-9">
                         <div class="row">
                             <div class="col-md-6">
-                                <FluentNumberField @bind-Value="Input.KundeVon" Label="Kunde Von" />
-                                <FluentValidationMessage For="() => Input.KundeVon" />
+                                <FluentNumberField @bind-Value="Input.CustomerFrom" Label="Kunde Von" />
+                                <FluentValidationMessage For="() => Input.CustomerFrom" />
                             </div>
 
                             <div class="col-md-6">
-                                <FluentNumberField @bind-Value="Input.KundeBis" Label="Kunde Bis" />
-                                <FluentValidationMessage For="() => Input.KundeBis" />
+                                <FluentNumberField @bind-Value="Input.CustomerTo" Label="Kunde Bis" />
+                                <FluentValidationMessage For="() => Input.CustomerTo" />
                             </div>
                         </div>
                     </div>
@@ -103,11 +103,11 @@
 
 
     private bool _showOptionsMenu;
-    private NummernkreisValidator _validator = new();
+    private NumberRangeValidator _validator = new();
 
 
-    protected override string GetListUrl() => "/Admin/Nummernkreise";
-    protected override string GetEntityRedirectUrl() => $"/Admin/Nummernkreise/Edit?nummernkreisId={Input!.NummernkreisId}";
+    protected override string GetListUrl() => "/Admin/NumberRanges";
+    protected override string GetEntityRedirectUrl() => $"/Admin/NumberRanges/Edit?numberRangeId={Input!.GetIdentifier()}";
 
     protected override async Task OnInitializedAsync()
     {
@@ -116,13 +116,13 @@
         User = await AuthService.GetUserAsync(dbController);
     }
 
-    [Parameter, SupplyParameterFromQuery(Name = "nummernkreisId")]
+    [Parameter, SupplyParameterFromQuery(Name = "numberRangeId")]
     public override int? Identifier { get; set; }
 
     protected override Task BeforeSaveAsync(IDbController dbController)
     {
-        Input.LetzterBearbeiter = User.UserId;
-        Input.ZuletztGeaendert = DateTime.Now;
+        Input.LastModifiedBy = User.UserId;
+        Input.LastModified = DateTime.Now;
 
         return Task.CompletedTask;
     }

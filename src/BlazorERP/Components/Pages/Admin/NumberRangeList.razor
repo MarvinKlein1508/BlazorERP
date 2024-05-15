@@ -1,4 +1,4 @@
-﻿@page "/Admin/Nummernkreise"
+﻿@page "/Admin/NumberRanges"
 @inject AuthService authService
 @inherits SearchPageBase<NumberRange, NumberRangeService, NumberRangeFilter>
 
@@ -30,7 +30,7 @@
                         <div class="list-details">
                             <div class="list-item" hidden-when="xs sm">
                                 <label>Id</label>
-                                <span>@item.NummernkreisId</span>
+                                <span>@item.NumberRangeId</span>
                             </div>
 
                             <div class="list-item">
@@ -40,7 +40,7 @@
 
                             <div class="list-item">
                                 <label>Letzte Änderung</label>
-                                <span>@item.ZuletztGeaendert?.ToShortDateString()</span>
+                                <span>@item.LastModified?.ToShortDateString()</span>
                             </div>
 
                             <div class="list-item">
@@ -49,7 +49,7 @@
                             </div>
                         </div>
                         <div class="list-buttons">
-                            <FluentAnchor Href="@($"/Admin/Nummernkreise/Edit?nummernkreisId={item.GetIdentifier()}")">
+                            <FluentAnchor Href="@($"/Admin/NumberRanges/Edit?numberRangeId={item.GetIdentifier()}")">
                                 Bearbeiten
                             </FluentAnchor>
                         </div>
@@ -70,7 +70,7 @@
                 <Pagination CurrentPageNumber="Page"
                             TotalItems="TotalItems"
                             ItemsPerPage="Filter.Limit"
-                            NavUrl="/Admin/Nummernkreise?page=" />
+                            NavUrl="/Admin/NumberRanges?page=" />
             }
         </FluentStack>
     </FluentGridItem>
@@ -95,5 +95,5 @@
 
 @code {
     protected override bool InternalNavigation => false;
-    protected override string BaseUrl => "/Admin/Nummernkreise";
+    protected override string BaseUrl => "/Admin/NumberRanges";
 }

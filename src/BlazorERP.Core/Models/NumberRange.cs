@@ -4,13 +4,13 @@ namespace BlazorERP.Core.Models;
 
 public class NumberRange : IDbModelWithName<int?>
 {
-    public int NummernkreisId { get; set; }
+    public int NumberRangeId { get; set; }
     public string Name { get; set; } = string.Empty;
-    public int KundeVon { get; set; }
-    public int KundeBis { get; set; }
-    public int? LetzterBearbeiter { get; set; }
-    public DateTime? ZuletztGeaendert { get; set; }
-    public int? GetIdentifier() => NummernkreisId > 0 ? NummernkreisId : null;
+    public int CustomerFrom { get; set; }
+    public int CustomerTo { get; set; }
+    public int? LastModifiedBy { get; set; }
+    public DateTime? LastModified { get; set; }
+    public int? GetIdentifier() => NumberRangeId > 0 ? NumberRangeId : null;
 
     public string GetName() => Name;
 
@@ -19,12 +19,12 @@ public class NumberRange : IDbModelWithName<int?>
     {
         return new Dictionary<string, object?>
         {
-            { "NUMMERNKREIS_ID", NummernkreisId },
+            { "NUMBER_RANGE_ID", NumberRangeId },
             { "NAME", Name },
-            { "KUNDE_VON", KundeVon },
-            { "KUNDE_BIS", KundeBis },
-            { "LETZTER_BEARBEITER", LetzterBearbeiter },
-            { "ZULETZT_GEAENDERT", ZuletztGeaendert }
+            { "CUSTOMER_FROM", CustomerFrom },
+            { "CUSTOMER_TO", CustomerTo },
+            { "LAST_MODIFIED_BY", LastModifiedBy },
+            { "LAST_MODIFIED", LastModified }
         };
     }
 }
