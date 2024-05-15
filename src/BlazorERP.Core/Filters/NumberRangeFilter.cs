@@ -1,7 +1,7 @@
 ﻿
 namespace BlazorERP.Core.Filters;
 
-public class NummernkreisFilter : PageFilterBase
+public class NumberRangeFilter : PageFilterBase
 {
     public override Dictionary<string, object?> GetParameters()
     {

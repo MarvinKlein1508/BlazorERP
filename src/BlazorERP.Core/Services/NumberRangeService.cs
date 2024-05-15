@@ -5,9 +5,9 @@ using System.Text;
 
 namespace BlazorERP.Core.Services;
 
-public class NummernkreisService : IModelService<Nummernkreis, int?, NummernkreisFilter>
+public class NumberRangeService : IModelService<NumberRange, int?, NumberRangeFilter>
 {
-    public async Task CreateAsync(Nummernkreis input, IDbController dbController, CancellationToken cancellationToken = default)
+    public async Task CreateAsync(NumberRange input, IDbController dbController, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         string sql =
@@ -33,18 +33,18 @@ public class NummernkreisService : IModelService<Nummernkreis, int?, Nummernkrei
         input.NummernkreisId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
     }
 
-    public Task DeleteAsync(Nummernkreis input, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task DeleteAsync(NumberRange input, IDbController dbController, CancellationToken cancellationToken = default)
     {
         string sql = "DELETE FROM NUMMERNKREISE WHERE NUMMERNKREIS_ID = @NUMMERNKREIS_ID";
 
         return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
     }
 
-    public Task<Nummernkreis?> GetAsync(int? identifier, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task<NumberRange?> GetAsync(int? identifier, IDbController dbController, CancellationToken cancellationToken = default)
     {
         if (identifier is null)
         {
-            return Task.FromResult<Nummernkreis?>(null);
+            return Task.FromResult<NumberRange?>(null);
         }
 
         string sql =
@@ -58,13 +58,13 @@ public class NummernkreisService : IModelService<Nummernkreis, int?, Nummernkrei
                 NUMMERNKREIS_ID = @NUMMERNKREIS_ID
             """;
 
-        return dbController.GetFirstAsync<Nummernkreis>(sql, new
+        return dbController.GetFirstAsync<NumberRange>(sql, new
         {
             NUMMERNKREIS_ID = identifier
         }, cancellationToken);
     }
 
-    public Task<List<Nummernkreis>> GetAsync(NummernkreisFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task<List<NumberRange>> GetAsync(NumberRangeFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         string sql =
@@ -80,12 +80,12 @@ public class NummernkreisService : IModelService<Nummernkreis, int?, Nummernkrei
             ORDER BY NUMMERNKREIS_ID DESC
         """;
 
-        return dbController.SelectDataAsync<Nummernkreis>(sql, filter.GetParameters(), cancellationToken);
+        return dbController.SelectDataAsync<NumberRange>(sql, filter.GetParameters(), cancellationToken);
     }
 
  
 
-    public string GetFilterWhere(NummernkreisFilter filter)
+    public string GetFilterWhere(NumberRangeFilter filter)
     {
         StringBuilder sb = new();
 
@@ -103,7 +103,7 @@ public class NummernkreisService : IModelService<Nummernkreis, int?, Nummernkrei
         return sql;
     }
 
-    public Task<int> GetTotalAsync(NummernkreisFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task<int> GetTotalAsync(NumberRangeFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         string sql =
@@ -120,7 +120,7 @@ public class NummernkreisService : IModelService<Nummernkreis, int?, Nummernkrei
     }
 
 
-    public async Task UpdateAsync(Nummernkreis input, IDbController dbController, CancellationToken cancellationToken = default)
+    public async Task UpdateAsync(NumberRange input, IDbController dbController, CancellationToken cancellationToken = default)
     {
         string sql =
            """

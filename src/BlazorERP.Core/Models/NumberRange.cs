@@ -2,7 +2,7 @@
 
 namespace BlazorERP.Core.Models;
 
-public class Nummernkreis : IDbModelWithName<int?>
+public class NumberRange : IDbModelWithName<int?>
 {
     public int NummernkreisId { get; set; }
     public string Name { get; set; } = string.Empty;

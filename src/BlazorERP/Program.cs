@@ -46,7 +46,7 @@ builder.Services.AddScoped<PaymentConditionService>();
 builder.Services.AddScoped<DeliveryConditionService>();
 builder.Services.AddScoped<KundeService>();
 builder.Services.AddScoped<ConfigurationService>();
-builder.Services.AddScoped<NummernkreisService>();
+builder.Services.AddScoped<NumberRangeService>();
 builder.Services.AddScoped<AnschriftService>();
 builder.Services.AddScoped<AuthService>();
 

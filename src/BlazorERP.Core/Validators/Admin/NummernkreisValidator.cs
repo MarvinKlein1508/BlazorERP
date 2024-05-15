@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace BlazorERP.Core.Validators.Admin;
 
-public class NummernkreisValidator : AbstractValidator<Nummernkreis>
+public class NummernkreisValidator : AbstractValidator<NumberRange>
 {
     public NummernkreisValidator()
     {
