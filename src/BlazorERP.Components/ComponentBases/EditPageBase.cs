@@ -1,4 +1,5 @@
-﻿using BlazorERP.Core.Enums;
+﻿using BlazorERP.Core;
+using BlazorERP.Core.Enums;
 using BlazorERP.Core.Interfaces;
 using BlazorERP.Core.Models;
 using BlazorERP.Core.Services;
@@ -8,7 +9,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.FluentUI.AspNetCore.Components;
 
-namespace BlazorERP.Core.ComponentBases;
+namespace BlazorERP.Components.ComponentBases;
 
 public abstract class EditPageBase<TIdentifier, TModel, TService> : ActivePageBase
     where TModel : class, IDbModel<TIdentifier>, new()

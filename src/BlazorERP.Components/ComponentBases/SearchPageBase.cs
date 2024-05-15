@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using System;
 using Microsoft.Extensions.Primitives;
 
-namespace BlazorERP.Core.ComponentBases;
+namespace BlazorERP.Components.ComponentBases;
 
 public abstract class SearchPageBase<TModel, TService, TFilter> : ComponentBase
     where TModel : class, new()

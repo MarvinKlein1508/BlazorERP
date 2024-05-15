@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
-namespace BlazorERP.Core.ComponentBases;
+namespace BlazorERP.Components.ComponentBases;
 
 public abstract class ActivePageBase : ComponentBase, IAsyncDisposable
 {

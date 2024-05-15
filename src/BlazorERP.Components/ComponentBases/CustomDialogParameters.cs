@@ -1,6 +1,6 @@
 ﻿using Microsoft.FluentUI.AspNetCore.Components;
 
-namespace BlazorERP.Core.ComponentBases;
+namespace BlazorERP.Components.ComponentBases;
 
 public sealed class CustomDialogParameters : DialogParameters
 {
