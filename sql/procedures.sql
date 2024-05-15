@@ -29,80 +29,80 @@ SET TERM ; ^
 
 SET TERM ^ ;
 
-CREATE OR ALTER PROCEDURE GET_NEXT_KUNDENNUMMER()
+CREATE OR ALTER PROCEDURE GET_NEXT_CUSTOMER_NUMBER()
 RETURNS 
 (
-    NEXT_KUNDENNUMMER INTEGER
+    NEXT_CUSTOMER_NUMBER INTEGER
 )
 AS
-DECLARE VARIABLE MIN_KUNDE INTEGER;
-DECLARE VARIABLE MAX_KUNDE INTEGER;
-DECLARE VARIABLE CURRENT_KUNDE INTEGER;
-DECLARE VARIABLE EXISTS_KUNDE INTEGER;
+DECLARE VARIABLE MIN_CUSTOMER INTEGER;
+DECLARE VARIABLE MAX_CUSTOMER INTEGER;
+DECLARE VARIABLE CURRENT_CUSTOMER INTEGER;
+DECLARE VARIABLE EXISTS_CUSTOMER INTEGER;
 BEGIN
 	 -- Initialize variables
-    MIN_KUNDE = 0;
-    MAX_KUNDE = 0;
-    CURRENT_KUNDE = 0;
-    EXISTS_KUNDE = 0;
+    MIN_CUSTOMER = 0;
+    MAX_CUSTOMER = 0;
+    CURRENT_CUSTOMER = 0;
+    EXISTS_CUSTOMER = 0;
    
-   	-- Find the range for KUNDENNUMMER from NUMMERNKREISE table
-    SELECT KUNDE_VON, KUNDE_BIS
-    FROM NUMMERNKREISE
-    INTO :MIN_KUNDE, :MAX_KUNDE;
+   	-- Find the range for CUSTOMER_NUMBER from NUMMERNKREISE table
+    SELECT CUSTOMER_FROM, CUSTOMER_TO
+    FROM NUMBER_RANGES
+    INTO :MIN_CUSTOMER, :MAX_CUSTOMER;
 
-    IF (MIN_KUNDE = 0 OR MAX_KUNDE = 0) THEN
+    IF (MIN_CUSTOMER = 0 OR MAX_CUSTOMER = 0) THEN
     BEGIN
         -- Return error if range is not defined
         EXCEPTION NO_NUMBERS_AVAILABLE;
         SUSPEND;
     END
     
-     -- Find the next available KUNDENNUMMER within the range
-    FOR SELECT KUNDENNUMMER
-    FROM KUNDEN
-    WHERE KUNDENNUMMER BETWEEN :MIN_KUNDE AND :MAX_KUNDE
-    INTO :CURRENT_KUNDE
+     -- Find the next available CUSTOMER_NUMBER within the range
+    FOR SELECT CUSTOMER_NUMBER
+    FROM CUSTOMERS
+    WHERE CUSTOMER_NUMBER BETWEEN :MIN_CUSTOMER AND :MAX_CUSTOMER
+    INTO :CURRENT_CUSTOMER
     DO
     BEGIN
-        EXISTS_KUNDE = 1;
+        EXISTS_CUSTOMER = 1;
     END
    
-    IF (EXISTS_KUNDE = 0) THEN
+    IF (EXISTS_CUSTOMER = 0) THEN
     BEGIN
-        -- If no KUNDENNUMMER exists within the range, return the minimum number
-        NEXT_KUNDENNUMMER = MIN_KUNDE;
+        -- If no CUSTOMER_NUMBER exists within the range, return the minimum number
+        NEXT_CUSTOMER_NUMBER = MIN_CUSTOMER;
         SUSPEND;
     END
     ELSE
     BEGIN
     
         -- Otherwise, find the next available number
-        NEXT_KUNDENNUMMER = (
-                                SELECT COALESCE(MIN(NUMMER), -1) AS NUMMER FROM 
+        NEXT_CUSTOMER_NUMBER = 
+                            (
+                                SELECT COALESCE(MIN(NUMBER), -1) AS NUMBER FROM 
                                 (
-                                    WITH RECURSIVE NUMBERS(NUMMER) AS 
+                                    WITH RECURSIVE NUMBERS(NUMBER) AS 
                                     (
-                                        SELECT :MIN_KUNDE AS NUMMER FROM RDB$DATABASE -- Anfangswert
+                                        SELECT :MIN_CUSTOMER AS NUMBER FROM RDB$DATABASE -- Initial value
                                         UNION ALL
-                                        SELECT NUMMER + 1 FROM NUMBERS WHERE NUMMER < :MAX_KUNDE -- Endwert
+                                        SELECT NUMBER + 1 FROM NUMBERS WHERE NUMBER < :MAX_CUSTOMER -- End value
                                     )
-                                    SELECT FIRST 1 N.NUMMER 
+                                    SELECT FIRST 1 N.NUMBER 
                                     FROM NUMBERS N
-                                    LEFT JOIN KUNDEN K ON N.NUMMER = K.KUNDENNUMMER
-                                    WHERE K.KUNDENNUMMER IS NULL
+                                    LEFT JOIN CUSTOMERS C ON N.NUMBER = C.CUSTOMER_NUMBER
+                                    WHERE C.CUSTOMER_NUMBER IS NULL
                                 )
                             );
 
-        IF (NEXT_KUNDENNUMMER = -1) THEN
+        IF (NEXT_CUSTOMER_NUMBER = -1) THEN
         BEGIN
             EXCEPTION NO_NUMBERS_AVAILABLE;
         END
 
         SUSPEND;
     END
-  
-
 END^
 
 SET TERM ; ^
+
