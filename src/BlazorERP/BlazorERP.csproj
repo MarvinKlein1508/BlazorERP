@@ -28,22 +28,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Components\Pages\Admin\Hilfsdaten\DeliveryConditionForm.razor">
+    <Content Update="Components\Pages\Admin\AuxiliaryData\DeliveryConditionForm.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
-    <Content Update="Components\Pages\Admin\Hilfsdaten\PaymentConditionForm.razor">
+    <Content Update="Components\Pages\Admin\AuxiliaryData\PaymentConditionForm.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
-    <Content Update="Components\Pages\Admin\Hilfsdaten\CostCenterList.razor">
+    <Content Update="Components\Pages\Admin\AuxiliaryData\CostCenterList.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
-    <Content Update="Components\Pages\Admin\Hilfsdaten\CurrencyList.razor">
+    <Content Update="Components\Pages\Admin\AuxiliaryData\CurrencyList.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
     <Content Update="Components\Pages\Admin\UserForm.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
-    <Content Update="Components\Pages\Stammdaten\AnschriftList.razor">
+    <Content Update="Components\Pages\MasterData\AnschriftList.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
   </ItemGroup>
