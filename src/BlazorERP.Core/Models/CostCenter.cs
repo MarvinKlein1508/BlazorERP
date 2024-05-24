@@ -4,14 +4,16 @@ namespace BlazorERP.Core.Models;
 
 public class CostCenter : IDbModelWithName<int?>
 {
-    public int Nummer { get; set; }
+    public int CostCenterId { get; set; }
+    public string CostCenterNumber { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
-    public int? LetzterBearbeiter { get; set; }
-    public DateTime? ZuletztGeaendert { get; set; }
+    public DateTime CreationDate { get; set; } = DateTime.Now;
+    public int? LastModifiedBy { get; set; }
+    public DateTime? LastModified { get; set; }
 
 
     public string BearbeiterName { get; set; } = string.Empty;
-    public int? GetIdentifier() => Nummer > 0 ? Nummer : null;
+    public int? GetIdentifier() => CostCenterId > 0 ? CostCenterId : null;
 
     public string GetName() => Name;
 
@@ -19,10 +21,12 @@ public class CostCenter : IDbModelWithName<int?>
     {
         return new Dictionary<string, object?>
         {
-            { "NUMMER", Nummer },
+            { "COST_CENTER_ID", CostCenterId },
+            { "COST_CENTER_NUMBER", CostCenterNumber },
             { "NAME", Name },
-            { "LETZTER_BEARBEITER", LetzterBearbeiter },
-            { "ZULETZT_GEAENDERT", ZuletztGeaendert },
+            { "CREATION_DATE", CreationDate },
+            { "LAST_MODIFIED_BY", LastModifiedBy },
+            { "LAST_MODIFIED", LastModified },
         };
     }
 }

@@ -7,64 +7,70 @@ namespace BlazorERP.Core.Services;
 
 public class CostCenterService : IModelService<CostCenter, int?, CostCenterFilter>
 {
-    public Task CreateAsync(CostCenter input, IDbController dbController, CancellationToken cancellationToken = default)
+    public async Task CreateAsync(CostCenter input, IDbController dbController, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         string sql =
             """
-            INSERT INTO KOSTENSTELLEN
+            INSERT INTO COST_CENTERS
             (
-                NUMMER,
+                COST_CENTER_NUMBER,
                 NAME,
-                LETZTER_BEARBEITER,
-                ZULETZT_GEAENDERT
+                CREATION_DATE,
+                LAST_MODIFIED,
+                LAST_MODIFIED_BY
             )
             VALUES
             (
-                @NUMMER,
+                @COST_CENTER_NUMBER,
                 @NAME,
-                @LETZTER_BEARBEITER,
-                @ZULETZT_GEAENDERT
-            );
+                @CREATION_DATE,
+                @LAST_MODIFIED,
+                @LAST_MODIFIED_BY
+            ) RETURNING COST_CENTER_ID;
             """;
 
-        return dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
+        input.CostCenterId =  await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
     }
 
-    public Task DeleteAsync(CostCenter input, IDbController dbController, CancellationToken cancellationToken = default)
+    public async Task DeleteAsync(CostCenter input, IDbController dbController, CancellationToken cancellationToken = default)
     {
-        string sql = "DELETE FROM KOSTENSTELLEN WHERE NUMMER = @NUMMER";
+        string sql = "DELETE FROM COST_CENTERS WHERE COST_CENTER_ID = @COST_CENTER_ID";
 
-        return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
+        await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
     }
-    public static Task<List<CostCenter>> GetAsync(IDbController dbController)
+    public static async Task<List<CostCenter>> GetAsync(IDbController dbController)
     {
-        string sql = "SELECT * FROM KOSTENSTELLEN";
+        string sql = "SELECT * FROM COST_CENTERS";
 
-        return dbController.SelectDataAsync<CostCenter>(sql);
+        var results = await dbController.SelectDataAsync<CostCenter>(sql);
+
+        return results;
     }
-    public Task<CostCenter?> GetAsync(int? identifier, IDbController dbController, CancellationToken cancellationToken = default)
+    public async Task<CostCenter?> GetAsync(int? identifier, IDbController dbController, CancellationToken cancellationToken = default)
     {
         if (identifier is null)
         {
-            return Task.FromResult<CostCenter?>(null);
+            return null;
         }
 
         string sql =
             """
             SELECT 
-                K.*,
-                U.ANZEIGENAME AS BEARBEITER_NAME
-            FROM KOSTENSTELLEN K
-            LEFT JOIN USERS U ON (U.USER_ID = K.LETZTER_BEARBEITER)
+                C.*,
+                U.DISPLAY_NAME AS BEARBEITER_NAME
+            FROM COST_CENTERS C
+            LEFT JOIN USERS U ON (U.USER_ID = C.LAST_MODIFIED_BY)
             WHERE 
-                NUMMER = @NUMMER
+                COST_CENTER_ID = @COST_CENTER_ID
             """;
 
-        return dbController.GetFirstAsync<CostCenter>(sql, new
+        var result = await dbController.GetFirstAsync<CostCenter>(sql, new
         {
-            NUMMER = identifier
+            COST_CENTER_ID = identifier
         }, cancellationToken);
+
+        return result;  
     }
 
     public Task<List<CostCenter>> GetAsync(CostCenterFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
@@ -74,13 +80,13 @@ public class CostCenterService : IModelService<CostCenter, int?, CostCenterFilte
         $"""
         SELECT 
             FIRST {filter.Limit} SKIP {(filter.PageNumber - 1) * filter.Limit}
-                K.*,
-                U.ANZEIGENAME AS BEARBEITER_NAME
-            FROM KOSTENSTELLEN K
-            LEFT JOIN USERS U ON (U.USER_ID = K.LETZTER_BEARBEITER)
+                C.*,
+                U.DISPLAY_NAME AS BEARBEITER_NAME
+            FROM COST_CENTERS C
+            LEFT JOIN USERS U ON (U.USER_ID = C.LAST_MODIFIED_BY)
             WHERE 1 = 1
             {GetFilterWhere(filter)}
-            ORDER BY NUMMER DESC
+            ORDER BY COST_CENTER_ID DESC
         """;
 
         return dbController.SelectDataAsync<CostCenter>(sql, filter.GetParameters(), cancellationToken);
@@ -106,20 +112,22 @@ public class CostCenterService : IModelService<CostCenter, int?, CostCenterFilte
         return sql;
     }
 
-    public Task<int> GetTotalAsync(CostCenterFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
+    public async Task<int> GetTotalAsync(CostCenterFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         string sql =
             $"""
             SELECT 
                 COUNT(*)
-            FROM KOSTENSTELLEN
+            FROM COST_CENTERS
             WHERE 1 = 1
             {GetFilterWhere(filter)}
             """;
 
 
-        return dbController.GetFirstAsync<int>(sql, filter.GetParameters(), cancellationToken);
+        var result = await dbController.GetFirstAsync<int>(sql, filter.GetParameters(), cancellationToken);
+
+        return result;
     }
 
 
@@ -127,12 +135,14 @@ public class CostCenterService : IModelService<CostCenter, int?, CostCenterFilte
     {
         string sql =
            """
-            UPDATE KOSTENSTELLEN SET 
+            UPDATE COST_CENTERS SET 
+                COST_CENTER_NUMBER = @COST_CENTER_NUMBER,
                 NAME = @NAME,
-                LETZTER_BEARBEITER = @LETZTER_BEARBEITER,
-                ZULETZT_GEAENDERT = @ZULETZT_GEAENDERT
+                CREATION_DATE = @CREATION_DATE,
+                LAST_MODIFIED = @LAST_MODIFIED,
+                LAST_MODIFIED_BY = @LAST_MODIFIED_BY
             WHERE
-                NUMMER = @NUMMER
+                COST_CENTER_ID = @COST_CENTER_ID
             """;
 
 

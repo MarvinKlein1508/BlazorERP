@@ -7,8 +7,8 @@ public class CostCenterValidator : AbstractValidator<CostCenter>
 {
     public CostCenterValidator()
     {
-        RuleFor(x => x.Nummer)
-            .GreaterThan(0)
+        RuleFor(x => x.CostCenterNumber)
+            .NotEmpty()
             .WithMessage("Bitte geben Sie eine Nummer an");
 
         RuleFor(x => x.Name)

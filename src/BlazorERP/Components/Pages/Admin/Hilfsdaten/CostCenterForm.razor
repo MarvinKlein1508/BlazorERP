@@ -1,4 +1,4 @@
-﻿@page "/Admin/Kostenstellen/Edit"
+﻿@page "/Admin/CostCenters/Edit"
 @using BlazorERP.Core.Validators.Admin.Hilfsdaten
 @using Microsoft.AspNetCore.Identity
 @inherits EditPageBase<int?, CostCenter, CostCenterService>
@@ -8,7 +8,7 @@
 <FluentBreadcrumb>
     <FluentBreadcrumbItem Href="/">Start</FluentBreadcrumbItem>
     <FluentBreadcrumbItem>Administration</FluentBreadcrumbItem>
-    <FluentBreadcrumbItem Href="/Admin/Kostenstellen">Kostenstellen</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="/Admin/CostCenters">Kostenstellen</FluentBreadcrumbItem>
     <FluentBreadcrumbItem>@FinalBreadcrumbItemName</FluentBreadcrumbItem>
 </FluentBreadcrumb>
 @if (Input is null)
@@ -16,7 +16,7 @@
     return;
 }
 <FluentStack HorizontalAlignment="HorizontalAlignment.End">
-    <FluentAnchor Href="/Admin/Kostenstellen"
+    <FluentAnchor Href="/Admin/CostCenters"
                   IconStart="@(new Icons.Regular.Size20.ArrowReply())">
         Zurück
     </FluentAnchor>
@@ -49,9 +49,16 @@
                     <div class="row">
                         <div class="col-md-9">
                             <div class="row">
+                                @if (Modus is EditMode.Edit)
+                                {
+                                    <div class="col-md-12">
+                                        <FluentNumberField @bind-Value="Input.CostCenterId" Label="Id" Disabled />
+                                    </div>
+                                }
+
                                 <div class="col-md-12">
-                                    <FluentNumberField @bind-Value="Input.Nummer" Label="Nummer" Disabled="Modus is EditMode.Edit" />
-                                    <FluentValidationMessage For="() => Input.Nummer" />
+                                    <FluentTextField @bind-Value="Input.CostCenterNumber" Label="Nummer" />
+                                    <FluentValidationMessage For="() => Input.CostCenterNumber" />
                                 </div>
 
                                 <div class="col-md-12">
@@ -65,7 +72,11 @@
                                 @if (Modus is EditMode.Edit)
                                 {
                                     <div class="col-12">
-                                        <FluentDatePicker Appearance="FluentInputAppearance.Filled" Label="Letzte Änderung" @bind-Value="@Input.ZuletztGeaendert" ReadOnly />
+                                        <FluentTextField Appearance="FluentInputAppearance.Filled" Label="Anlagedatum" Value="@Input.CreationDate.ToShortDateString()" ReadOnly />
+                                    </div>
+
+                                    <div class="col-12">
+                                        <FluentDatePicker Appearance="FluentInputAppearance.Filled" Label="Letzte Änderung" @bind-Value="@Input.LastModified" ReadOnly />
                                     </div>
 
                                     <div class="col-12">
@@ -88,12 +99,12 @@
     private bool _showOptionsMenu;
     private CostCenterValidator _validator = new();
 
-    protected override string GetListUrl() => "/Admin/Kostenstellen";
-    protected override string GetEntityRedirectUrl() => $"/Admin/Kostenstellen/Edit?nummer={Input!.Nummer}";
+    protected override string GetListUrl() => "/Admin/CostCenters";
+    protected override string GetEntityRedirectUrl() => $"/Admin/CostCenters/Edit?cost_center_id={Input!.GetIdentifier()}";
 
 
 
-    [Parameter, SupplyParameterFromQuery(Name = "nummer")]
+    [Parameter, SupplyParameterFromQuery(Name = "cost_center_id")]
     public override int? Identifier { get; set; }
 
 
@@ -101,8 +112,8 @@
 
     protected override Task BeforeSaveAsync(IDbController dbController)
     {
-        Input.LetzterBearbeiter = User.UserId;
-        Input.ZuletztGeaendert = DateTime.Now;
+        Input.LastModifiedBy = User.UserId;
+        Input.LastModified = DateTime.Now;
 
         return Task.CompletedTask;
     }

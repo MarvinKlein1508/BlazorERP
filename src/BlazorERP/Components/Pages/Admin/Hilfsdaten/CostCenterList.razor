@@ -1,4 +1,4 @@
-﻿@page "/Admin/Kostenstellen"
+﻿@page "/Admin/CostCenters"
 @inject AuthService authService
 @inherits SearchPageBase<CostCenter, CostCenterService, CostCenterFilter>
 
@@ -17,7 +17,7 @@
 <FluentGrid Width="100%">
     <FluentGridItem xs="12">
         <FluentStack HorizontalAlignment="HorizontalAlignment.End">
-            <FluentAnchor Href="/Admin/Kostenstellen/Edit"
+            <FluentAnchor Href="/Admin/CostCenters/Edit"
                           IconStart="@(new Icons.Regular.Size20.Add().WithColor(Color.Fill))"
                           Appearance="Appearance.Accent">
                 Neue Kostenstelle
@@ -44,9 +44,14 @@
                                 <label>Name</label>
                                 <span>@item.GetName()</span>
                             </div>
+
+                            <div class="list-item">
+                                <label>Nummer</label>
+                                <span>@item.CostCenterNumber</span>
+                            </div>
                         </div>
                         <div class="list-buttons">
-                            <FluentAnchor Href="@($"/Admin/Kostenstellen/Edit?nummer={item.GetIdentifier()}")">
+                            <FluentAnchor Href="@($"/Admin/CostCenters/Edit?cost_center_id={item.GetIdentifier()}")">
                                 Bearbeiten
                             </FluentAnchor>
                         </div>
@@ -67,7 +72,7 @@
                 <Pagination CurrentPageNumber="Page"
                             TotalItems="TotalItems"
                             ItemsPerPage="Filter.Limit"
-                            NavUrl="/Admin/Kostenstellen?page=" />
+                            NavUrl="/Admin/CostCenters?page=" />
             }
         </FluentStack>
     </FluentGridItem>
