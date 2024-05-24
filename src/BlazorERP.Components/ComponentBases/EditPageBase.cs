@@ -80,7 +80,7 @@ public abstract class EditPageBase<TIdentifier, TModel, TService> : ActivePageBa
             return;
         }
         _isLoading = true;
-        if (_form.EditContext.Validate())
+        if (_form.EditContext.Validate() && await OnValidateAsync())
         {
             using IDbController dbController = new FbController();
             await dbController.StartTransactionAsync();
@@ -109,12 +109,18 @@ public abstract class EditPageBase<TIdentifier, TModel, TService> : ActivePageBa
                 throw;
             }
 
-            
-            
-            NavigationManager.NavigateTo(GetEntityRedirectUrl());
+            await AfterSaveAsync(dbController);
+
             ToastService.ShowSuccess("Datensatz wurde erfolgreich gespeichert");
-            
-            await OnParametersSetAsync();
+
+            if (Modus is EditMode.Create)
+            {
+                NavigationManager.NavigateTo(GetEntityRedirectUrl());
+            }
+            else
+            {
+                await OnParametersSetAsync();
+            }
         }
         _isLoading = false;
     }
@@ -127,17 +133,16 @@ public abstract class EditPageBase<TIdentifier, TModel, TService> : ActivePageBa
             Input = entry.DeepCopyByExpressionTree();
             //EditEnabled = true; // TODO: Refactor
             Modus = EditMode.Edit;
-            if (Modus is EditMode.Edit && entry is IDbModelWithName<TIdentifier> modelWithName)
-            {
-                FinalBreadcrumbItemName = modelWithName.GetName();
-            }
-            else
-            {
-                FinalBreadcrumbItemName = entry.GetIdentifier()!.ToString()!;
-            }
+
+            FinalBreadcrumbItemName = GetFinalBreadcrumbItemName();
 
             await InitializeModelAsync(false, dbController);
         }
+    }
+
+    protected virtual string GetFinalBreadcrumbItemName()
+    {
+        return Input?.GetIdentifier()?.ToString() ?? string.Empty;
     }
 
     /// <summary>
@@ -165,6 +170,15 @@ public abstract class EditPageBase<TIdentifier, TModel, TService> : ActivePageBa
         return Task.CompletedTask;
     }
 
+    protected virtual Task AfterSaveAsync(IDbController dbController)
+    {
+        return Task.CompletedTask;
+    }
+
+    protected virtual Task<bool> OnValidateAsync()
+    {
+        return Task.FromResult(true);
+    }
 
     protected virtual Task InitializeModelAsync(bool newEntry, IDbController dbController)
     {
@@ -223,7 +237,7 @@ public abstract class EditPageBase<TIdentifier, TModel, TService> : ActivePageBa
         var dialog = await DialogService.ShowConfirmationAsync("Möchten Sie diesen Datensatz wirklich löschen?", "Löschen", "Abbrechen", "Datensatz löschen?");
         var result = await dialog.Result;
 
-        if(!result.Cancelled)
+        if (!result.Cancelled)
         {
 
             using IDbController dbController = new FbController();
@@ -242,7 +256,7 @@ public abstract class EditPageBase<TIdentifier, TModel, TService> : ActivePageBa
                 await dbController.RollbackAsync();
                 throw;
             }
-            
+
 
             MessageService.ShowMessageBar(options =>
             {
@@ -254,6 +268,11 @@ public abstract class EditPageBase<TIdentifier, TModel, TService> : ActivePageBa
 
             NavigationManager.NavigateTo(GetListUrl());
         }
+    }
+
+    protected virtual bool CanSave()
+    {
+        return true;
     }
 
 }
