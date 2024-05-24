@@ -43,7 +43,7 @@
     <Content Update="Components\Pages\Admin\UserForm.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
-    <Content Update="Components\Pages\MasterData\AnschriftList.razor">
+    <Content Update="Components\Pages\MasterData\AddressList.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
   </ItemGroup>

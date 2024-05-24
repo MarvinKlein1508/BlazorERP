@@ -5,7 +5,7 @@ using System.Xml.Linq;
 
 namespace BlazorERP.Core.Models;
 
-public class Anschrift : IDbModel<int?>
+public class Address : IDbModel<int?>
 {
     public int AnschriftId { get; set; }
     public string? Kundennummer { get; set; }

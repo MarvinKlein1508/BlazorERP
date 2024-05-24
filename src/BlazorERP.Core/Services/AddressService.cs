@@ -5,9 +5,9 @@ using System.Text;
 
 namespace BlazorERP.Core.Services;
 
-public class AnschriftService : IModelService<Anschrift, int?, AnschriftFilter>
+public class AddressService : IModelService<Address, int?, AddressFilter>
 {
-    public async Task CreateAsync(Anschrift input, IDbController dbController, CancellationToken cancellationToken = default)
+    public async Task CreateAsync(Address input, IDbController dbController, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         string sql =
@@ -63,18 +63,18 @@ public class AnschriftService : IModelService<Anschrift, int?, AnschriftFilter>
         input.AnschriftId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
     }
 
-    public Task DeleteAsync(Anschrift input, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task DeleteAsync(Address input, IDbController dbController, CancellationToken cancellationToken = default)
     {
         string sql = "DELETE FROM ANSCHRIFTEN WHERE ANSCHRIFT_ID = @ANSCHRIFT_ID";
 
         return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);  
     }
 
-    public Task<Anschrift?> GetAsync(int? identifier, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task<Address?> GetAsync(int? identifier, IDbController dbController, CancellationToken cancellationToken = default)
     {
         if (identifier is null)
         {
-            return Task.FromResult<Anschrift?>(null);
+            return Task.FromResult<Address?>(null);
         }
 
         string sql =
@@ -88,13 +88,13 @@ public class AnschriftService : IModelService<Anschrift, int?, AnschriftFilter>
                 ANSCHRIFT_ID = @ANSCHRIFT_ID
             """;
 
-        return dbController.GetFirstAsync<Anschrift>(sql, new
+        return dbController.GetFirstAsync<Address>(sql, new
         {
             ANSCHRIFT_ID = identifier
         }, cancellationToken);
     }
 
-    public Task<List<Anschrift>> GetAsync(AnschriftFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task<List<Address>> GetAsync(AddressFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         string sql =
@@ -110,10 +110,10 @@ public class AnschriftService : IModelService<Anschrift, int?, AnschriftFilter>
             ORDER BY ANSCHRIFT_ID DESC
         """;
 
-        return dbController.SelectDataAsync<Anschrift>(sql, filter.GetParameters(), cancellationToken);
+        return dbController.SelectDataAsync<Address>(sql, filter.GetParameters(), cancellationToken);
     }
 
-    public string GetFilterWhere(AnschriftFilter filter)
+    public string GetFilterWhere(AddressFilter filter)
     {
         StringBuilder sb = new();
 
@@ -131,7 +131,7 @@ public class AnschriftService : IModelService<Anschrift, int?, AnschriftFilter>
         return sql;
     }
 
-    public Task<int> GetTotalAsync(AnschriftFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task<int> GetTotalAsync(AddressFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         string sql =
@@ -147,7 +147,7 @@ public class AnschriftService : IModelService<Anschrift, int?, AnschriftFilter>
         return dbController.GetFirstAsync<int>(sql, filter.GetParameters(), cancellationToken);
     }
 
-    public Task UpdateAsync(Anschrift input, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task UpdateAsync(Address input, IDbController dbController, CancellationToken cancellationToken = default)
     {
         string sql =
             """

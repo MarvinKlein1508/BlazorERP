@@ -1,6 +1,6 @@
-﻿@page "/Stammdaten/Anschriften"
+﻿@page "/Addresses"
 @inject AuthService authService
-@inherits SearchPageBase<Anschrift, AnschriftService, AnschriftFilter>
+@inherits SearchPageBase<Address, AddressService, AddressFilter>
 
 <PageTitle>Anschriften</PageTitle>
 
@@ -15,7 +15,7 @@
 <FluentGrid Width="100%">
     <FluentGridItem xs="12">
         <FluentStack HorizontalAlignment="HorizontalAlignment.End">
-            <FluentAnchor Href="/Stammdaten/Anschriften/Edit"
+            <FluentAnchor Href="/Addresses/Edit"
                           IconStart="@(new Icons.Regular.Size20.Add().WithColor(Color.Fill))"
                           Appearance="Appearance.Accent">
                 Neue Anschrift
@@ -45,7 +45,7 @@
 
                         </div>
                         <div class="list-buttons">
-                            <FluentAnchor Href="@($"/Stammdaten/Anschriften/Edit?anschriftId={item.GetIdentifier()}")">
+                            <FluentAnchor Href="@($"/Addresses/Edit?addressId={item.GetIdentifier()}")">
                                 Bearbeiten
                             </FluentAnchor>
                         </div>
@@ -66,7 +66,7 @@
                 <Pagination CurrentPageNumber="Page"
                             TotalItems="TotalItems"
                             ItemsPerPage="Filter.Limit"
-                            NavUrl="/Stammdaten/Anschriften?page=" />
+                            NavUrl="/Addresses?page=" />
             }
         </FluentStack>
     </FluentGridItem>
@@ -88,9 +88,3 @@
         </FluentCard>
     </FluentGridItem>
 </FluentGrid>
-
-@code {
-
-    [Parameter, SupplyParameterFromQuery(Name = "kundennummer")]
-    public string? Kundennummer { get; set; } 
-}

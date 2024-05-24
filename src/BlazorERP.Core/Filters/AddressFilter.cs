@@ -1,7 +1,7 @@
 ﻿
 namespace BlazorERP.Core.Filters;
 
-public class AnschriftFilter : PageFilterBase
+public class AddressFilter : PageFilterBase
 {
     public override Dictionary<string, object?> GetParameters()
     {

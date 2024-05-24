@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace BlazorERP.Core.Validators.Admin;
 
-public class VoreinstellungValidator : AbstractValidator<Configuration>
+public class ConfigurationValidator : AbstractValidator<Configuration>
 {
-    public VoreinstellungValidator()
+    public ConfigurationValidator()
     {
         RuleFor(x => x.Name)
             .NotEmpty();

@@ -1,13 +1,13 @@
-﻿@page "/Stammdaten/Anschriften/Edit"
+﻿@page "/Addresses/Edit"
 @using BlazorERP.Core.Validators.Admin.Hilfsdaten
 @using Microsoft.AspNetCore.Identity
-@inherits EditPageBase<int?, Anschrift, AnschriftService>
+@inherits EditPageBase<int?, Address, AddressService>
 
 <PageTitle>@FinalBreadcrumbItemName</PageTitle>
 
 <FluentBreadcrumb>
     <FluentBreadcrumbItem Href="/">Start</FluentBreadcrumbItem>
-    <FluentBreadcrumbItem Href="/Stammdaten/Anschriften">Anschriften</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="/Addresses">Anschriften</FluentBreadcrumbItem>
     <FluentBreadcrumbItem>@FinalBreadcrumbItemName</FluentBreadcrumbItem>
 </FluentBreadcrumb>
 @if (Input is null)
@@ -15,7 +15,7 @@
     return;
 }
 <FluentStack HorizontalAlignment="HorizontalAlignment.End">
-    <FluentAnchor Href="/Admin/Anschriften"
+    <FluentAnchor Href="/Addresses"
                   IconStart="@(new Icons.Regular.Size20.ArrowReply())">
         Zurück
     </FluentAnchor>
@@ -166,12 +166,12 @@
     private bool _showOptionsMenu;
     private PaymentConditionValidator _validator = new();
 
-    protected override string GetListUrl() => "/Stammdaten/Anschriften";
-    protected override string GetEntityRedirectUrl() => $"/Stammdaten/Anschriften/Edit?anschriftId={Input!.AnschriftId}";
+    protected override string GetListUrl() => "/Addresses";
+    protected override string GetEntityRedirectUrl() => $"/Addresses/Edit?addressId={Input!.AnschriftId}";
 
 
 
-    [Parameter, SupplyParameterFromQuery(Name = "anschriftId")]
+    [Parameter, SupplyParameterFromQuery(Name = "addressId")]
     public override int? Identifier { get; set; }
 
 

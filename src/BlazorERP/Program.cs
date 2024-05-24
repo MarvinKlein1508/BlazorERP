@@ -48,7 +48,7 @@ builder.Services.AddScoped<DeliveryConditionService>();
 builder.Services.AddScoped<CustomerService>();
 builder.Services.AddScoped<ConfigurationService>();
 builder.Services.AddScoped<NumberRangeService>();
-builder.Services.AddScoped<AnschriftService>();
+builder.Services.AddScoped<AddressService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<CacheStorageAccessor>();
 
