@@ -1,4 +1,4 @@
-﻿@page "/Admin/Voreinstellungen/Edit"
+﻿@page "/Admin/Configuration/Edit"
 @using BlazorERP.Core.Validators.Admin
 @using Microsoft.AspNetCore.Identity
 @inject AuthService authService
@@ -11,7 +11,7 @@
 <FluentBreadcrumb>
     <FluentBreadcrumbItem Href="/">Start</FluentBreadcrumbItem>
     <FluentBreadcrumbItem>Administration</FluentBreadcrumbItem>
-    <FluentBreadcrumbItem Href="/Admin/Voreinstellungen">Voreinstellungen</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="/Admin/Configuration">Voreinstellungen</FluentBreadcrumbItem>
     <FluentBreadcrumbItem>@FinalBreadcrumbItemName</FluentBreadcrumbItem>
 </FluentBreadcrumb>
 @if (Input is null)
@@ -19,7 +19,7 @@
     return;
 }
 <FluentStack HorizontalAlignment="HorizontalAlignment.End">
-    <FluentAnchor Href="/Admin/Voreinstellungen"
+    <FluentAnchor Href="/Admin/Configuration"
                   IconStart="@(new Icons.Regular.Size20.ArrowReply())">
         Zurück
     </FluentAnchor>
@@ -163,8 +163,8 @@
     private VoreinstellungValidator _validator = new();
 
 
-    protected override string GetListUrl() => "/Admin/Voreinstellungen";
-    protected override string GetEntityRedirectUrl() => $"/Admin/Voreinstellungen/Edit?voreinstellungId={Input!.ConfigurationId}";
+    protected override string GetListUrl() => "/Admin/Configuration";
+    protected override string GetEntityRedirectUrl() => $"/Admin/Configuration/Edit?configurationId={Input!.GetIdentifier()}";
 
     protected override async Task OnInitializedAsync()
     {
@@ -175,7 +175,7 @@
 
 
 
-    [Parameter, SupplyParameterFromQuery(Name = "voreinstellungId")]
+    [Parameter, SupplyParameterFromQuery(Name = "configurationId")]
     public override int? Identifier { get; set; }
 
 

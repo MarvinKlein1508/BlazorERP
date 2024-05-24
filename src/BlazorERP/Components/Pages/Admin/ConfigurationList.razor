@@ -1,4 +1,4 @@
-﻿@page "/Admin/Voreinstellungen"
+﻿@page "/Admin/Configuration"
 @inject AuthService authService
 @inherits SearchPageBase<Configuration, ConfigurationService, ConfigurationFilter>
 
@@ -49,7 +49,7 @@
                             </div>
                         </div>
                         <div class="list-buttons">
-                            <FluentAnchor Href="@($"/Admin/Voreinstellungen/Edit?voreinstellungId={item.GetIdentifier()}")">
+                            <FluentAnchor Href="@($"/Admin/Configuration/Edit?configurationId={item.GetIdentifier()}")">
                                 Bearbeiten
                             </FluentAnchor>
                         </div>
@@ -70,7 +70,7 @@
                 <Pagination CurrentPageNumber="Page"
                             TotalItems="TotalItems"
                             ItemsPerPage="Filter.Limit"
-                            NavUrl="/Admin/Voreinstellungen?page=" />
+                            NavUrl="/Admin/Configuration?page=" />
             }
         </FluentStack>
     </FluentGridItem>
