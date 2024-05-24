@@ -1,4 +1,5 @@
 using BlazorERP.Components;
+using BlazorERP.Components.Infrastructure;
 using BlazorERP.Core.Models;
 using BlazorERP.Core.Options;
 using BlazorERP.Core.Services;
@@ -49,6 +50,7 @@ builder.Services.AddScoped<ConfigurationService>();
 builder.Services.AddScoped<NumberRangeService>();
 builder.Services.AddScoped<AnschriftService>();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<CacheStorageAccessor>();
 
 // Options
 builder.Services.AddOptions<LdapOptions>()
