@@ -49,7 +49,7 @@
                         @if (Modus is EditMode.Edit)
                         {
                             <div class="col-md-12">
-                                <FluentNumberField @bind-Value="Input.AnschriftId" Label="AnschriftId" Disabled />
+                                <FluentNumberField @bind-Value="Input.AddressId" Label="Id" Disabled />
                             </div>
                         }
 
@@ -57,8 +57,8 @@
                             <div class="col-md-6">
                                 <div class="row">
                                     <div class="col-12">
-                                        <FluentTextField @bind-Value="Input.Firma" Label="Firma" />
-                                        <FluentValidationMessage For="() => Input.Firma" />
+                                        <FluentTextField @bind-Value="Input.Company" Label="Firma" />
+                                        <FluentValidationMessage For="() => Input.Company" />
                                     </div>
                                     <div class="col-12">
                                         <FluentTextField @bind-Value="Input.Name1" Label="Name 1" />
@@ -70,45 +70,45 @@
                                     </div>
 
                                     <div class="col-12">
-                                        <FluentTextField @bind-Value="Input.Strasse" Label="Straße" />
-                                        <FluentValidationMessage For="() => Input.Strasse" />
+                                        <FluentTextField @bind-Value="Input.Street" Label="Straße" />
+                                        <FluentValidationMessage For="() => Input.Street" />
                                     </div>
 
 
                                     <div class="col-md-4">
-                                        <FluentSelect TOption="Country" Label="Land" Width="100%;">
-                                            <FluentOption Value="null" Selected="@(Input.LandId is null)" OnSelect="(val) => Input.LandId = null">--- Auswählen ---</FluentOption>
+                                        <FluentSelect TOption="Country" Label="Land" Width="100%;" Height="300px">
+                                            <FluentOption Value="null" Selected="@(Input.CountryId is null)" OnSelect="(val) => Input.CountryId = null">--- Auswählen ---</FluentOption>
                                             @foreach (var item in Storage.Get<Country>())
                                             {
-                                                <FluentOption TOption="Country" Value="@item.CountryId.ToString()" Selected="@(Input.LandId == item.CountryId)" OnSelect="(val) => Input.LandId = item.CountryId">@item.ISO2</FluentOption>
+                                                <FluentOption TOption="Country" Value="@item.CountryId.ToString()" Selected="@(Input.CountryId == item.CountryId)" OnSelect="(val) => Input.CountryId = item.CountryId">@item.ISO2</FluentOption>
                                             }
                                         </FluentSelect>
                                     </div>
 
                                     <div class="col-md-4">
-                                        <FluentTextField @bind-Value="Input.Postleistzahl" Label="Postleitzahl" />
-                                        <FluentValidationMessage For="() => Input.Postleistzahl" />
+                                        <FluentTextField @bind-Value="Input.PostalCode" Label="Postleitzahl" />
+                                        <FluentValidationMessage For="() => Input.PostalCode" />
                                     </div>
 
                                     <div class="col-md-4">
-                                        <FluentTextField @bind-Value="Input.Ort" Label="Ort" />
-                                        <FluentValidationMessage For="() => Input.Ort" />
+                                        <FluentTextField @bind-Value="Input.City" Label="Ort" />
+                                        <FluentValidationMessage For="() => Input.City" />
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <FluentTextField @bind-Value="Input.Telefonnummer" Label="Telefonnummer" />
-                                        <FluentValidationMessage For="() => Input.Telefonnummer" />
+                                        <FluentTextField @bind-Value="Input.PhoneNumber" Label="Telefonnummer" />
+                                        <FluentValidationMessage For="() => Input.PhoneNumber" />
                                     </div>
                                     <div class="col-md-6">
-                                        <FluentTextField @bind-Value="Input.Mobilnummer" Label="Mobilnummer" />
-                                        <FluentValidationMessage For="() => Input.Mobilnummer" />
+                                        <FluentTextField @bind-Value="Input.MobileNumber" Label="Mobilnummer" />
+                                        <FluentValidationMessage For="() => Input.MobileNumber" />
                                     </div>
                                     <div class="col-md-6">
-                                        <FluentTextField @bind-Value="Input.Faxnummer" Label="Faxnummer" />
-                                        <FluentValidationMessage For="() => Input.Faxnummer" />
+                                        <FluentTextField @bind-Value="Input.FaxNumber" Label="Faxnummer" />
+                                        <FluentValidationMessage For="() => Input.FaxNumber" />
                                     </div>
                                     <div class="col-md-6">
                                         <FluentTextField @bind-Value="Input.Email" Label="E-Mail" />
@@ -116,20 +116,20 @@
                                     </div>
                                     <div class="col-md-6">
                                         <FluentSelect TOption="Language" Label="Sprache" Width="100%;">
-                                            <FluentOption Value="null" Selected="@(Input.SprachId is null)" OnSelect="(val) => Input.SprachId = null">--- Auswählen ---</FluentOption>
+                                            <FluentOption Value="null" Selected="@(Input.LanguageId is null)" OnSelect="(val) => Input.LanguageId = null">--- Auswählen ---</FluentOption>
                                             @foreach (var item in Storage.Get<Language>())
                                             {
-                                                <FluentOption TOption="Language" Value="@item.LanguageId.ToString()" Selected="@(Input.SprachId == item.LanguageId)" OnSelect="(val) => Input.SprachId = item.LanguageId">@item.GetName(Storage.DEFAULT_LANGUAGE)</FluentOption>
+                                                <FluentOption TOption="Language" Value="@item.LanguageId.ToString()" Selected="@(Input.LanguageId == item.LanguageId)" OnSelect="(val) => Input.LanguageId = item.LanguageId">@item.GetName(Storage.DEFAULT_LANGUAGE)</FluentOption>
                                             }
                                         </FluentSelect>
-                                        <FluentValidationMessage For="() => Input.SprachId" />
+                                        <FluentValidationMessage For="() => Input.LanguageId" />
                                     </div>
                                     <div class="col-md-6">
-                                        <FluentTextField @bind-Value="Input.UmsatzsteuerIdentifikationsnummer" Label="Ust. ID-Nummer" />
-                                        <FluentValidationMessage For="() => Input.UmsatzsteuerIdentifikationsnummer" />
+                                        <FluentTextField @bind-Value="Input.VatIdentificationNumber" Label="Ust. ID-Nummer" />
+                                        <FluentValidationMessage For="() => Input.VatIdentificationNumber" />
                                     </div>
                                     <div class="col-12">
-                                        <FluentTextArea @bind-Value="Input.Notiz" Label="Notiz" Class="w-100" Rows="6" />
+                                        <FluentTextArea @bind-Value="Input.Note" Label="Notiz" Class="w-100" Rows="6" />
                                     </div>
                                 </div>
                             </div>
@@ -146,7 +146,7 @@
                         @if (Modus is EditMode.Edit)
                         {
                             <div class="col-12">
-                                <FluentDatePicker Appearance="FluentInputAppearance.Filled" Label="Letzte Änderung" @bind-Value="@Input.ZuletztGeaendert" ReadOnly />
+                                <FluentDatePicker Appearance="FluentInputAppearance.Filled" Label="Letzte Änderung" @bind-Value="@Input.LastModified" ReadOnly />
                             </div>
 
                             <div class="col-12">
@@ -167,7 +167,7 @@
     private PaymentConditionValidator _validator = new();
 
     protected override string GetListUrl() => "/Addresses";
-    protected override string GetEntityRedirectUrl() => $"/Addresses/Edit?addressId={Input!.AnschriftId}";
+    protected override string GetEntityRedirectUrl() => $"/Addresses/Edit?addressId={Input!.GetIdentifier()}";
 
 
 
@@ -175,11 +175,10 @@
     public override int? Identifier { get; set; }
 
 
-
     protected override Task BeforeSaveAsync(IDbController dbController)
     {
-        Input.LetzterBearbeiter = User.UserId;
-        Input.ZuletztGeaendert = DateTime.Now;
+        Input.LastModifiedBy = User.UserId;
+        Input.LastModified = DateTime.Now;
 
         return Task.CompletedTask;
     }
