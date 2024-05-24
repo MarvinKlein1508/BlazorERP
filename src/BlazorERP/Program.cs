@@ -41,7 +41,7 @@ builder.Services.AddScoped<TranslationService>();
 builder.Services.AddScoped<LanguageService>();
 builder.Services.AddScoped<CountryService>();
 builder.Services.AddScoped<CurrencyService>();
-builder.Services.AddScoped<KostenstelleService>();
+builder.Services.AddScoped<CostCenterService>();
 builder.Services.AddScoped<PaymentConditionService>();
 builder.Services.AddScoped<DeliveryConditionService>();
 builder.Services.AddScoped<CustomerService>();

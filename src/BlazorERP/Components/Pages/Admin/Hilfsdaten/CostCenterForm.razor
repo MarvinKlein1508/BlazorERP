@@ -1,7 +1,7 @@
 ﻿@page "/Admin/Kostenstellen/Edit"
 @using BlazorERP.Core.Validators.Admin.Hilfsdaten
 @using Microsoft.AspNetCore.Identity
-@inherits EditPageBase<int?, Kostenstelle, KostenstelleService>
+@inherits EditPageBase<int?, CostCenter, CostCenterService>
 
 <PageTitle>@FinalBreadcrumbItemName</PageTitle>
 
@@ -86,7 +86,7 @@
 
 
     private bool _showOptionsMenu;
-    private KostenstelleValidator _validator = new();
+    private CostCenterValidator _validator = new();
 
     protected override string GetListUrl() => "/Admin/Kostenstellen";
     protected override string GetEntityRedirectUrl() => $"/Admin/Kostenstellen/Edit?nummer={Input!.Nummer}";

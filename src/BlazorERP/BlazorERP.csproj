@@ -34,7 +34,7 @@
     <Content Update="Components\Pages\Admin\Hilfsdaten\PaymentConditionForm.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
-    <Content Update="Components\Pages\Admin\Hilfsdaten\KostenstelleList.razor">
+    <Content Update="Components\Pages\Admin\Hilfsdaten\CostCenterList.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
     <Content Update="Components\Pages\Admin\Hilfsdaten\CurrencyList.razor">

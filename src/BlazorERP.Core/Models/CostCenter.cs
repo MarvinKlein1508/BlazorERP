@@ -2,7 +2,7 @@
 
 namespace BlazorERP.Core.Models;
 
-public class Kostenstelle : IDbModelWithName<int?>
+public class CostCenter : IDbModelWithName<int?>
 {
     public int Nummer { get; set; }
     public string Name { get; set; } = string.Empty;

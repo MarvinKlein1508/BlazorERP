@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace BlazorERP.Core.Validators.Admin.Hilfsdaten;
 
-public class KostenstelleValidator : AbstractValidator<Kostenstelle>
+public class CostCenterValidator : AbstractValidator<CostCenter>
 {
-    public KostenstelleValidator()
+    public CostCenterValidator()
     {
         RuleFor(x => x.Nummer)
             .GreaterThan(0)

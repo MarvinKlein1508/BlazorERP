@@ -5,9 +5,9 @@ using System.Text;
 
 namespace BlazorERP.Core.Services;
 
-public class KostenstelleService : IModelService<Kostenstelle, int?, KostenstelleFilter>
+public class CostCenterService : IModelService<CostCenter, int?, CostCenterFilter>
 {
-    public Task CreateAsync(Kostenstelle input, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task CreateAsync(CostCenter input, IDbController dbController, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         string sql =
@@ -31,23 +31,23 @@ public class KostenstelleService : IModelService<Kostenstelle, int?, Kostenstell
         return dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
     }
 
-    public Task DeleteAsync(Kostenstelle input, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task DeleteAsync(CostCenter input, IDbController dbController, CancellationToken cancellationToken = default)
     {
         string sql = "DELETE FROM KOSTENSTELLEN WHERE NUMMER = @NUMMER";
 
         return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
     }
-    public static Task<List<Kostenstelle>> GetAsync(IDbController dbController)
+    public static Task<List<CostCenter>> GetAsync(IDbController dbController)
     {
         string sql = "SELECT * FROM KOSTENSTELLEN";
 
-        return dbController.SelectDataAsync<Kostenstelle>(sql);
+        return dbController.SelectDataAsync<CostCenter>(sql);
     }
-    public Task<Kostenstelle?> GetAsync(int? identifier, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task<CostCenter?> GetAsync(int? identifier, IDbController dbController, CancellationToken cancellationToken = default)
     {
         if (identifier is null)
         {
-            return Task.FromResult<Kostenstelle?>(null);
+            return Task.FromResult<CostCenter?>(null);
         }
 
         string sql =
@@ -61,13 +61,13 @@ public class KostenstelleService : IModelService<Kostenstelle, int?, Kostenstell
                 NUMMER = @NUMMER
             """;
 
-        return dbController.GetFirstAsync<Kostenstelle>(sql, new
+        return dbController.GetFirstAsync<CostCenter>(sql, new
         {
             NUMMER = identifier
         }, cancellationToken);
     }
 
-    public Task<List<Kostenstelle>> GetAsync(KostenstelleFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task<List<CostCenter>> GetAsync(CostCenterFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         string sql =
@@ -83,12 +83,12 @@ public class KostenstelleService : IModelService<Kostenstelle, int?, Kostenstell
             ORDER BY NUMMER DESC
         """;
 
-        return dbController.SelectDataAsync<Kostenstelle>(sql, filter.GetParameters(), cancellationToken);
+        return dbController.SelectDataAsync<CostCenter>(sql, filter.GetParameters(), cancellationToken);
     }
 
  
 
-    public string GetFilterWhere(KostenstelleFilter filter)
+    public string GetFilterWhere(CostCenterFilter filter)
     {
         StringBuilder sb = new();
 
@@ -106,7 +106,7 @@ public class KostenstelleService : IModelService<Kostenstelle, int?, Kostenstell
         return sql;
     }
 
-    public Task<int> GetTotalAsync(KostenstelleFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task<int> GetTotalAsync(CostCenterFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         string sql =
@@ -123,7 +123,7 @@ public class KostenstelleService : IModelService<Kostenstelle, int?, Kostenstell
     }
 
 
-    public async Task UpdateAsync(Kostenstelle input, IDbController dbController, CancellationToken cancellationToken = default)
+    public async Task UpdateAsync(CostCenter input, IDbController dbController, CancellationToken cancellationToken = default)
     {
         string sql =
            """
