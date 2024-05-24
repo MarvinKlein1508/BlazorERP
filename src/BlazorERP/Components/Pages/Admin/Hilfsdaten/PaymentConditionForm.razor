@@ -15,6 +15,7 @@
 {
     return;
 }
+
 <FluentStack HorizontalAlignment="HorizontalAlignment.End">
     <FluentAnchor Href="/Admin/PaymentConditions"
                   IconStart="@(new Icons.Regular.Size20.ArrowReply())">
@@ -54,8 +55,6 @@
                                 <FluentValidationMessage For="() => Input.PaymentConditionId" />
                             </div>
                         }
-
-             
 
                         <div class="col-md-4">
                             <FluentNumberField @bind-Value="Input.NetDays" Label="Nettotage" />
@@ -112,9 +111,7 @@
             </div>
         </FluentTab>
         <FluentTab Label="Übersetzungen">
-            <Content>
-                <BlazorERP.Components.Shared.TranslationEditor Input="Input" />
-            </Content>
+            <BlazorERP.Components.Shared.TranslationEditor Input="Input" />
         </FluentTab>
 
     </FluentTabs>

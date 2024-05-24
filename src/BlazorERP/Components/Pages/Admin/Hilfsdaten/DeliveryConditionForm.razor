@@ -50,14 +50,10 @@
                         @if (Modus is EditMode.Edit)
                         {
                             <div class="col-md-12">
-                                <FluentNumberField @bind-Value="Input.DeliveryConditionId" Label="LieferbedingungId" Disabled />
+                                <FluentNumberField @bind-Value="Input.DeliveryConditionId" Label="Id" Disabled />
                                 <FluentValidationMessage For="() => Input.DeliveryConditionId" />
                             </div>
                         }
-
-                        <div class="col-12">
-                            <BlazorERP.Components.Shared.TranslationEditor Input="Input" />
-                        </div>
 
                     </div>
                 </div>
@@ -85,6 +81,9 @@
                     </div>
                 </div>
             </div>
+        </FluentTab>
+        <FluentTab Label="Übersetzungen">
+            <BlazorERP.Components.Shared.TranslationEditor Input="Input" />
         </FluentTab>
     </FluentTabs>
 </EditForm>

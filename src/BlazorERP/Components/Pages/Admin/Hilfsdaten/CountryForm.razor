@@ -54,12 +54,6 @@
                             </div>
                         }
 
-                        <div class="col-12">
-                            <label>Namen</label>
-                            <BlazorERP.Components.Shared.TranslationEditor Translations="Input.Translations" />
-                        </div>
-
-      
                         <div class="col-md-3">
                             <FluentTextField @bind-Value="Input.ISO2" Label="ISO2" />
                             <FluentValidationMessage For="() => Input.ISO2" />
@@ -100,7 +94,7 @@
         </FluentTab>
         <FluentTab Label="Übersetzungen">
             <Content>
-                <BlazorERP.Components.Shared.TranslationEditor Translations="Input.Translations" />
+                <BlazorERP.Components.Shared.TranslationEditor Input="Input" />
             </Content>
         </FluentTab>
 
