@@ -12,7 +12,7 @@
     --bg-success: rgb(25, 135, 84);
 }
 
-.header {
+header.header {
     background-color: #0481e0 !important;
     color: #fff !important;
 }
