@@ -2,11 +2,18 @@
 using BlazorERP.Core.Interfaces;
 using BlazorERP.Core.Models;
 using System.Text;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace BlazorERP.Core.Services;
 
 public class CustomerService : IModelService<Customer, string?, CustomerFilter>
 {
+    private readonly AddressService _addressService;
+
+    public CustomerService(AddressService addressService)
+    {
+        _addressService = addressService;
+    }
     public async Task CreateAsync(Customer input, IDbController dbController, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -86,19 +93,27 @@ public class CustomerService : IModelService<Customer, string?, CustomerFilter>
         return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
     }
 
-    public Task<Customer?> GetAsync(string? identifier, IDbController dbController, CancellationToken cancellationToken = default)
+    public async Task<Customer?> GetAsync(string? identifier, IDbController dbController, CancellationToken cancellationToken = default)
     {
         if (identifier is null)
         {
-            return Task.FromResult<Customer?>(null);
+            return null;
         }
 
         string sql = "SELECT * FROM CUSTOMERS WHERE CUSTOMER_NUMBER = @CUSTOMER_NUMBER";
 
-        return dbController.GetFirstAsync<Customer>(sql, new
+        var result = await dbController.GetFirstAsync<Customer>(sql, new
         {
             CUSTOMER_NUMBER = identifier
         }, cancellationToken);
+
+        if (result is not null)
+        {
+            result.Addresses = await _addressService.GetForCustomersAsync([result.CustomerNumber], dbController, cancellationToken);
+        }
+
+
+        return result;
     }
 
     public Task<List<Customer>> GetAsync(CustomerFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
@@ -118,7 +133,7 @@ public class CustomerService : IModelService<Customer, string?, CustomerFilter>
         return dbController.SelectDataAsync<Customer>(sql, filter.GetParameters(), cancellationToken);
     }
 
- 
+
 
     public string GetFilterWhere(CustomerFilter filter)
     {
@@ -195,4 +210,7 @@ public class CustomerService : IModelService<Customer, string?, CustomerFilter>
 
         await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
     }
+
+
+    
 }

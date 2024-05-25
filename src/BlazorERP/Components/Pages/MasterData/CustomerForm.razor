@@ -235,10 +235,150 @@
                 </div>
             </Content>
         </FluentTab>
-        <FluentTab Label="Historie">
-            <Content>
+        <FluentTab Label="Anschriften">
+            <div class="d-flex justify-content-end mb-2">
+                <FluentButton @onclick="AddAddress" IconStart="@(new Icons.Regular.Size20.Add().WithColor("#fff"))" Color="#fff" BackgroundColor="var(--bg-success)">
+                    Anschrift hinzufügen
+                </FluentButton>
+            </div>
 
-            </Content>
+            <div class="row">
+                <div class="col-md-2 mb-3">
+                    <div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
+                        @foreach (var address in Input.Addresses)
+                        {
+                            <button type="button" role="tab" @onclick="() => SelectAddress(address)" class="@GetTabNavLinkClass(SelectedAddress == address)" id="address-tab-@address.GetHashCode()" data-bs-toggle="pill">
+                                @((MarkupString)(address.GetIdentifier() is null ? "<span class=\"fw-bold\">NEU</span>" : $"({address.AddressId})")) @address.GetName() - @address.Street
+                            </button>
+                        }
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    <div class="tab-content">
+                        @foreach (var address in Input.Addresses)
+                        {
+                            <div class="position @GetTabClass(SelectedAddress == address)" role="tabpanel">
+
+                                <div class="d-flex justify-content-end gap-1">
+                                    <FluentButton @onclick="() => RemoveAddress(address)" IconStart="@(new Icons.Regular.Size20.Delete().WithColor(Color.Error))" />
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <div class="row">
+                                            @if (address.GetIdentifier() is not null)
+                                            {
+                                                <div class="col-md-12">
+                                                    <FluentNumberField @bind-Value="address.AddressId" Label="Id" Disabled />
+                                                </div>
+                                            }
+
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <FluentTextField @bind-Value="address.Company" Label="Firma" />
+                                                        <FluentValidationMessage For="() => address.Company" />
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <FluentTextField @bind-Value="address.Name1" Label="Name 1" />
+                                                        <FluentValidationMessage For="() => address.Name1" />
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <FluentTextField @bind-Value="address.Name2" Label="Name 2" />
+                                                        <FluentValidationMessage For="() => address.Name2" />
+                                                    </div>
+
+                                                    <div class="col-12">
+                                                        <FluentTextField @bind-Value="address.Street" Label="Straße" />
+                                                        <FluentValidationMessage For="() => address.Street" />
+                                                    </div>
+
+
+                                                    <div class="col-md-4">
+                                                        <FluentSelect TOption="Country" Label="Land" Width="100%;" Height="300px">
+                                                            <FluentOption Value="null" Selected="@(address.CountryId is null)" OnSelect="(val) => address.CountryId = null">--- Auswählen ---</FluentOption>
+                                                            @foreach (var item in Storage.Get<Country>())
+                                                            {
+                                                                <FluentOption TOption="Country" Value="@item.CountryId.ToString()" Selected="@(address.CountryId == item.CountryId)" OnSelect="(val) => address.CountryId = item.CountryId">@item.ISO2</FluentOption>
+                                                            }
+                                                        </FluentSelect>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <FluentTextField @bind-Value="address.PostalCode" Label="Postleitzahl" />
+                                                        <FluentValidationMessage For="() => address.PostalCode" />
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <FluentTextField @bind-Value="address.City" Label="Ort" />
+                                                        <FluentValidationMessage For="() => address.City" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <FluentTextField @bind-Value="address.PhoneNumber" Label="Telefonnummer" />
+                                                        <FluentValidationMessage For="() => address.PhoneNumber" />
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <FluentTextField @bind-Value="address.MobileNumber" Label="Mobilnummer" />
+                                                        <FluentValidationMessage For="() => address.MobileNumber" />
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <FluentTextField @bind-Value="address.FaxNumber" Label="Faxnummer" />
+                                                        <FluentValidationMessage For="() => address.FaxNumber" />
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <FluentTextField @bind-Value="address.Email" Label="E-Mail" />
+                                                        <FluentValidationMessage For="() => address.Email" />
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <FluentSelect TOption="Language" Label="Sprache" Width="100%;">
+                                                            <FluentOption Value="null" Selected="@(address.LanguageId is null)" OnSelect="(val) => address.LanguageId = null">--- Auswählen ---</FluentOption>
+                                                            @foreach (var item in Storage.Get<Language>())
+                                                            {
+                                                                <FluentOption TOption="Language" Value="@item.LanguageId.ToString()" Selected="@(address.LanguageId == item.LanguageId)" OnSelect="(val) => address.LanguageId = item.LanguageId">@item.GetName(Storage.DEFAULT_LANGUAGE)</FluentOption>
+                                                            }
+                                                        </FluentSelect>
+                                                        <FluentValidationMessage For="() => address.LanguageId" />
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <FluentTextField @bind-Value="address.VatIdentificationNumber" Label="Ust. ID-Nummer" />
+                                                        <FluentValidationMessage For="() => address.VatIdentificationNumber" />
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <FluentTextArea @bind-Value="address.Note" Label="Notiz" Class="w-100" Rows="6" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 ">
+                                        <div class="row">
+                                            @if (Modus is EditMode.Edit)
+                                            {
+                                                <div class="col-12">
+                                                    <FluentDatePicker Appearance="FluentInputAppearance.Filled" Label="Letzte Änderung" @bind-Value="@address.LastModified" ReadOnly />
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <FluentTextField Appearance="FluentInputAppearance.Filled" Label="Letzter Bearbeiter" Value="@address.BearbeiterName" ReadOnly />
+                                                </div>
+
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </FluentTab>
+        <FluentTab Label="Historie">
+
         </FluentTab>
     </FluentTabs>
 </EditForm>
@@ -255,8 +395,15 @@
     [Parameter, SupplyParameterFromQuery(Name = "customerNumber")]
     public override string? Identifier { get; set; }
 
+    public Address? SelectedAddress { get; set; }
+
     protected override async Task InitializeModelAsync(bool newEntry, IDbController dbController)
     {
+        if (Input == null)
+        {
+            throw new InvalidOperationException("Input must not be null.");
+        }
+
         if (newEntry)
         {
             var defaults = await voreinstellungService.GetAsync(1, dbController);
@@ -273,10 +420,24 @@
                 Input.DeliveryConditionId = defaults.CustomerDeliveryConditionId;
             }
         }
+        else
+        {
+            SelectAddress(Input.Addresses.FirstOrDefault());
+        }
     }
 
     protected override Task BeforeSaveAsync(IDbController dbController)
     {
+        if (Input == null)
+        {
+            throw new InvalidOperationException("Input must not be null.");
+        }
+
+        if (User == null)
+        {
+            throw new InvalidOperationException("User must not be null.");
+        }
+
         if (Modus is EditMode.Create)
         {
             Input.CreationDate = DateTime.Now;
@@ -290,6 +451,11 @@
 
     private void OnEmailChanged(string email)
     {
+        if (Input == null)
+        {
+            throw new InvalidOperationException("Input must not be null.");
+        }
+
         Input.Email = email;
         string domain = Regex.Replace(email, @".*@", "");
 
@@ -298,4 +464,28 @@
             Input.Website = domain;
         }
     }
-                                    }
+
+    private void AddAddress()
+    {
+
+        var address = new Address
+        {
+
+        };
+
+        Input!.Addresses.Add(address);
+        SelectAddress(address);
+    }
+
+    private void RemoveAddress(Address address)
+    {
+        Input!.Addresses.Remove(address);
+
+        SelectAddress(Input.Addresses.FirstOrDefault());
+    }
+
+    private void SelectAddress(Address? address)
+    {
+        SelectedAddress = address;
+    }
+}

@@ -8,6 +8,7 @@ using FirebirdSql.Data.FirebirdClient;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.FluentUI.AspNetCore.Components;
+using System.Diagnostics.CodeAnalysis;
 
 namespace BlazorERP.Components.ComponentBases;
 
@@ -133,7 +134,7 @@ public abstract class EditPageBase<TIdentifier, TModel, TService> : ActivePageBa
             Input = entry.DeepCopyByExpressionTree();
             //EditEnabled = true; // TODO: Refactor
             Modus = EditMode.Edit;
-
+            
             FinalBreadcrumbItemName = GetFinalBreadcrumbItemName();
 
             await InitializeModelAsync(false, dbController);
@@ -180,6 +181,7 @@ public abstract class EditPageBase<TIdentifier, TModel, TService> : ActivePageBa
         return Task.FromResult(true);
     }
 
+    
     protected virtual Task InitializeModelAsync(bool newEntry, IDbController dbController)
     {
         return Task.CompletedTask;
@@ -275,4 +277,6 @@ public abstract class EditPageBase<TIdentifier, TModel, TService> : ActivePageBa
         return true;
     }
 
+    public string GetTabNavLinkClass(bool active) => active ? "nav-link active" : "nav-link";
+    public string GetTabClass(bool active) => active ? "tab-pane fade active show" : "tab-pane fade";
 }

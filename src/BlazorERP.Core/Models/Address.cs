@@ -27,7 +27,20 @@ public class Address : IDbModel<int?>
 
     public int? GetIdentifier() => AddressId > 0 ? AddressId : null;
 
+    public string GetName()
+    {
+        if (!string.IsNullOrWhiteSpace(Company))
+        {
+            return Company;
+        }
 
+        if (!string.IsNullOrWhiteSpace(Name1))
+        {
+            return Name1;
+        }
+
+        return string.Empty;
+    }
     public string BearbeiterName { get; set; } = string.Empty;
     public Dictionary<string, object?> GetParameters()
     {

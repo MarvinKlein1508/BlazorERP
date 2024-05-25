@@ -183,4 +183,38 @@ public class AddressService : IModelService<Address, int?, AddressFilter>
 
         return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
     }
+
+    public async Task<List<Address>> GetForCustomersAsync(string[] customerNumbers, IDbController dbController, CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (customerNumbers.Length is 0)
+        {
+            return [];
+        }
+
+        var parameters = new Dictionary<string, object?>();
+
+        List<string> parameterNames = [];
+
+        for (int i = 0; i < customerNumbers.Length; i++)
+        {
+            string parameterName = $"@CUSTOMER_NUMBER{i}";
+            parameterNames.Add(parameterName);
+            parameters.Add(parameterName, customerNumbers[i]);
+        }
+
+        string parameterQuery = string.Join(", ", parameterNames);
+        string sql =
+            $"""
+            SELECT 
+                * 
+            FROM ADDRESSES 
+            WHERE CUSTOMER_NUMBER IN ({parameterQuery})
+            """;
+
+        var results = await dbController.SelectDataAsync<Address>(sql, parameters, cancellationToken);
+
+        return results;
+    }
 }
