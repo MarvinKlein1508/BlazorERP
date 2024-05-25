@@ -14,8 +14,6 @@ public class AddressService : IModelService<Address, int?, AddressFilter>
             """
             INSERT INTO ADDRESSES
             (              
-                CUSTOMER_NUMBER,
-                SUPPLIER_NUMBER,
                 COMPANY,
                 NAME1,
                 NAME2,
@@ -36,8 +34,6 @@ public class AddressService : IModelService<Address, int?, AddressFilter>
             )
             VALUES
             (
-                @CUSTOMER_NUMBER,
-                @SUPPLIER_NUMBER,
                 @COMPANY,
                 @NAME1,
                 @NAME2,
@@ -157,9 +153,7 @@ public class AddressService : IModelService<Address, int?, AddressFilter>
     {
         string sql =
             """
-            UPDATE ADDRESSES SET 
-                CUSTOMER_NUMBER = @CUSTOMER_NUMBER,
-                SUPPLIER_NUMBER = @SUPPLIER_NUMBER,
+            UPDATE ADDRESSES SET            
                 COMPANY = @COMPANY,
                 NAME1 = @NAME1,
                 NAME2 = @NAME2,
@@ -208,8 +202,11 @@ public class AddressService : IModelService<Address, int?, AddressFilter>
         string sql =
             $"""
             SELECT 
-                * 
-            FROM ADDRESSES 
+                A.*,
+                U.DISPLAY_NAME AS BearbeiterName
+            FROM CUSTOMER_TO_ADDRESS CTA
+            INNER JOIN ADDRESSES A ON (A.ADDRESS_ID = CTA.ADDRESS_ID)
+            INNER JOIN USERS U ON (U.USER_ID = A.LAST_MODIFIED_BY) 
             WHERE CUSTOMER_NUMBER IN ({parameterQuery})
             """;
 

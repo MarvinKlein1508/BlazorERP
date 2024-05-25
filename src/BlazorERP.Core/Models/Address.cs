@@ -5,8 +5,6 @@ namespace BlazorERP.Core.Models;
 public class Address : IDbModel<int?>
 {
     public int AddressId { get; set; }
-    public string? CustomerNumber { get; set; }
-    public int? SupplierNumber { get; set; }
     public string Company { get; set; } = string.Empty;
     public string Name1 { get; set; } = string.Empty;
     public string Name2 { get; set; } = string.Empty;
@@ -47,8 +45,6 @@ public class Address : IDbModel<int?>
         return new Dictionary<string, object?>
         {
             { "ADDRESS_ID", AddressId },
-            { "CUSTOMER_NUMBER", CustomerNumber },
-            { "SUPPLIER_NUMBER", SupplierNumber },
             { "COMPANY", Company },
             { "NAME1", Name1 },
             { "NAME2", Name2 },

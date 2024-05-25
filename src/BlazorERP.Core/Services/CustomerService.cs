@@ -84,6 +84,7 @@ public class CustomerService : IModelService<Customer, string?, CustomerFilter>
             """;
 
         input.CustomerNumber = (await dbController.GetFirstAsync<string>(sql, input.GetParameters(), cancellationToken))!;
+
     }
 
     public Task DeleteAsync(Customer input, IDbController dbController, CancellationToken cancellationToken = default)
