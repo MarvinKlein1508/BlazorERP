@@ -150,6 +150,10 @@ public class AddressService : IModelService<Address, int?, AddressFilter>
 )");
         }
 
+        if (filter.Blocked.Count > 0)
+        {
+            sb.AppendLine($"AND ADDRESS_ID NOT IN ({filter.GetBlockedQuery()})");
+        }
 
 
         string sql = sb.ToString();
@@ -233,13 +237,13 @@ public class AddressService : IModelService<Address, int?, AddressFilter>
             WHERE CUSTOMER_NUMBER IN ({parameterQuery})
             """;
 
-     
+
         var results = await dbController.SelectDataAsync<Address>(sql, parameters, cancellationToken);
 
-        if(results.Count > 0)
+        if (results.Count > 0)
         {
             var countryIds = results.Select(x => x.CountryId).Distinct().ToArray();
-            
+
             var countries = await _countryService.GetAsync(countryIds, dbController, cancellationToken);
 
             foreach (var item in results)

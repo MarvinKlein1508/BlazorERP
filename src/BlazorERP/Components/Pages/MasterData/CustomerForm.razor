@@ -236,7 +236,7 @@
         </FluentTab>
         <FluentTab Label="Anschriften">
             <div class="d-flex justify-content-end mb-2">
-                <FluentButton @onclick="() => _addressSearchModal.Show()" IconStart="@(new Icons.Regular.Size20.Add().WithColor("#fff"))" Color="#fff" BackgroundColor="var(--bg-success)">
+                <FluentButton @onclick="ShowAddressSearchModal" IconStart="@(new Icons.Regular.Size20.Add().WithColor("#fff"))" Color="#fff" BackgroundColor="var(--bg-success)">
                     Anschrift zuordnen
                 </FluentButton>
             </div>
@@ -361,7 +361,7 @@
 </EditForm>
 
 <Modal @ref="_addressSearchModal" Title="Anschriftsuche" Class="modal-fullscreen">
-    <AddressSearch OnItemSelected="AddAdress" />
+    <AddressSearch OnItemSelected="AddAdress" Filter="AddressFilter" />
 </Modal>
 
 @code {
@@ -378,6 +378,7 @@
     public override string? Identifier { get; set; }
 
     public Address? SelectedAddress { get; set; }
+    public AddressFilter AddressFilter { get; set; } = new();
 
     protected override async Task InitializeModelAsync(bool newEntry, IDbController dbController)
     {
@@ -462,5 +463,11 @@
         Input.Addresses.Add(address);
         SelectedAddress = address;
         _addressSearchModal.Hide();
+    }
+
+    private void ShowAddressSearchModal()
+    {
+        AddressFilter.Blocked = Input.Addresses.Select(x => x.AddressId).ToList();
+        _addressSearchModal.Show();
     }
 }
