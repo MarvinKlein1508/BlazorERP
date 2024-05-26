@@ -247,7 +247,7 @@
                         @foreach (var address in Input.Addresses)
                         {
                             <button type="button" role="tab" @onclick="() => SelectedAddress = address" class="@GetTabNavLinkClass(SelectedAddress == address)" id="address-tab-@address.GetHashCode()" data-bs-toggle="pill">
-                                @((MarkupString)(address.GetIdentifier() is null ? "<span class=\"fw-bold\">NEU</span>" : $"({address.AddressId})")) @address.GetName() - @address.Street
+                                (@address.AddressId) @address.GetName() - @address.Street
                             </button>
                         }
                     </div>
