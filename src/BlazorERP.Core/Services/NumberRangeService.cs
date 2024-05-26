@@ -83,7 +83,7 @@ public class NumberRangeService : IModelService<NumberRange, int?, NumberRangeFi
         return dbController.SelectDataAsync<NumberRange>(sql, filter.GetParameters(), cancellationToken);
     }
 
-    public Task<List<NumberRange>> GetAsync(IEnumerable<int?> identifiers, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task<List<NumberRange>> GetAsync(int?[] identifiers, IDbController dbController, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

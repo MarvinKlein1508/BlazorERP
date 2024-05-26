@@ -218,7 +218,7 @@ public class UserService : IModelService<User, int?, UserFilter>
         return true;
     }
 
-    public Task<List<User>> GetAsync(IEnumerable<int?> identifiers, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task<List<User>> GetAsync(int?[] identifiers, IDbController dbController, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

@@ -107,7 +107,55 @@ public class CountryService : IModelService<Country, int?, CountryFilter>, ITran
 
         return result;
     }
+    public async Task<List<Country>> GetAsync(int?[] identifiers, IDbController dbController, CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
 
+        if (identifiers.Length is 0)
+        {
+            return [];
+        }
+
+        var parameters = new Dictionary<string, object?>();
+
+        List<string> parameterNames = [];
+
+        for (int i = 0; i < identifiers.Length; i++)
+        {
+            string parameterName = $"@COUNTRY_ID{i}";
+            parameterNames.Add(parameterName);
+            parameters.Add(parameterName, identifiers[i]);
+        }
+
+        string parameterQuery = string.Join(", ", parameterNames);
+
+        string sql =
+        $"""
+        SELECT 
+            C.*,
+            U.DISPLAY_NAME AS BEARBEITER_NAME
+        FROM COUNTRIES C 
+        LEFT JOIN USERS U ON (U.USER_ID = C.LAST_MODIFIED_BY)
+        WHERE 1 = 1 AND COUNTRY_ID IN 
+        (
+            {parameterQuery}
+        )
+        ORDER BY COUNTRY_ID
+        """;
+
+        var results = await dbController.SelectDataAsync<Country>(sql, parameters, cancellationToken);
+        if (results.Count > 0)
+        {
+            var countryIds = results.Select(x => x.CountryId).Distinct().ToArray();
+            var translations = await _translationService.GetAsync(GetTranslationCode(), countryIds, dbController, cancellationToken);
+            foreach (var item in results)
+            {
+                item.Translations = translations.Where(x => x.ParentId == item.CountryId).ToList();
+            }
+        }
+
+        return results;
+    }
     public async Task<List<Country>> GetAsync(CountryFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -213,8 +261,5 @@ public class CountryService : IModelService<Country, int?, CountryFilter>, ITran
         }
     }
 
-    public Task<List<Country>> GetAsync(IEnumerable<int?> identifiers, IDbController dbController, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
+    
 }

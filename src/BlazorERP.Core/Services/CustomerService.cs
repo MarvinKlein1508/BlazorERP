@@ -8,10 +8,12 @@ namespace BlazorERP.Core.Services;
 
 public class CustomerService : IModelService<Customer, string?, CustomerFilter>
 {
+    private readonly CountryService _countryService;
     private readonly AddressService _addressService;
 
-    public CustomerService(AddressService addressService)
+    public CustomerService(CountryService countryService, AddressService addressService)
     {
+        _countryService = countryService;
         _addressService = addressService;
     }
     public async Task CreateAsync(Customer input, IDbController dbController, CancellationToken cancellationToken = default)
@@ -113,6 +115,7 @@ public class CustomerService : IModelService<Customer, string?, CustomerFilter>
 
         if (result is not null)
         {
+            result.Country = await _countryService.GetAsync(result.CountryId, dbController, cancellationToken);
             result.Addresses = await _addressService.GetForCustomersAsync([result.CustomerNumber], dbController, cancellationToken);
         }
 
@@ -120,7 +123,11 @@ public class CustomerService : IModelService<Customer, string?, CustomerFilter>
         return result;
     }
 
-    public Task<List<Customer>> GetAsync(CustomerFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task<List<Customer>> GetAsync(string?[] identifiers, IDbController dbController, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+    public async Task<List<Customer>> GetAsync(CustomerFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         string sql =
@@ -134,13 +141,27 @@ public class CustomerService : IModelService<Customer, string?, CustomerFilter>
             ORDER BY CUSTOMER_NUMBER DESC
         """;
 
-        return dbController.SelectDataAsync<Customer>(sql, filter.GetParameters(), cancellationToken);
+        var results = await dbController.SelectDataAsync<Customer>(sql, filter.GetParameters(), cancellationToken);
+
+        if (results.Count > 0)
+        {
+            var customerNumbers = results.Select(x => x.CustomerNumber).Distinct().ToArray();
+            var countryIds = results.Select(x => x.CountryId).Distinct().ToArray();
+
+            var addresses = await _addressService.GetForCustomersAsync(customerNumbers, dbController, cancellationToken);
+            var countries = await _countryService.GetAsync(countryIds, dbController, cancellationToken);
+
+            foreach (var item in results)
+            {
+                item.Country = countries.FirstOrDefault(x => x.CountryId == item.CountryId);
+            }
+
+        }
+
+        return results;
     }
 
-    public Task<List<Customer>> GetAsync(IEnumerable<string?> identifiers, IDbController dbController, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
+
 
     public string GetFilterWhere(CustomerFilter filter)
     {
@@ -162,7 +183,7 @@ public class CustomerService : IModelService<Customer, string?, CustomerFilter>
         return sql;
     }
 
-    public Task<int> GetTotalAsync(CustomerFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
+    public async Task<int> GetTotalAsync(CustomerFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         string sql =
@@ -175,7 +196,9 @@ public class CustomerService : IModelService<Customer, string?, CustomerFilter>
             """;
 
 
-        return dbController.GetFirstAsync<int>(sql, filter.GetParameters(), cancellationToken);
+        var result = await dbController.GetFirstAsync<int>(sql, filter.GetParameters(), cancellationToken);
+
+        return result;
     }
 
     public async Task UpdateAsync(Customer input, IDbController dbController, CancellationToken cancellationToken = default)
@@ -219,9 +242,9 @@ public class CustomerService : IModelService<Customer, string?, CustomerFilter>
 
 
         await _addressService.CleanCustomerAssignmentAsync(input, dbController, cancellationToken);
-        await _addressService.AssignCustomerAsync(input, dbController, cancellationToken);  
+        await _addressService.AssignCustomerAsync(input, dbController, cancellationToken);
     }
 
 
-    
+
 }

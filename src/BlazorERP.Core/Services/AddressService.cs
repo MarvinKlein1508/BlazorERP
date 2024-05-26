@@ -86,7 +86,6 @@ public class AddressService : IModelService<Address, int?, AddressFilter>
                 A.*,
                 U.DISPLAY_NAME AS BEARBEITER_NAME
             FROM ADDRESSES A 
-            LEFT JOIN COUNTRIES C ON (C.COUNTRY_ID = A.COUNTRY_ID)
             LEFT JOIN USERS U ON (U.USER_ID = A.LAST_MODIFIED_BY)
             WHERE 
                 ADDRESS_ID = @ADDRESS_ID
@@ -113,41 +112,26 @@ public class AddressService : IModelService<Address, int?, AddressFilter>
         SELECT 
             FIRST {filter.Limit} SKIP {(filter.PageNumber - 1) * filter.Limit}
                 A.*,
-                C.*,
-                TC.*,
                 U.DISPLAY_NAME AS BEARBEITER_NAME
         FROM ADDRESSES A
         LEFT JOIN USERS U ON (U.USER_ID = A.LAST_MODIFIED_BY)
-        LEFT JOIN COUNTRIES C ON (C.COUNTRY_ID = A.COUNTRY_ID)
-        LEFT JOIN TRANSLATIONS TC ON (TC.CODE = 'COUNTRY' AND TC.PARENT_ID = C.COUNTRY_ID)
         WHERE 1 = 1
             {GetFilterWhere(filter)}
         ORDER BY ADDRESS_ID DESC
         """;
-        var addressDict = new Dictionary<int, Address>();
 
-        var results =
-        (
-            await dbController.SelectDataAsync<Address, Country, Translation, Address>(sql, (address, country, translation) =>
+        var results = await dbController.SelectDataAsync<Address>(sql, filter.GetParameters(), cancellationToken);
+
+        if (results.Count > 0)
+        {
+            var countryIds = results.Select(x => x.CountryId).ToArray();
+            var countries = await _countryService.GetAsync(countryIds, dbController, cancellationToken);
+
+            foreach (var item in results)
             {
-                if (!addressDict.TryGetValue(address.AddressId, out var currentAddress))
-                {
-                    currentAddress = address;
-                    currentAddress.Country = country;
-                    currentAddress.Country.Translations = new List<Translation>();
-                    addressDict.Add(address.AddressId, currentAddress);
-                }
-
-                if (translation != null && !string.IsNullOrEmpty(translation.Code))
-                {
-                    currentAddress.Country.Translations.Add(translation);
-                }
-
-                return currentAddress;
-            }, "country_id, code", filter.GetParameters(), cancellationToken)
-        )
-        .Distinct()
-        .ToList();
+                item.Country = countries.FirstOrDefault(x => x.CountryId == item.CountryId);
+            }
+        }
 
         return results;
     }
@@ -242,46 +226,32 @@ public class AddressService : IModelService<Address, int?, AddressFilter>
             $"""
             SELECT 
                 A.*,
-                C.*,
-                TC.*,
                 U.DISPLAY_NAME AS BearbeiterName
             FROM CUSTOMER_TO_ADDRESS CTA
             INNER JOIN ADDRESSES A ON (A.ADDRESS_ID = CTA.ADDRESS_ID)
             LEFT JOIN USERS U ON (U.USER_ID = A.LAST_MODIFIED_BY)
-            LEFT JOIN COUNTRIES C ON (C.COUNTRY_ID = A.COUNTRY_ID)
-            LEFT JOIN TRANSLATIONS TC ON (TC.CODE = 'COUNTRY' AND TC.PARENT_ID = C.COUNTRY_ID)
             WHERE CUSTOMER_NUMBER IN ({parameterQuery})
             """;
 
-        var addressDict = new Dictionary<int, Address>();
+     
+        var results = await dbController.SelectDataAsync<Address>(sql, parameters, cancellationToken);
 
-        var results =
-        (
-            await dbController.SelectDataAsync<Address, Country, Translation, Address>(sql, (address, country, translation) =>
+        if(results.Count > 0)
+        {
+            var countryIds = results.Select(x => x.CountryId).Distinct().ToArray();
+            
+            var countries = await _countryService.GetAsync(countryIds, dbController, cancellationToken);
+
+            foreach (var item in results)
             {
-                if (!addressDict.TryGetValue(address.AddressId, out var currentAddress))
-                {
-                    currentAddress = address;
-                    currentAddress.Country = country;
-                    currentAddress.Country.Translations = new List<Translation>();
-                    addressDict.Add(address.AddressId, currentAddress);
-                }
-
-                if (translation != null && !string.IsNullOrEmpty(translation.Code))
-                {
-                    currentAddress.Country!.Translations.Add(translation);
-                }
-
-                return currentAddress;
-            }, "country_id, code", parameters, cancellationToken)
-        )
-        .Distinct()
-        .ToList();
+                item.Country = countries.FirstOrDefault(x => x.CountryId == item.CountryId);
+            }
+        }
 
         return results;
     }
 
-    public Task<List<Address>> GetAsync(IEnumerable<int?> identifiers, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task<List<Address>> GetAsync(int?[] identifiers, IDbController dbController, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

@@ -184,7 +184,7 @@ public class SalutationService : IModelService<Salutation, int?, SalutationFilte
 
     public static string GetTranslationCode() => "SALUTATION";
 
-    public Task<List<Salutation>> GetAsync(IEnumerable<int?> identifiers, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task<List<Salutation>> GetAsync(int?[] identifiers, IDbController dbController, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

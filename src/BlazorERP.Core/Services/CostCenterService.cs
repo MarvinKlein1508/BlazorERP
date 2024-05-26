@@ -149,7 +149,7 @@ public class CostCenterService : IModelService<CostCenter, int?, CostCenterFilte
         await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
     }
 
-    public Task<List<CostCenter>> GetAsync(IEnumerable<int?> identifiers, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task<List<CostCenter>> GetAsync(int?[] identifiers, IDbController dbController, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

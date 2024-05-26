@@ -207,7 +207,7 @@ public class DeliveryConditionService : IModelService<DeliveryCondition, int?, D
         }
     }
 
-    public Task<List<DeliveryCondition>> GetAsync(IEnumerable<int?> identifiers, IDbController dbController, CancellationToken cancellationToken = default)
+    public Task<List<DeliveryCondition>> GetAsync(int?[] identifiers, IDbController dbController, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

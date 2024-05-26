@@ -105,7 +105,7 @@ public interface IGetOperation<TObject, TIdentifier>
     /// <returns>
     /// If no objects for the specified identifiers will be found then this method will return an empty List
     /// </returns>
-    Task<List<TObject>> GetAsync(IEnumerable<TIdentifier> identifiers, IDbController dbController, CancellationToken cancellationToken = default);
+    Task<List<TObject>> GetAsync(TIdentifier[] identifiers, IDbController dbController, CancellationToken cancellationToken = default);
 }
 
 /// <summary>
