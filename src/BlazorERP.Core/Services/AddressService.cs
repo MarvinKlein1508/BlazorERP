@@ -249,13 +249,16 @@ public class AddressService : IModelService<Address, int?, AddressFilter>
 
         if (results.Count > 0)
         {
-            var countryIds = results.Select(x => x.CountryId).Distinct().ToArray();
+            var countryIds = results.Select(x => x.CountryId).ToArray();
+            var languageIds = results.Select(x => x.LanguageId).ToArray();
 
             var countries = await _countryService.GetAsync(countryIds, dbController, cancellationToken);
+            var languages = await _languageService.GetAsync(languageIds, dbController, cancellationToken);
 
             foreach (var item in results)
             {
                 item.Country = countries.FirstOrDefault(x => x.CountryId == item.CountryId);
+                item.Language = languages.FirstOrDefault(x => x.LanguageId == item.LanguageId);
             }
         }
 
