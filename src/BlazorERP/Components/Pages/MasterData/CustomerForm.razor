@@ -237,8 +237,8 @@
         </FluentTab>
         <FluentTab Label="Anschriften">
             <div class="d-flex justify-content-end mb-2">
-                <FluentButton @onclick="AddAddress" IconStart="@(new Icons.Regular.Size20.Add().WithColor("#fff"))" Color="#fff" BackgroundColor="var(--bg-success)">
-                    Anschrift hinzufügen
+                <FluentButton @onclick="() => _addressSearchModal.Show()" IconStart="@(new Icons.Regular.Size20.Add().WithColor("#fff"))" Color="#fff" BackgroundColor="var(--bg-success)">
+                    Anschrift zuordnen
                 </FluentButton>
             </div>
 
@@ -247,7 +247,7 @@
                     <div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
                         @foreach (var address in Input.Addresses)
                         {
-                            <button type="button" role="tab" @onclick="() => SelectAddress(address)" class="@GetTabNavLinkClass(SelectedAddress == address)" id="address-tab-@address.GetHashCode()" data-bs-toggle="pill">
+                            <button type="button" role="tab" @onclick="() => SelectedAddress = address" class="@GetTabNavLinkClass(SelectedAddress == address)" id="address-tab-@address.GetHashCode()" data-bs-toggle="pill">
                                 @((MarkupString)(address.GetIdentifier() is null ? "<span class=\"fw-bold\">NEU</span>" : $"({address.AddressId})")) @address.GetName() - @address.Street
                             </button>
                         }
@@ -383,9 +383,14 @@
     </FluentTabs>
 </EditForm>
 
+<Modal @ref="_addressSearchModal" Title="Anschriftsuche" Class="modal-fullscreen">
+    <AddressSearch OnItemSelected="AddAdress" />
+</Modal>
+
 @code {
     private bool _showOptionsMenu;
     private CustomerValidator _validator = new();
+    private Modal _addressSearchModal = default!;
 
     protected override string GetListUrl() => "/Customers/Edit";
     protected override string GetEntityRedirectUrl() => $"/Customers/Edit?customerNumber={Input!.GetIdentifier()}";
@@ -422,7 +427,7 @@
         }
         else
         {
-            SelectAddress(Input.Addresses.FirstOrDefault());
+            SelectedAddress = Input.Addresses.FirstOrDefault();
         }
     }
 
@@ -465,27 +470,20 @@
         }
     }
 
-    private void AddAddress()
-    {
 
-        var address = new Address
-        {
-
-        };
-
-        Input!.Addresses.Add(address);
-        SelectAddress(address);
-    }
 
     private void RemoveAddress(Address address)
     {
         Input!.Addresses.Remove(address);
 
-        SelectAddress(Input.Addresses.FirstOrDefault());
+        SelectedAddress = Input.Addresses.FirstOrDefault();
     }
 
-    private void SelectAddress(Address? address)
+
+    private void AddAdress(Address address)
     {
+        Input.Addresses.Add(address);
         SelectedAddress = address;
+        _addressSearchModal.Hide();
     }
 }

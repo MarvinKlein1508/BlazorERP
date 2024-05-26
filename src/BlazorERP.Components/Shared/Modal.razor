@@ -1,0 +1,68 @@
+﻿
+<FluentDialog Class="@Class" @ref="_dialog" @bind-Hidden="@Hidden" aria-label="Simple dialog" Modal="true" TrapFocus="true" PreventScroll="true" @ondialogdismiss="OnDismiss">
+    <FluentDialogHeader ShowDismiss="ShowDismiss" Visible="ShowHeader">
+        <FluentStack VerticalAlignment="VerticalAlignment.Center">
+            <FluentIcon Value="@Icon" />
+            <FluentLabel Typo="Typography.PaneHeader">
+                @Title
+            </FluentLabel>
+        </FluentStack>
+    </FluentDialogHeader>
+
+    <FluentDialogBody Style="overflow-y: auto;">
+        @if (!Hidden)
+        {
+            @ChildContent
+        }
+    </FluentDialogBody>
+
+    <FluentDialogFooter Visible="ShowFooter" Class="justify-content-end">
+
+        <FluentButton Appearance="Appearance.Accent" Autofocus="true" @onclick="Hide">Schließen</FluentButton>
+
+    </FluentDialogFooter>
+
+</FluentDialog>
+
+
+@code {
+    private FluentDialog _dialog = default!;
+
+    private bool Hidden { get; set; } = true;
+
+    [Parameter]
+    public bool ShowFooter { get; set; } = true;
+    [Parameter]
+    public bool ShowHeader { get; set; } = true;
+    [Parameter]
+    public bool ShowDismiss { get; set; } = true;
+
+
+    [Parameter]
+    public string Class { get; set; } = "modal-xl";
+
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+    [Parameter]
+    public Icon Icon { get; set; } = new Icons.Regular.Size24.WindowApps();
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+    public void Show()
+    {
+        _dialog.Show();
+    }
+
+    public void Hide()
+    {
+        _dialog.Hide();
+    }
+
+    private void OnDismiss(DialogEventArgs args)
+    {
+        if (args is not null && args.Reason is not null && args.Reason == "dismiss")
+        {
+            _dialog.Hide();
+        }
+    }
+}
