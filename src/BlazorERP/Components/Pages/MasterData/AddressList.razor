@@ -54,6 +54,11 @@
                                 <label>Postleitzahl</label>
                                 <span>@item.PostalCode</span>
                             </div>
+
+                            <div class="list-item">
+                                <label>Land</label>
+                                <span>@item.Country?.GetName(Storage.DEFAULT_LANGUAGE)</span>
+                            </div>
                             
 
 

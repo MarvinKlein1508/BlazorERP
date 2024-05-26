@@ -1,12 +1,19 @@
 ﻿using BlazorERP.Core.Filters;
 using BlazorERP.Core.Interfaces;
 using BlazorERP.Core.Models;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace BlazorERP.Core.Services;
 
 public class AddressService : IModelService<Address, int?, AddressFilter>
 {
+    private readonly CountryService _countryService;
+
+    public AddressService(CountryService countryService)
+    {
+        _countryService = countryService;
+    }
     public async Task CreateAsync(Address input, IDbController dbController, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -63,7 +70,7 @@ public class AddressService : IModelService<Address, int?, AddressFilter>
     {
         string sql = "DELETE FROM ADDRESSES WHERE ADDRESS_ID = @ADDRESS_ID";
 
-        return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);  
+        return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
     }
 
     public async Task<Address?> GetAsync(int? identifier, IDbController dbController, CancellationToken cancellationToken = default)
@@ -79,6 +86,7 @@ public class AddressService : IModelService<Address, int?, AddressFilter>
                 A.*,
                 U.DISPLAY_NAME AS BEARBEITER_NAME
             FROM ADDRESSES A 
+            LEFT JOIN COUNTRIES C ON (C.COUNTRY_ID = A.COUNTRY_ID)
             LEFT JOIN USERS U ON (U.USER_ID = A.LAST_MODIFIED_BY)
             WHERE 
                 ADDRESS_ID = @ADDRESS_ID
@@ -88,6 +96,11 @@ public class AddressService : IModelService<Address, int?, AddressFilter>
         {
             ADDRESS_ID = identifier
         }, cancellationToken);
+
+        if (result is not null)
+        {
+            result.Country = await _countryService.GetAsync(result.CountryId, dbController, cancellationToken);
+        }
 
         return result;
     }
@@ -100,15 +113,41 @@ public class AddressService : IModelService<Address, int?, AddressFilter>
         SELECT 
             FIRST {filter.Limit} SKIP {(filter.PageNumber - 1) * filter.Limit}
                 A.*,
+                C.*,
+                TC.*,
                 U.DISPLAY_NAME AS BEARBEITER_NAME
-            FROM ADDRESSES A
-            LEFT JOIN USERS U ON (U.USER_ID = A.LAST_MODIFIED_BY)
-            WHERE 1 = 1
+        FROM ADDRESSES A
+        LEFT JOIN USERS U ON (U.USER_ID = A.LAST_MODIFIED_BY)
+        LEFT JOIN COUNTRIES C ON (C.COUNTRY_ID = A.COUNTRY_ID)
+        LEFT JOIN TRANSLATIONS TC ON (TC.CODE = 'COUNTRY' AND TC.PARENT_ID = C.COUNTRY_ID)
+        WHERE 1 = 1
             {GetFilterWhere(filter)}
-            ORDER BY ADDRESS_ID DESC
+        ORDER BY ADDRESS_ID DESC
         """;
+        var addressDict = new Dictionary<int, Address>();
 
-        var results = await dbController.SelectDataAsync<Address>(sql, filter.GetParameters(), cancellationToken);
+        var results =
+        (
+            await dbController.SelectDataAsync<Address, Country, Translation, Address>(sql, (address, country, translation) =>
+            {
+                if (!addressDict.TryGetValue(address.AddressId, out var currentAddress))
+                {
+                    currentAddress = address;
+                    currentAddress.Country = country;
+                    currentAddress.Country.Translations = new List<Translation>();
+                    addressDict.Add(address.AddressId, currentAddress);
+                }
+
+                if (translation != null && !string.IsNullOrEmpty(translation.Code))
+                {
+                    currentAddress.Country.Translations.Add(translation);
+                }
+
+                return currentAddress;
+            }, "country_id, code", filter.GetParameters(), cancellationToken)
+        )
+        .Distinct()
+        .ToList();
 
         return results;
     }

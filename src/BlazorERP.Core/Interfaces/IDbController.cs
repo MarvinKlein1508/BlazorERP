@@ -29,6 +29,34 @@ public interface IDbController : IDisposable
     /// <param name="cancellationToken"></param>
     /// <returns>When no objects are found, an empty list will be returned.</returns>
     Task<List<T>> SelectDataAsync<T>(string sql, object? param = null, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Executes a query asynchronously and returns a list of objects with generic multi-mapping.
+    /// </summary>
+    /// <typeparam name="T1"></typeparam>
+    /// <typeparam name="T2"></typeparam>
+    /// <typeparam name="T3"></typeparam>
+    /// <typeparam name="TReturn"></typeparam>
+    /// <param name="sql"></param>
+    /// <param name="map"></param>
+    /// <param name="splitOn"></param>
+    /// <param name="param"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns>When no objects are found, an empty list will be returned.</returns>
+    Task<List<TReturn>> SelectDataAsync<T1, T2, T3, TReturn>(string sql, Func<T1, T2, T3, TReturn> map, string splitOn, object? param = null, CancellationToken cancellationToken = default);
+    /// <summary>
+    /// Executes a query asynchronously and returns a list of objects with generic multi-mapping.
+    /// </summary>
+    /// <typeparam name="T1"></typeparam>
+    /// <typeparam name="T2"></typeparam>
+    /// <typeparam name="TReturn"></typeparam>
+    /// <param name="sql"></param>
+    /// <param name="map"></param>
+    /// <param name="splitOn"></param>
+    /// <param name="param"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns>When no objects are found, an empty list will be returned.</returns>
+    Task<List<TReturn>> SelectDataAsync<T1, T2, TReturn>(string sql, Func<T1, T2, TReturn> map, string splitOn, object? param = null, CancellationToken cancellationToken = default);
     /// <summary>
     /// Executes SQL and does not return anything.
     /// </summary>

@@ -61,6 +61,25 @@ public sealed class FbController : IDisposable, IDbController
         IEnumerable<T> enumerable = await Connection.QueryAsync<T>(definition);
         return enumerable.ToList();
     }
+
+    /// <inheritdoc/>
+    public async Task<List<TReturn>> SelectDataAsync<T1, T2, TReturn>(string sql, Func<T1, T2, TReturn> map, string splitOn, object? param = null, CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        CommandDefinition definition = new CommandDefinition(sql, param, Transaction, cancellationToken: cancellationToken);
+        IEnumerable<TReturn> enumerable = await Connection.QueryAsync<T1, T2, TReturn>(definition, map, splitOn: splitOn);
+        return enumerable.ToList();
+    }
+
+    /// <inheritdoc/>
+    public async Task<List<TReturn>> SelectDataAsync<T1, T2, T3, TReturn>(string sql, Func<T1, T2, T3, TReturn> map, string splitOn, object? param = null, CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        CommandDefinition definition = new CommandDefinition(sql, param, Transaction, cancellationToken: cancellationToken);
+        IEnumerable<TReturn> enumerable = await Connection.QueryAsync<T1, T2, T3, TReturn>(definition, map, splitOn: splitOn);
+        return enumerable.ToList();
+    }
+
     /// <inheritdoc />
     public async Task<DynamicParameters?> ExecuteProcedureAsync(string procedureName, DynamicParameters? param = null, CancellationToken cancellationToken = default)
     {
