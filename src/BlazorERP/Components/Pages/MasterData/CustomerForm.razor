@@ -64,11 +64,12 @@
                             <FluentValidationMessage For="() => Input.Street" />
 
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-lg-4">
                                     <FluentCombobox Items="@(Storage.Get<Country>())"
                                                     Height="300px"
                                                     Autocomplete="ComboboxAutocomplete.Both"
                                                     Label="Land"
+                                                    Class="w-100"
                                                     OptionText="@(i => i!.GetName(Storage.DEFAULT_LANGUAGE))"
                                                     OptionValue="@(i => i!.CountryId.ToString())"
                                                     OptionSelected="@(i => i!.CountryId is int countryId && countryId == Input.CountryId)"
@@ -76,11 +77,11 @@
                                                     @bind-SelectedOption:after="() => Input.CountryId = Input.Country?.CountryId" />
                                     <p>ID: @(Input.Country?.CountryId.ToString() ?? "<NULL>")</p>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-lg-4">
                                     <FluentTextField @bind-Value="Input.PostalCode" Label="Postleitzahl" />
                                     <FluentValidationMessage For="() => Input.PostalCode" />
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-lg-4">
                                     <FluentTextField @bind-Value="Input.City" Label="Ort" />
                                     <FluentValidationMessage For="() => Input.City" />
                                 </div>
