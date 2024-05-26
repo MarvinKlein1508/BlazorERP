@@ -9,10 +9,12 @@ namespace BlazorERP.Core.Services;
 public class AddressService : IModelService<Address, int?, AddressFilter>
 {
     private readonly CountryService _countryService;
+    private readonly LanguageService _languageService;
 
-    public AddressService(CountryService countryService)
+    public AddressService(CountryService countryService, LanguageService languageService)
     {
         _countryService = countryService;
+        _languageService = languageService;
     }
     public async Task CreateAsync(Address input, IDbController dbController, CancellationToken cancellationToken = default)
     {
@@ -99,6 +101,7 @@ public class AddressService : IModelService<Address, int?, AddressFilter>
         if (result is not null)
         {
             result.Country = await _countryService.GetAsync(result.CountryId, dbController, cancellationToken);
+            result.Language = await _languageService.GetAsync(result.LanguageId, dbController, cancellationToken);
         }
 
         return result;
@@ -125,11 +128,15 @@ public class AddressService : IModelService<Address, int?, AddressFilter>
         if (results.Count > 0)
         {
             var countryIds = results.Select(x => x.CountryId).ToArray();
+            var languageIds = results.Select(x => x.LanguageId).ToArray();
+
             var countries = await _countryService.GetAsync(countryIds, dbController, cancellationToken);
+            var languages = await _languageService.GetAsync(languageIds, dbController, cancellationToken);
 
             foreach (var item in results)
             {
                 item.Country = countries.FirstOrDefault(x => x.CountryId == item.CountryId);
+                item.Language = languages.FirstOrDefault(x => x.LanguageId == item.LanguageId);
             }
         }
 
