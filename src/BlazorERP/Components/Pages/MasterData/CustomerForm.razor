@@ -65,7 +65,7 @@
 
                             <div class="row">
                                 <div class="col-md-4">
-                                   <FluentCombobox Items="@(Storage.Get<Country>())"
+                                    <FluentCombobox Items="@(Storage.Get<Country>())"
                                                     Height="300px"
                                                     Autocomplete="ComboboxAutocomplete.Both"
                                                     Label="Land"
@@ -73,7 +73,7 @@
                                                     OptionValue="@(i => i!.CountryId.ToString())"
                                                     OptionSelected="@(i => i!.CountryId is int countryId && countryId == Input.CountryId)"
                                                     @bind-SelectedOption="@Input.Country"
-                                                    @bind-SelectedOption:after="() => Input.CountryId = Input.Country?.CountryId" /> 
+                                                    @bind-SelectedOption:after="() => Input.CountryId = Input.Country?.CountryId" />
                                     <p>ID: @(Input.Country?.CountryId.ToString() ?? "<NULL>")</p>
                                 </div>
                                 <div class="col-md-4">
@@ -236,7 +236,18 @@
             </Content>
         </FluentTab>
         <FluentTab Label="Anschriften">
-            <div class="d-flex justify-content-end mb-2">
+            <div class="d-flex justify-content-end gap-1 mb-2">
+                @if (SelectedAddress is not null)
+                {
+                    <FluentButton @onclick="() => RemoveAddress(SelectedAddress)" IconStart="@(new Icons.Regular.Size20.Delete().WithColor(Color.Error))">
+                        Zuordnung löschen
+                    </FluentButton>
+
+                    <FluentAnchor Appearance="Appearance.Accent" Target="_blank" Href="@($"/Addresses/Edit?addressId={SelectedAddress.AddressId}")" IconStart="@(new Icons.Regular.Size20.Edit().WithColor(Color.Fill))">
+                        Anschrift bearbeiten
+                    </FluentAnchor>
+                }
+
                 <FluentButton @onclick="ShowAddressSearchModal" IconStart="@(new Icons.Regular.Size20.Add().WithColor("#fff"))" Color="#fff" BackgroundColor="var(--bg-success)">
                     Anschrift zuordnen
                 </FluentButton>
@@ -258,11 +269,6 @@
                         @foreach (var address in Input.Addresses)
                         {
                             <div class="position @GetTabClass(SelectedAddress == address)" role="tabpanel">
-
-                                <div class="d-flex justify-content-end gap-1">
-                                    <FluentButton @onclick="() => RemoveAddress(address)" IconStart="@(new Icons.Regular.Size20.Delete().WithColor(Color.Error))" />
-                                </div>
-
                                 <div class="row">
                                     <div class="col-md-9">
                                         <div class="row">
@@ -306,7 +312,7 @@
                                                         <FluentTextField Value="@address.Email" Label="E-Mail" ReadOnly Appearance="FluentInputAppearance.Filled" />
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <FluentSelect TOption="Language" Label="Sprache" Width="100%;">
+                                                        <FluentSelect TOption="Language" Label="Sprache" Width="100%;" Appearance="Appearance.Filled">
                                                             <FluentOption Value="null" Selected="@(address.LanguageId is null)" OnSelect="(val) => address.LanguageId = null">--- Auswählen ---</FluentOption>
                                                             @foreach (var item in Storage.Get<Language>())
                                                             {
