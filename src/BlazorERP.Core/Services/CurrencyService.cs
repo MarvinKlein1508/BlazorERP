@@ -150,4 +150,9 @@ public class CurrencyService : IModelService<Currency, string?, CurrencyFilter>
 
         return dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
     }
+
+    public Task<List<Currency>> GetAsync(IEnumerable<string?> identifiers, IDbController dbController, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
 }

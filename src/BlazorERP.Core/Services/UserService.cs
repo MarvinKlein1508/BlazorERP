@@ -4,6 +4,7 @@ using BlazorERP.Core.Interfaces;
 using BlazorERP.Core.Models;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
+
 namespace BlazorERP.Core.Services;
 
 public class UserService : IModelService<User, int?, UserFilter>
@@ -215,5 +216,10 @@ public class UserService : IModelService<User, int?, UserFilter>
         await dbController.QueryAsync(sql, user.GetParameters(), cancellationToken);
 
         return true;
+    }
+
+    public Task<List<User>> GetAsync(IEnumerable<int?> identifiers, IDbController dbController, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
     }
 }

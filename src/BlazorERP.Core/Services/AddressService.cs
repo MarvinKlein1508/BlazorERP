@@ -280,4 +280,48 @@ public class AddressService : IModelService<Address, int?, AddressFilter>
 
         return results;
     }
+
+    public Task<List<Address>> GetAsync(IEnumerable<int?> identifiers, IDbController dbController, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task AssignCustomerAsync(Customer input, IDbController dbController, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        string sql =
+            """
+            INSERT INTO CUSTOMER_TO_ADDRESS
+            (
+                ADDRESS_ID,
+                CUSTOMER_NUMBER
+            )
+            VALUES
+            (
+                @ADDRESS_ID,
+                @CUSTOMER_NUMBER
+            )
+            """;
+
+        foreach (var item in input.Addresses)
+        {
+            await dbController.QueryAsync(sql, new
+            {
+                ADDRESS_ID = item.AddressId,
+                CUSTOMER_NUMBER = input.CustomerNumber
+            }, cancellationToken);
+        }
+    }
+
+    public async Task CleanCustomerAssignmentAsync(Customer input, IDbController dbController, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        string sql = "DELETE FROM CUSTOMER_TO_ADDRESS WHERE CUSTOMER_NUMBER = @CUSTOMER_NUMBER";
+
+        await dbController.QueryAsync(sql, new
+        {
+            CUSTOMER_NUMBER = input.CustomerNumber,
+        }, cancellationToken);
+    }
 }

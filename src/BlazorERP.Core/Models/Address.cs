@@ -12,6 +12,7 @@ public class Address : IDbModel<int?>
     public int? CountryId { get; set; }
     public Country? Country { get; set; }
     public int? LanguageId { get; set; }
+    public Language? Language { get; set; }
     public string PostalCode { get; set; } = string.Empty;
     public string City { get; set; } = string.Empty;
     public string PhoneNumber { get; set; } = string.Empty;

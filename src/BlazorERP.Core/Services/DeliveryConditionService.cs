@@ -206,4 +206,9 @@ public class DeliveryConditionService : IModelService<DeliveryCondition, int?, D
             await _translationService.CreateAsync(item, dbController, cancellationToken);
         }
     }
+
+    public Task<List<DeliveryCondition>> GetAsync(IEnumerable<int?> identifiers, IDbController dbController, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
 }

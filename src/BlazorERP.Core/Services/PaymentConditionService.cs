@@ -227,4 +227,9 @@ public class PaymentConditionService : IModelService<PaymentCondition, int?, Pay
             await _translationService.CreateAsync(item, dbController, cancellationToken);
         }
     }
+
+    public Task<List<PaymentCondition>> GetAsync(IEnumerable<int?> identifiers, IDbController dbController, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
 }

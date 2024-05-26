@@ -85,6 +85,9 @@ public class CustomerService : IModelService<Customer, string?, CustomerFilter>
 
         input.CustomerNumber = (await dbController.GetFirstAsync<string>(sql, input.GetParameters(), cancellationToken))!;
 
+        await _addressService.AssignCustomerAsync(input, dbController, cancellationToken);
+
+
     }
 
     public Task DeleteAsync(Customer input, IDbController dbController, CancellationToken cancellationToken = default)
@@ -134,7 +137,10 @@ public class CustomerService : IModelService<Customer, string?, CustomerFilter>
         return dbController.SelectDataAsync<Customer>(sql, filter.GetParameters(), cancellationToken);
     }
 
-
+    public Task<List<Customer>> GetAsync(IEnumerable<string?> identifiers, IDbController dbController, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
 
     public string GetFilterWhere(CustomerFilter filter)
     {
@@ -210,6 +216,10 @@ public class CustomerService : IModelService<Customer, string?, CustomerFilter>
 
 
         await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
+
+
+        await _addressService.CleanCustomerAssignmentAsync(input, dbController, cancellationToken);
+        await _addressService.AssignCustomerAsync(input, dbController, cancellationToken);  
     }
 
 

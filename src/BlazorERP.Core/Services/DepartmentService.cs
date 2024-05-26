@@ -103,6 +103,11 @@ public class DepartmentService : IModelService<Department, int?, DepartmentFilte
         return results;
     }
 
+    public Task<List<Department>> GetAsync(IEnumerable<int?> identifiers, IDbController dbController, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
     public string GetFilterWhere(DepartmentFilter filter)
     {
         StringBuilder sb = new();

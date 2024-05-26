@@ -212,4 +212,9 @@ public class CountryService : IModelService<Country, int?, CountryFilter>, ITran
             await _translationService.CreateAsync(item, dbController, cancellationToken);
         }
     }
+
+    public Task<List<Country>> GetAsync(IEnumerable<int?> identifiers, IDbController dbController, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
 }

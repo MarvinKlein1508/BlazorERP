@@ -97,7 +97,10 @@ public class ConfigurationService : IModelService<Configuration, int?, Configura
         return dbController.SelectDataAsync<Configuration>(sql, filter.GetParameters(), cancellationToken);
     }
 
- 
+    public Task<List<Configuration>> GetAsync(IEnumerable<int?> identifiers, IDbController dbController, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
 
     public string GetFilterWhere(ConfigurationFilter filter)
     {

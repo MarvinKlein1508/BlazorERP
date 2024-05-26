@@ -96,6 +96,16 @@ public interface IGetOperation<TObject, TIdentifier>
     /// If the object does not exist than this method will return NULL.
     /// </returns>
     Task<TObject?> GetAsync(TIdentifier identifier, IDbController dbController, CancellationToken cancellationToken = default);
+    /// <summary>
+    /// Gets the objects from the database
+    /// </summary>
+    /// <param name="identifiers">An IEnumerable of multiple identifiers</param>
+    /// <param name="dbController"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns>
+    /// If no objects for the specified identifiers will be found then this method will return an empty List
+    /// </returns>
+    Task<List<TObject>> GetAsync(IEnumerable<TIdentifier> identifiers, IDbController dbController, CancellationToken cancellationToken = default);
 }
 
 /// <summary>
