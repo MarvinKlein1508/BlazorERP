@@ -275,41 +275,41 @@
                                             <div class="col-md-6">
                                                 <div class="row">
                                                     <div class="col-12">
-                                                        <FluentTextField Value="@address.Company" Label="Firma" />
-                                                    
-                                                        <FluentTextField Value="@address.Name1" Label="Name 1" />
-                                                    
-                                                        <FluentTextField Value="@address.Name2" Label="Name 2" />
+                                                        <FluentTextField Value="@address.Company" Label="Firma" ReadOnly Appearance="FluentInputAppearance.Filled" />
 
-                                                        <FluentTextField Value="@address.Street" Label="Straße" />
+                                                        <FluentTextField Value="@address.Name1" Label="Name 1" ReadOnly Appearance="FluentInputAppearance.Filled" />
+
+                                                        <FluentTextField Value="@address.Name2" Label="Name 2" ReadOnly Appearance="FluentInputAppearance.Filled" />
+
+                                                        <FluentTextField Value="@address.Street" Label="Straße" ReadOnly Appearance="FluentInputAppearance.Filled" />
                                                     </div>
 
                                                     <div class="col-md-4">
-                                                        <FluentTextField Value="@address.Country?.GetName(Storage.DEFAULT_LANGUAGE)" Label="Land" />
+                                                        <FluentTextField Value="@address.Country?.GetName(Storage.DEFAULT_LANGUAGE)" Label="Land" ReadOnly Appearance="FluentInputAppearance.Filled" />
                                                     </div>
 
                                                     <div class="col-md-4">
-                                                        <FluentTextField Value="@address.PostalCode" Label="Postleitzahl" />
+                                                        <FluentTextField Value="@address.PostalCode" Label="Postleitzahl" ReadOnly Appearance="FluentInputAppearance.Filled" />
                                                     </div>
 
                                                     <div class="col-md-4">
-                                                        <FluentTextField Value="@address.City" Label="Ort" />
+                                                        <FluentTextField Value="@address.City" Label="Ort" ReadOnly Appearance="FluentInputAppearance.Filled" />
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <FluentTextField Value="@address.PhoneNumber" Label="Telefonnummer" />
+                                                        <FluentTextField Value="@address.PhoneNumber" Label="Telefonnummer" ReadOnly Appearance="FluentInputAppearance.Filled" />
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <FluentTextField Value="@address.MobileNumber" Label="Mobilnummer" />
+                                                        <FluentTextField Value="@address.MobileNumber" Label="Mobilnummer" ReadOnly Appearance="FluentInputAppearance.Filled" />
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <FluentTextField Value="@address.FaxNumber" Label="Faxnummer" />
+                                                        <FluentTextField Value="@address.FaxNumber" Label="Faxnummer" ReadOnly Appearance="FluentInputAppearance.Filled" />
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <FluentTextField Value="@address.Email" Label="E-Mail" />
+                                                        <FluentTextField Value="@address.Email" Label="E-Mail" ReadOnly Appearance="FluentInputAppearance.Filled" />
                                                     </div>
                                                     <div class="col-md-6">
                                                         <FluentSelect TOption="Language" Label="Sprache" Width="100%;">
@@ -322,10 +322,10 @@
                                                         <FluentValidationMessage For="() => address.LanguageId" />
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <FluentTextField Value="@address.VatIdentificationNumber" Label="Ust. ID-Nummer" />
+                                                        <FluentTextField Value="@address.VatIdentificationNumber" Label="Ust. ID-Nummer" ReadOnly Appearance="FluentInputAppearance.Filled" />
                                                     </div>
                                                     <div class="col-12">
-                                                        <FluentTextArea Value="@address.Note" Label="Notiz" Class="w-100" Rows="6" />
+                                                        <FluentTextArea Value="@address.Note" Label="Notiz" Class="w-100" Rows="6" ReadOnly Appearance="FluentInputAppearance.Filled" />
                                                     </div>
                                                 </div>
                                             </div>

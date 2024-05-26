@@ -1,6 +1,10 @@
 ﻿@inherits SearchComponentBase<Address, AddressService, AddressFilter>
 
-
+<div class="d-flex justify-content-end mb-2">
+    <FluentAnchor Href="/Addresses/Edit" Target="_blank" Appearance="Appearance.Accent" IconStart="@(new Icons.Regular.Size20.Add().WithColor("#fff"))" Style="background-color: var(--bg-success); color: #fff;">
+        Neue Anschrift
+    </FluentAnchor>
+</div>
 
 <div class="row">
     <div class="col-md-9">
@@ -35,7 +39,7 @@
 
             </EditForm>
         </FluentCard>
-       
+
     </div>
 </div>
 
