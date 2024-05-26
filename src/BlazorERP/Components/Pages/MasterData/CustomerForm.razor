@@ -65,15 +65,16 @@
 
                             <div class="row">
                                 <div class="col-md-4">
-                                    <FluentCombobox Items="@(Storage.Get<Country>())"
+                                   <FluentCombobox Items="@(Storage.Get<Country>())"
                                                     Height="300px"
                                                     Autocomplete="ComboboxAutocomplete.Both"
                                                     Label="Land"
                                                     OptionText="@(i => i!.GetName(Storage.DEFAULT_LANGUAGE))"
                                                     OptionValue="@(i => i!.CountryId.ToString())"
-                                                    OptionSelected="@(i => i!.CountryId == Input.CountryId)"
+                                                    OptionSelected="@(i => i!.CountryId is int countryId && countryId == Input.CountryId)"
                                                     @bind-SelectedOption="@Input.Country"
-                                                    @bind-SelectedOption:after="() => Input.CountryId = Input.Country?.CountryId" />
+                                                    @bind-SelectedOption:after="() => Input.CountryId = Input.Country?.CountryId" /> 
+                                    <p>ID: @(Input.Country?.CountryId.ToString() ?? "<NULL>")</p>
                                 </div>
                                 <div class="col-md-4">
                                     <FluentTextField @bind-Value="Input.PostalCode" Label="Postleitzahl" />
@@ -367,6 +368,8 @@
     public Address? SelectedAddress { get; set; }
     public AddressFilter AddressFilter { get; set; } = new();
 
+
+
     protected override async Task InitializeModelAsync(bool newEntry, IDbController dbController)
     {
         if (Input == null)
@@ -393,6 +396,8 @@
         else
         {
             SelectedAddress = Input.Addresses.FirstOrDefault();
+            // Temp solution for https://github.com/microsoft/fluentui-blazor/issues/2101
+            Input.Country = Storage.Get<Country, int?>(Input.CountryId);
         }
     }
 
