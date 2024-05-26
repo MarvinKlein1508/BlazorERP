@@ -312,14 +312,7 @@
                                                         <FluentTextField Value="@address.Email" Label="E-Mail" ReadOnly Appearance="FluentInputAppearance.Filled" />
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <FluentSelect TOption="Language" Label="Sprache" Width="100%;" Appearance="Appearance.Filled">
-                                                            <FluentOption Value="null" Selected="@(address.LanguageId is null)" OnSelect="(val) => address.LanguageId = null">--- Auswählen ---</FluentOption>
-                                                            @foreach (var item in Storage.Get<Language>())
-                                                            {
-                                                                <FluentOption TOption="Language" Value="@item.LanguageId.ToString()" Selected="@(address.LanguageId == item.LanguageId)" OnSelect="(val) => address.LanguageId = item.LanguageId">@item.GetName(Storage.DEFAULT_LANGUAGE)</FluentOption>
-                                                            }
-                                                        </FluentSelect>
-                                                        <FluentValidationMessage For="() => address.LanguageId" />
+                                                        <FluentTextField Value="@address.Language?.GetName(Storage.DEFAULT_LANGUAGE)" Label="Sprache" ReadOnly Appearance="FluentInputAppearance.Filled" />
                                                     </div>
                                                     <div class="col-md-6">
                                                         <FluentTextField Value="@address.VatIdentificationNumber" Label="Ust. ID-Nummer" ReadOnly Appearance="FluentInputAppearance.Filled" />
