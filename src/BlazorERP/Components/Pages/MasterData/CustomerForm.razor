@@ -73,7 +73,7 @@
                                                     OptionValue="@(i => i!.CountryId.ToString())"
                                                     OptionSelected="@(i => i!.CountryId == Input.CountryId)"
                                                     @bind-SelectedOption="@Input.Country"
-                                                    @bind-SelectedOption:after="() => Input.CountryId = Input.Country?.CountryId"/>
+                                                    @bind-SelectedOption:after="() => Input.CountryId = Input.Country?.CountryId" />
                                 </div>
                                 <div class="col-md-4">
                                     <FluentTextField @bind-Value="Input.PostalCode" Label="Postleitzahl" />
@@ -265,13 +265,6 @@
                                 <div class="row">
                                     <div class="col-md-9">
                                         <div class="row">
-                                            @if (address.GetIdentifier() is not null)
-                                            {
-                                                <div class="col-md-12">
-                                                    <FluentNumberField @bind-Value="address.AddressId" Label="Id" Disabled />
-                                                </div>
-                                            }
-
                                             <div class="col-md-6">
                                                 <div class="row">
                                                     <div class="col-12">
@@ -332,19 +325,13 @@
                                         </div>
                                     </div>
                                     <div class="col-md-3 ">
-                                        <div class="row">
-                                            @if (Modus is EditMode.Edit)
-                                            {
-                                                <div class="col-12">
-                                                    <FluentDatePicker Appearance="FluentInputAppearance.Filled" Label="Letzte Änderung" @bind-Value="@address.LastModified" ReadOnly />
-                                                </div>
 
-                                                <div class="col-12">
-                                                    <FluentTextField Appearance="FluentInputAppearance.Filled" Label="Letzter Bearbeiter" Value="@address.BearbeiterName" ReadOnly />
-                                                </div>
+                                        <FluentNumberField Value="@address.AddressId" Label="Id" ReadOnly Appearance="FluentInputAppearance.Filled" />
 
-                                            }
-                                        </div>
+                                        <FluentDatePicker Value="@address.LastModified" Label="Letzte Änderung" ReadOnly Appearance="FluentInputAppearance.Filled" />
+
+                                        <FluentTextField Value="@address.BearbeiterName" Label="Letzter Bearbeiter" ReadOnly Appearance="FluentInputAppearance.Filled" />
+
                                     </div>
                                 </div>
                             </div>
