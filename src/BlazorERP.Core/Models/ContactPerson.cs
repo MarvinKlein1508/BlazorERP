@@ -23,6 +23,11 @@ public class ContactPerson : IDbModel<int?>
 
     public int? GetIdentifier() => ContactPersonId > 0 ? ContactPersonId : null;
 
+    public string GetName()
+    {
+        return $"{FirstName} {LastName}".Trim();
+    }
+
     public Dictionary<string, object?> GetParameters()
     {
         throw new NotImplementedException();

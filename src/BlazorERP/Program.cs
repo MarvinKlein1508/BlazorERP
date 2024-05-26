@@ -51,6 +51,7 @@ builder.Services.AddScoped<NumberRangeService>();
 builder.Services.AddScoped<AddressService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<CacheStorageAccessor>();
+builder.Services.AddScoped<ContactPersonService>();
 
 // Options
 builder.Services.AddOptions<LdapOptions>()
