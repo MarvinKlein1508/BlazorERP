@@ -83,7 +83,8 @@
                                                         OptionText="@(i => i!.GetName(Storage.DEFAULT_LANGUAGE))"
                                                         OptionValue="@(i => i!.CountryId.ToString())"
                                                         OptionSelected="@(i => i!.CountryId == Input.CountryId)"
-                                                        @bind-SelectedOption="@Input.Country" />
+                                                        @bind-SelectedOption="@Input.Country"
+                                                        @bind-SelectedOption:after="() => Input.CountryId = Input.Country?.CountryId"/>
 
                                     </div>
 
@@ -185,4 +186,15 @@
         return Task.CompletedTask;
     }
 
+
+    protected override Task InitializeModelAsync(bool newEntry, IDbController dbController)
+    {
+        if(!newEntry)
+        {
+            // Temp solution for https://github.com/microsoft/fluentui-blazor/issues/2101
+            Input.Country = Storage.Get<Country, int?>(Input.CountryId);
+        }
+
+        return Task.CompletedTask;
+    }
 }
