@@ -76,13 +76,15 @@
 
 
                                     <div class="col-md-4">
-                                        <FluentSelect TOption="Country" Label="Land" Width="100%;" Height="300px">
-                                            <FluentOption Value="null" Selected="@(Input.CountryId is null)" OnSelect="(val) => Input.CountryId = null">--- Auswählen ---</FluentOption>
-                                            @foreach (var item in Storage.Get<Country>())
-                                            {
-                                                <FluentOption TOption="Country" Value="@item.CountryId.ToString()" Selected="@(Input.CountryId == item.CountryId)" OnSelect="(val) => Input.CountryId = item.CountryId">@item.ISO2</FluentOption>
-                                            }
-                                        </FluentSelect>
+                                        <FluentCombobox Items="@(Storage.Get<Country>())"
+                                                        Height="300px"
+                                                        Autocomplete="ComboboxAutocomplete.Both"
+                                                        Label="Land"
+                                                        OptionText="@(i => i!.GetName(Storage.DEFAULT_LANGUAGE))"
+                                                        OptionValue="@(i => i!.CountryId.ToString())"
+                                                        OptionSelected="@(i => i!.CountryId == Input.CountryId)"
+                                                        @bind-SelectedOption="@Input.Country" />
+
                                     </div>
 
                                     <div class="col-md-4">
@@ -136,7 +138,7 @@
                         </div>
 
 
-                       
+
 
 
                     </div>

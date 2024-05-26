@@ -13,6 +13,7 @@ public class Customer : IDbModelWithName<string?>
     public DateTime? CreationDate { get; set; }
     public int? LanguageId { get; set; }
     public int? CountryId { get; set; }
+    public Country? Country { get; set; }
     public string Street { get; set; } = string.Empty;
     public string PostalCode { get; set; } = string.Empty;
     public string City { get; set; } = string.Empty;

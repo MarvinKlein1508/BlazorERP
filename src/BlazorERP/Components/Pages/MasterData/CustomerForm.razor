@@ -65,16 +65,15 @@
 
                             <div class="row">
                                 <div class="col-md-4">
-                                    <FluentSelect TOption="Country" Label="Land" Width="100%;" Height="300px">
-                                        <FluentOption Value="null" Selected="@(Input.CountryId is null)" OnSelect="(val) => Input.CountryId = null">--- Auswählen ---</FluentOption>
-                                        @foreach (var item in Storage.Get<Country>())
-                                        {
-                                            <FluentOption TOption="Country" Value="@item.CountryId.ToString()" Selected="@(Input.CountryId == item.CountryId)" OnSelect="(val) => Input.CountryId = item.CountryId">@item.ISO2</FluentOption>
-                                        }
-                                    </FluentSelect>
-
-                                    <p>Land: @Input.CountryId</p>
-
+                                    <FluentCombobox Items="@(Storage.Get<Country>())"
+                                                    Height="300px"
+                                                    Autocomplete="ComboboxAutocomplete.Both"
+                                                    Label="Land"
+                                                    OptionText="@(i => i!.GetName(Storage.DEFAULT_LANGUAGE))"
+                                                    OptionValue="@(i => i!.CountryId.ToString())"
+                                                    OptionSelected="@(i => i!.CountryId == Input.CountryId)"
+                                                    @bind-SelectedOption="@Input.Country"
+                                                    @bind-SelectedOption:after="() => Input.CountryId = Input.Country?.CountryId"/>
                                 </div>
                                 <div class="col-md-4">
                                     <FluentTextField @bind-Value="Input.PostalCode" Label="Postleitzahl" />
@@ -276,62 +275,41 @@
                                             <div class="col-md-6">
                                                 <div class="row">
                                                     <div class="col-12">
-                                                        <FluentTextField @bind-Value="address.Company" Label="Firma" />
-                                                        <FluentValidationMessage For="() => address.Company" />
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <FluentTextField @bind-Value="address.Name1" Label="Name 1" />
-                                                        <FluentValidationMessage For="() => address.Name1" />
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <FluentTextField @bind-Value="address.Name2" Label="Name 2" />
-                                                        <FluentValidationMessage For="() => address.Name2" />
-                                                    </div>
+                                                        <FluentTextField Value="@address.Company" Label="Firma" />
+                                                    
+                                                        <FluentTextField Value="@address.Name1" Label="Name 1" />
+                                                    
+                                                        <FluentTextField Value="@address.Name2" Label="Name 2" />
 
-                                                    <div class="col-12">
-                                                        <FluentTextField @bind-Value="address.Street" Label="Straße" />
-                                                        <FluentValidationMessage For="() => address.Street" />
-                                                    </div>
-
-
-                                                    <div class="col-md-4">
-                                                        <FluentSelect TOption="Country" Label="Land" Width="100%;" Height="300px">
-                                                            <FluentOption Value="null" Selected="@(address.CountryId is null)" OnSelect="(val) => address.CountryId = null">--- Auswählen ---</FluentOption>
-                                                            @foreach (var item in Storage.Get<Country>())
-                                                            {
-                                                                <FluentOption TOption="Country" Value="@item.CountryId.ToString()" Selected="@(address.CountryId == item.CountryId)" OnSelect="(val) => address.CountryId = item.CountryId">@item.ISO2</FluentOption>
-                                                            }
-                                                        </FluentSelect>
+                                                        <FluentTextField Value="@address.Street" Label="Straße" />
                                                     </div>
 
                                                     <div class="col-md-4">
-                                                        <FluentTextField @bind-Value="address.PostalCode" Label="Postleitzahl" />
-                                                        <FluentValidationMessage For="() => address.PostalCode" />
+                                                        <FluentTextField Value="@address.Country?.GetName(Storage.DEFAULT_LANGUAGE)" Label="Land" />
                                                     </div>
 
                                                     <div class="col-md-4">
-                                                        <FluentTextField @bind-Value="address.City" Label="Ort" />
-                                                        <FluentValidationMessage For="() => address.City" />
+                                                        <FluentTextField Value="@address.PostalCode" Label="Postleitzahl" />
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <FluentTextField Value="@address.City" Label="Ort" />
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <FluentTextField @bind-Value="address.PhoneNumber" Label="Telefonnummer" />
-                                                        <FluentValidationMessage For="() => address.PhoneNumber" />
+                                                        <FluentTextField Value="@address.PhoneNumber" Label="Telefonnummer" />
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <FluentTextField @bind-Value="address.MobileNumber" Label="Mobilnummer" />
-                                                        <FluentValidationMessage For="() => address.MobileNumber" />
+                                                        <FluentTextField Value="@address.MobileNumber" Label="Mobilnummer" />
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <FluentTextField @bind-Value="address.FaxNumber" Label="Faxnummer" />
-                                                        <FluentValidationMessage For="() => address.FaxNumber" />
+                                                        <FluentTextField Value="@address.FaxNumber" Label="Faxnummer" />
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <FluentTextField @bind-Value="address.Email" Label="E-Mail" />
-                                                        <FluentValidationMessage For="() => address.Email" />
+                                                        <FluentTextField Value="@address.Email" Label="E-Mail" />
                                                     </div>
                                                     <div class="col-md-6">
                                                         <FluentSelect TOption="Language" Label="Sprache" Width="100%;">
@@ -344,11 +322,10 @@
                                                         <FluentValidationMessage For="() => address.LanguageId" />
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <FluentTextField @bind-Value="address.VatIdentificationNumber" Label="Ust. ID-Nummer" />
-                                                        <FluentValidationMessage For="() => address.VatIdentificationNumber" />
+                                                        <FluentTextField Value="@address.VatIdentificationNumber" Label="Ust. ID-Nummer" />
                                                     </div>
                                                     <div class="col-12">
-                                                        <FluentTextArea @bind-Value="address.Note" Label="Notiz" Class="w-100" Rows="6" />
+                                                        <FluentTextArea Value="@address.Note" Label="Notiz" Class="w-100" Rows="6" />
                                                     </div>
                                                 </div>
                                             </div>
