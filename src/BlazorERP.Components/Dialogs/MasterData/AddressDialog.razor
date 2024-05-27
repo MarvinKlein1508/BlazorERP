@@ -1,7 +1,4 @@
-﻿@using FirebirdSql.Data.FirebirdClient
-@implements IDialogContentComponent<Address>
-@inject AddressService addressService
-@inject IToastService toastService
+﻿@inherits CustomDialogBase<int?, Address, AddressService, AddressValidator>
 <FluentDialogHeader ShowDismiss="true">
     <FluentStack VerticalAlignment="VerticalAlignment.Center">
         <FluentIcon Value="@(new Icons.Regular.Size24.WindowApps())" />
@@ -112,14 +109,6 @@
 </FluentDialogFooter>
 
 @code {
-    private EditForm? _form;
-    private AddressValidator _validator = new();
-
-    [Parameter]
-    public Address Content { get; set; } = default!;
-
-    [CascadingParameter]
-    public FluentDialog Dialog { get; set; } = default!;
 
     protected override void OnParametersSet()
     {
@@ -127,49 +116,8 @@
         Content.Country = Storage.Get<Country, int?>(Content.CountryId);
     }
 
-    protected override void OnInitialized()
+    protected override string GetSavedMessage()
     {
-        Dialog.Class = "modal-lg";
+        return "Anschrift wurde erfolgreich gespeichert";
     }
-
-    private async Task SaveAsync()
-    {
-        if (_form is null || _form.EditContext is null)
-        {
-            return;
-        }
-
-        if (_form.EditContext.Validate())
-        {
-            using IDbController dbController = new FbController();
-            await dbController.StartTransactionAsync();
-            try
-            {
-                if (Content.GetIdentifier() is null)
-                {
-                    await addressService.CreateAsync(Content, dbController);
-                }
-                else
-                {
-                    await addressService.UpdateAsync(Content, dbController);
-                }
-
-                await dbController.CommitAsync();
-            }
-            catch (FbException ex)
-            {
-                await dbController.RollbackAsync();
-                throw;
-            }
-
-            toastService.ShowSuccess("Anschrift wurde erfolgreich gespeichert");
-            await Dialog.CloseAsync(Content);
-        }
-    }
-
-    private async Task CancelAsync()
-    {
-        await Dialog.CancelAsync();
-    }
-
 }
