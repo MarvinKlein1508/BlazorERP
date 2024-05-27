@@ -1,9 +1,16 @@
 ﻿@inherits SearchComponentBase<Address, AddressService, AddressFilter>
 
 <div class="d-flex justify-content-end mb-2">
-    <FluentAnchor Href="/Addresses/Edit" Target="_blank" Appearance="Appearance.Accent" IconStart="@(new Icons.Regular.Size20.Add().WithColor("#fff"))" Style="background-color: var(--bg-success); color: #fff;">
-        Neue Anschrift
-    </FluentAnchor>
+    @if (NewButtonTemplate is not null)
+    {
+        @NewButtonTemplate
+    }
+    else
+    {
+        <FluentAnchor Href="/Addresses/Edit" Target="_blank" Appearance="Appearance.Accent" IconStart="@(new Icons.Regular.Size20.Add().WithColor("#fff"))" Style="background-color: var(--bg-success); color: #fff;">
+            Neue Anschrift
+        </FluentAnchor>
+    }
 </div>
 
 <div class="row">
@@ -52,4 +59,9 @@
                      TotalItems="TotalItems"
                      ItemsPerPage="Filter.Limit"
                      OnPageChanged="OnPageChangedAsync" />
+}
+
+@code {
+    [Parameter]
+    public RenderFragment? NewButtonTemplate { get; set; }
 }
