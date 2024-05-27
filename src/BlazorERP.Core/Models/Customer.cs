@@ -40,7 +40,7 @@ public class Customer : IDbModelWithName<string?>
     public string? GetIdentifier() => string.IsNullOrWhiteSpace(CustomerNumber) ? null : CustomerNumber;
 
     public List<Address> Addresses { get; set; } = [];
-
+    public List<ContactPerson> ContactPersons { get; set; } = [];
     public string GetName()
     {
         if(!string.IsNullOrWhiteSpace(Company))

@@ -5,7 +5,7 @@ namespace BlazorERP.Core.Models;
 public class ContactPerson : IDbModel<int?>
 {
     public int ContactPersonId { get; set; }
-    public string Company { get; set; } = string.Empty;
+    public string CustomerNumber { get; set; } = string.Empty;
     public int? SalutationId { get; set; }
     public Salutation? Salutation { get; set; }
     public string FirstName { get; set; } = string.Empty;
