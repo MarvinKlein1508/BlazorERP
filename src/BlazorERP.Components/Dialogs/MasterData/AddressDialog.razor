@@ -1,0 +1,175 @@
+﻿@using FirebirdSql.Data.FirebirdClient
+@implements IDialogContentComponent<Address>
+@inject AddressService addressService
+@inject IToastService toastService
+<FluentDialogHeader ShowDismiss="true">
+    <FluentStack VerticalAlignment="VerticalAlignment.Center">
+        <FluentIcon Value="@(new Icons.Regular.Size24.WindowApps())" />
+        <FluentLabel Typo="Typography.PaneHeader">
+            @Dialog.Instance.Parameters.Title
+        </FluentLabel>
+    </FluentStack>
+</FluentDialogHeader>
+
+<FluentDialogBody>
+    <EditForm Model="Content" @ref="_form">
+
+        <FluentValidationValidator Validator="_validator" />
+
+        <div class="row">
+
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-12">
+                        <FluentTextField @bind-Value="Content.Company" Label="Firma" />
+                        <FluentValidationMessage For="() => Content.Company" />
+                    </div>
+                    <div class="col-12">
+                        <FluentTextField @bind-Value="Content.Name1" Label="Name 1" />
+                        <FluentValidationMessage For="() => Content.Name1" />
+                    </div>
+                    <div class="col-12">
+                        <FluentTextField @bind-Value="Content.Name2" Label="Name 2" />
+                        <FluentValidationMessage For="() => Content.Name2" />
+                    </div>
+
+                    <div class="col-12">
+                        <FluentTextField @bind-Value="Content.Street" Label="Straße" />
+                        <FluentValidationMessage For="() => Content.Street" />
+                    </div>
+
+
+                    <div class="col-12">
+                        <FluentCombobox Items="@(Storage.Get<Country>())"
+                                        Height="300px"
+                                        Class="w-100"
+                                        Autocomplete="ComboboxAutocomplete.Both"
+                                        Label="Land"
+                                        OptionText="@(i => i!.GetName(Storage.DEFAULT_LANGUAGE))"
+                                        OptionValue="@(i => i!.CountryId.ToString())"
+                                        OptionSelected="@(i => i!.CountryId == Content.CountryId)"
+                                        @bind-SelectedOption="@Content.Country"
+                                        @bind-SelectedOption:after="() => Content.CountryId = Content.Country?.CountryId" />
+
+                    </div>
+
+                    <div class="col-md-6">
+                        <FluentTextField @bind-Value="Content.PostalCode" Label="Postleitzahl" />
+                        <FluentValidationMessage For="() => Content.PostalCode" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <FluentTextField @bind-Value="Content.City" Label="Ort" />
+                        <FluentValidationMessage For="() => Content.City" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-6">
+                        <FluentTextField @bind-Value="Content.PhoneNumber" Label="Telefonnummer" />
+                        <FluentValidationMessage For="() => Content.PhoneNumber" />
+                    </div>
+                    <div class="col-md-6">
+                        <FluentTextField @bind-Value="Content.MobileNumber" Label="Mobilnummer" />
+                        <FluentValidationMessage For="() => Content.MobileNumber" />
+                    </div>
+                    <div class="col-md-6">
+                        <FluentTextField @bind-Value="Content.FaxNumber" Label="Faxnummer" />
+                        <FluentValidationMessage For="() => Content.FaxNumber" />
+                    </div>
+                    <div class="col-md-6">
+                        <FluentTextField @bind-Value="Content.Email" Label="E-Mail" />
+                        <FluentValidationMessage For="() => Content.Email" />
+                    </div>
+                    <div class="col-md-6">
+                        <FluentSelect TOption="Language" Label="Sprache" Width="100%;">
+                            <FluentOption Value="null" Selected="@(Content.LanguageId is null)" OnSelect="(val) => Content.LanguageId = null">--- Auswählen ---</FluentOption>
+                            @foreach (var item in Storage.Get<Language>())
+                            {
+                                <FluentOption TOption="Language" Value="@item.LanguageId.ToString()" Selected="@(Content.LanguageId == item.LanguageId)" OnSelect="(val) => Content.LanguageId = item.LanguageId">@item.GetName(Storage.DEFAULT_LANGUAGE)</FluentOption>
+                            }
+                        </FluentSelect>
+                        <FluentValidationMessage For="() => Content.LanguageId" />
+                    </div>
+                    <div class="col-md-6">
+                        <FluentTextField @bind-Value="Content.VatIdentificationNumber" Label="Ust. ID-Nummer" />
+                        <FluentValidationMessage For="() => Content.VatIdentificationNumber" />
+                    </div>
+                    <div class="col-12">
+                        <FluentTextArea @bind-Value="Content.Note" Label="Notiz" Class="w-100" Rows="6" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </EditForm>
+</FluentDialogBody>
+
+<FluentDialogFooter>
+    <FluentButton Appearance="Appearance.Accent" OnClick="@SaveAsync">Save</FluentButton>
+    <FluentButton Appearance="Appearance.Neutral" OnClick="@CancelAsync">Cancel</FluentButton>
+</FluentDialogFooter>
+
+@code {
+    private EditForm? _form;
+    private AddressValidator _validator = new();
+
+    [Parameter]
+    public Address Content { get; set; } = default!;
+
+    [CascadingParameter]
+    public FluentDialog Dialog { get; set; } = default!;
+
+    protected override void OnParametersSet()
+    {
+        // Tmp fix
+        Content.Country = Storage.Get<Country, int?>(Content.CountryId);
+    }
+
+    protected override void OnInitialized()
+    {
+        Dialog.Class = "modal-lg";
+    }
+
+    private async Task SaveAsync()
+    {
+        if (_form is null || _form.EditContext is null)
+        {
+            return;
+        }
+
+        if (_form.EditContext.Validate())
+        {
+            using IDbController dbController = new FbController();
+            await dbController.StartTransactionAsync();
+            try
+            {
+                if (Content.GetIdentifier() is null)
+                {
+                    await addressService.CreateAsync(Content, dbController);
+                }
+                else
+                {
+                    await addressService.UpdateAsync(Content, dbController);
+                }
+
+                await dbController.CommitAsync();
+            }
+            catch (FbException ex)
+            {
+                await dbController.RollbackAsync();
+                throw;
+            }
+
+            toastService.ShowSuccess("Anschrift wurde erfolgreich gespeichert");
+            await Dialog.CloseAsync(Content);
+        }
+    }
+
+    private async Task CancelAsync()
+    {
+        await Dialog.CancelAsync();
+    }
+
+}

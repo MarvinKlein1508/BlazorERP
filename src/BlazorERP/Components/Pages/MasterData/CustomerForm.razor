@@ -244,9 +244,9 @@
                         Zuordnung löschen
                     </FluentButton>
 
-                    <FluentAnchor Appearance="Appearance.Accent" Target="_blank" Href="@($"/Addresses/Edit?addressId={SelectedAddress.AddressId}")" IconStart="@(new Icons.Regular.Size20.Edit().WithColor(Color.Fill))">
+                    <FluentButton @onclick="async () => await EditAddressAsync(SelectedAddress)" Appearance="Appearance.Accent" IconStart="@(new Icons.Regular.Size20.Edit().WithColor(Color.Fill))">
                         Anschrift bearbeiten
-                    </FluentAnchor>
+                    </FluentButton>
                 }
 
                 <FluentButton @onclick="ShowAddressSearchModal" IconStart="@(new Icons.Regular.Size20.Add().WithColor("#fff"))" Color="#fff" BackgroundColor="var(--bg-success)">
@@ -461,5 +461,40 @@
     {
         AddressFilter.Blocked = Input.Addresses.Select(x => x.AddressId).ToList();
         _addressSearchModal.Show();
+    }
+
+    private async Task EditAddressAsync(Address? address)
+    {
+        if (Input is null)
+        {
+            return;
+        }
+
+        var input = address is null ? new() : address.DeepCopyByExpressionTree();
+
+        var dialog = await DialogService.ShowDialogAsync<AddressDialog>(input, new DialogParameters()
+        {
+            Title = address is null ? "Neue Anschrift" : "Anschrift bearbeiten",
+            PreventDismissOnOverlayClick = true,
+            PreventScroll = true,
+        });
+
+        var result = await dialog.Result;
+        if (!result.Cancelled && result.Data != null)
+        {
+            var result_address = (Address)result.Data;
+            if (address is not null)
+            {
+                var index = Input.Addresses.IndexOf(address);
+                Input.Addresses[index] = result_address;
+            }
+            else
+            {
+                Input.Addresses.Add(result_address);
+            }
+
+            SelectedAddress = result_address;
+        }
+
     }
 }
