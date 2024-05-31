@@ -33,6 +33,8 @@ public class PaymentConditionService : IModelService<PaymentCondition, int?, Pay
                 IS_ACTIVE,
                 AVAILABLE_FOR_CUSTOMER,
                 AVAILABLE_FOR_SUPPLIER,
+                CREATED_AT,
+                CREATED_BY,
                 LAST_MODIFIED_BY,
                 LAST_MODIFIED
             )
@@ -50,6 +52,8 @@ public class PaymentConditionService : IModelService<PaymentCondition, int?, Pay
                 @IS_ACTIVE,
                 @AVAILABLE_FOR_CUSTOMER,
                 @AVAILABLE_FOR_SUPPLIER,
+                @CREATED_AT,
+                @CREATED_BY,
                 @LAST_MODIFIED_BY,
                 @LAST_MODIFIED
             ) RETURNING PAYMENT_CONDITION_ID;
@@ -212,6 +216,8 @@ public class PaymentConditionService : IModelService<PaymentCondition, int?, Pay
                 IS_ACTIVE = @IS_ACTIVE,
                 AVAILABLE_FOR_CUSTOMER = @AVAILABLE_FOR_CUSTOMER,
                 AVAILABLE_FOR_SUPPLIER = @AVAILABLE_FOR_SUPPLIER,
+                CREATED_AT = @CREATED_AT,
+                CREATED_BY = @CREATED_BY,
                 LAST_MODIFIED_BY = @LAST_MODIFIED_BY,
                 LAST_MODIFIED = @LAST_MODIFIED           
             WHERE

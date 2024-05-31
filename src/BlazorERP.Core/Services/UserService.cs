@@ -27,7 +27,11 @@ public class UserService : IModelService<User, int?, UserFilter>
                 SALT,
                 ACCOUNT_TYPE,
                 IS_ACTIVE,
-                IS_ADMIN
+                IS_ADMIN,
+                CREATED_AT,
+                CREATED_BY,
+                LAST_MODIFIED_BY,
+                LAST_MODIFIED
             )
             VALUES
             (
@@ -42,7 +46,11 @@ public class UserService : IModelService<User, int?, UserFilter>
                 @SALT,
                 @ACCOUNT_TYPE,
                 @IS_ACTIVE,
-                @IS_ADMIN
+                @IS_ADMIN,
+                @CREATED_AT,
+                @CREATED_BY,
+                @LAST_MODIFIED_BY,
+                @LAST_MODIFIED
             ) RETURNING USER_ID;
             """;
 
@@ -106,7 +114,11 @@ public class UserService : IModelService<User, int?, UserFilter>
                 DISPLAY_NAME = @DISPLAY_NAME,
                 EMAIL = @EMAIL,
                 IS_ACTIVE = @IS_ACTIVE,
-                IS_ADMIN = @IS_ADMIN
+                IS_ADMIN = @IS_ADMIN,
+                CREATED_AT = @CREATED_AT,
+                CREATED_BY = @CREATED_BY,
+                LAST_MODIFIED_BY = @LAST_MODIFIED_BY,
+                LAST_MODIFIED = @LAST_MODIFIED
             WHERE
                 USER_ID = @USER_ID
             """;

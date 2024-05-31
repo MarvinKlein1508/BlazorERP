@@ -33,6 +33,8 @@ public class ContactPersonService : IModelService<ContactPerson, int?, ContactPe
                 FAX_NUMBER,
                 EMAIL,
                 NOTE,
+                CREATED_AT,
+                CREATED_BY,
                 LAST_MODIFIED_BY,
                 LAST_MODIFIED
             )
@@ -49,6 +51,8 @@ public class ContactPersonService : IModelService<ContactPerson, int?, ContactPe
                 @FAX_NUMBER,
                 @EMAIL,
                 @NOTE,
+                @CREATED_AT,
+                @CREATED_BY,
                 @LAST_MODIFIED_BY,
                 @LAST_MODIFIED
             ) RETURNING CONTACT_PERSON_ID;
@@ -167,6 +171,8 @@ public class ContactPersonService : IModelService<ContactPerson, int?, ContactPe
                 FAX_NUMBER = @FAX_NUMBER,
                 EMAIL = @EMAIL,
                 NOTE = @NOTE,
+                CREATED_AT = @CREATED_AT,
+                CREATED_BY = @CREATED_BY,
                 LAST_MODIFIED_BY = @LAST_MODIFIED_BY,
                 LAST_MODIFIED = @LAST_MODIFIED
             WHERE

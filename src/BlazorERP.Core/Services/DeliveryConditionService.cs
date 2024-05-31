@@ -26,6 +26,8 @@ public class DeliveryConditionService : IModelService<DeliveryCondition, int?, D
                 AVAILABLE_FOR_CUSTOMER,
                 AVAILABLE_FOR_SUPPLIER,
                 IS_ACTIVE,
+                CREATED_AT,
+                CREATED_BY,
                 LAST_MODIFIED_BY,
                 LAST_MODIFIED
             )
@@ -36,6 +38,8 @@ public class DeliveryConditionService : IModelService<DeliveryCondition, int?, D
                 @AVAILABLE_FOR_CUSTOMER,
                 @AVAILABLE_FOR_SUPPLIER,
                 @IS_ACTIVE,
+                @CREATED_AT,
+                @CREATED_BY,
                 @LAST_MODIFIED_BY,
                 @LAST_MODIFIED
             ) RETURNING DELIVERY_CONDITION_ID;
@@ -191,6 +195,8 @@ public class DeliveryConditionService : IModelService<DeliveryCondition, int?, D
                 AVAILABLE_FOR_CUSTOMER = @AVAILABLE_FOR_CUSTOMER,
                 AVAILABLE_FOR_SUPPLIER = @AVAILABLE_FOR_SUPPLIER,
                 IS_ACTIVE = @IS_ACTIVE,
+                CREATED_AT = @CREATED_AT,
+                CREATED_BY = @CREATED_BY,
                 LAST_MODIFIED_BY = @LAST_MODIFIED_BY,
                 LAST_MODIFIED = @LAST_MODIFIED
             WHERE

@@ -26,6 +26,8 @@ public class CountryService : IModelService<Country, int?, CountryFilter>, ITran
                 DIALING_CODE,
                 IS_EU,
                 IS_ACTIVE,
+                CREATED_AT,
+                CREATED_BY,
                 LAST_MODIFIED_BY,
                 LAST_MODIFIED
             )
@@ -36,6 +38,8 @@ public class CountryService : IModelService<Country, int?, CountryFilter>, ITran
                 @DIALING_CODE,
                 @IS_EU,
                 @IS_ACTIVE,
+                @CREATED_AT,
+                @CREATED_BY,
                 @LAST_MODIFIED_BY,
                 @LAST_MODIFIED
             ) RETURNING COUNTRY_ID;
@@ -247,6 +251,8 @@ public class CountryService : IModelService<Country, int?, CountryFilter>, ITran
                 DIALING_CODE = @DIALING_CODE,
                 IS_EU = @IS_EU,
                 IS_ACTIVE = @IS_ACTIVE,
+                CREATED_AT = @CREATED_AT,
+                CREATED_BY = @CREATED_BY,
                 LAST_MODIFIED_BY = @LAST_MODIFIED_BY,
                 LAST_MODIFIED = @LAST_MODIFIED
             WHERE

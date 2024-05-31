@@ -49,6 +49,8 @@ public class CustomerService : IModelService<Customer, string?, CustomerFilter>
                 IS_BLOCKED,
                 NEUTRAL_SHIPPING,
                 CURRENCY_CODE,
+                CREATED_AT,
+                CREATED_BY,
                 LAST_MODIFIED_BY,
                 LAST_MODIFIED
             )
@@ -80,6 +82,8 @@ public class CustomerService : IModelService<Customer, string?, CustomerFilter>
                 @IS_BLOCKED,
                 @NEUTRAL_SHIPPING,
                 @CURRENCY_CODE,
+                @CREATED_AT,
+                @CREATED_BY,
                 @LAST_MODIFIED_BY,
                 @LAST_MODIFIED
             ) RETURNING CUSTOMER_NUMBER;
@@ -246,6 +250,8 @@ public class CustomerService : IModelService<Customer, string?, CustomerFilter>
                 IS_BLOCKED = @IS_BLOCKED,
                 NEUTRAL_SHIPPING = @NEUTRAL_SHIPPING,
                 CURRENCY_CODE = @CURRENCY_CODE,
+                CREATED_AT = @CREATED_AT,
+                CREATED_BY = @CREATED_BY,
                 LAST_MODIFIED_BY = @LAST_MODIFIED_BY,
                 LAST_MODIFIED = @LAST_MODIFIED
             WHERE

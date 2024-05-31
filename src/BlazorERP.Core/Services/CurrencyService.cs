@@ -20,6 +20,8 @@ public class CurrencyService : IModelService<Currency, string?, CurrencyFilter>
                 MUST_ROUND, 
                 DECIMAL_PLACES, 
                 RATE_DATE, 
+                CREATED_AT,
+                CREATED_BY,
                 LAST_MODIFIED_BY,
                 LAST_MODIFIED
             )
@@ -31,6 +33,8 @@ public class CurrencyService : IModelService<Currency, string?, CurrencyFilter>
                 @MUST_ROUND, 
                 @DECIMAL_PLACES, 
                 @RATE_DATE, 
+                @CREATED_AT,
+                @CREATED_BY,
                 @LAST_MODIFIED_BY,
                 @LAST_MODIFIED
             );
@@ -145,6 +149,8 @@ public class CurrencyService : IModelService<Currency, string?, CurrencyFilter>
                 MUST_ROUND = @MUST_ROUND, 
                 DECIMAL_PLACES = @DECIMAL_PLACES, 
                 RATE_DATE = @RATE_DATE, 
+                CREATED_AT = @CREATED_AT,
+                CREATED_BY = @CREATED_BY,
                 LAST_MODIFIED_BY = @LAST_MODIFIED_BY,
                 LAST_MODIFIED = @LAST_MODIFIED
             WHERE

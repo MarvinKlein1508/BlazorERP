@@ -23,12 +23,16 @@ public class DepartmentService : IModelService<Department, int?, DepartmentFilte
             INSERT INTO DEPARTMENTS
             (
                 ACTIVE_DIRECTORY_GROUP_CN,
+                CREATED_AT,
+                CREATED_BY,
                 LAST_MODIFIED_BY,
                 LAST_MODIFIED
             )
             VALUES
             (
                 @ACTIVE_DIRECTORY_GROUP_CN,
+                @CREATED_AT,
+                @CREATED_BY,
                 @LAST_MODIFIED_BY,
                 @LAST_MODIFIED
             ) RETURNING DEPARTMENT_ID;
@@ -163,6 +167,8 @@ public class DepartmentService : IModelService<Department, int?, DepartmentFilte
             """
             UPDATE DEPARTMENTS SET 
                 ACTIVE_DIRECTORY_GROUP_CN = @ACTIVE_DIRECTORY_GROUP_CN,
+                CREATED_AT = @CREATED_AT,
+                CREATED_BY = @CREATED_BY,
                 LAST_MODIFIED_BY = @LAST_MODIFIED_BY,
                 LAST_MODIFIED = @LAST_MODIFIED
             WHERE

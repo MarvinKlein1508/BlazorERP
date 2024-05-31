@@ -17,6 +17,8 @@ public class CostCenterService : IModelService<CostCenter, int?, CostCenterFilte
                 COST_CENTER_NUMBER,
                 NAME,
                 CREATION_DATE,
+                CREATED_AT,
+                CREATED_BY,
                 LAST_MODIFIED,
                 LAST_MODIFIED_BY
             )
@@ -25,6 +27,8 @@ public class CostCenterService : IModelService<CostCenter, int?, CostCenterFilte
                 @COST_CENTER_NUMBER,
                 @NAME,
                 @CREATION_DATE,
+                @CREATED_AT,
+                @CREATED_BY,
                 @LAST_MODIFIED,
                 @LAST_MODIFIED_BY
             ) RETURNING COST_CENTER_ID;
@@ -143,6 +147,8 @@ public class CostCenterService : IModelService<CostCenter, int?, CostCenterFilte
                 COST_CENTER_NUMBER = @COST_CENTER_NUMBER,
                 NAME = @NAME,
                 CREATION_DATE = @CREATION_DATE,
+                CREATED_AT = @CREATED_AT,
+                CREATED_BY = @CREATED_BY,
                 LAST_MODIFIED = @LAST_MODIFIED,
                 LAST_MODIFIED_BY = @LAST_MODIFIED_BY
             WHERE

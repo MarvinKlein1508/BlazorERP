@@ -24,6 +24,8 @@ public class ConfigurationService : IModelService<Configuration, int?, Configura
                 CUSTOMER_LANGUAGE_ID,
                 CUSTOMER_CREDIT_LIMIT,
                 CUSTOMER_NEUTRAL_SHIPPING,
+                CREATED_AT,
+                CREATED_BY,
                 LAST_MODIFIED_BY,
                 LAST_MODIFIED
             )
@@ -39,6 +41,8 @@ public class ConfigurationService : IModelService<Configuration, int?, Configura
                 @CUSTOMER_LANGUAGE_ID,
                 @CUSTOMER_CREDIT_LIMIT,
                 @CUSTOMER_NEUTRAL_SHIPPING,
+                @CREATED_AT,
+                @CREATED_BY,
                 @LAST_MODIFIED_BY,
                 @LAST_MODIFIED
             ) RETURNING CONFIGURATION_ID;
@@ -156,6 +160,8 @@ public class ConfigurationService : IModelService<Configuration, int?, Configura
                 CUSTOMER_LANGUAGE_ID = @CUSTOMER_LANGUAGE_ID,
                 CUSTOMER_CREDIT_LIMIT = @CUSTOMER_CREDIT_LIMIT,
                 CUSTOMER_NEUTRAL_SHIPPING = @CUSTOMER_NEUTRAL_SHIPPING,
+                CREATED_AT = @CREATED_AT,
+                CREATED_BY = @CREATED_BY,
                 LAST_MODIFIED_BY = @LAST_MODIFIED_BY,
                 LAST_MODIFIED = @LAST_MODIFIED
             WHERE

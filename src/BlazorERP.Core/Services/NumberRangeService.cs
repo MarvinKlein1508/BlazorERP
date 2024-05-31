@@ -17,6 +17,8 @@ public class NumberRangeService : IModelService<NumberRange, int?, NumberRangeFi
                 NAME,
                 CUSTOMER_FROM,
                 CUSTOMER_TO,
+                CREATED_AT,
+                CREATED_BY,
                 LAST_MODIFIED_BY,
                 LAST_MODIFIED
             )
@@ -25,6 +27,8 @@ public class NumberRangeService : IModelService<NumberRange, int?, NumberRangeFi
                 @NAME,
                 @CUSTOMER_FROM,
                 @CUSTOMER_TO,
+                @CREATED_AT,
+                @CREATED_BY,
                 @LAST_MODIFIED_BY,
                 @LAST_MODIFIED
             ) RETURNING NUMBER_RANGE_ID;
@@ -135,6 +139,8 @@ public class NumberRangeService : IModelService<NumberRange, int?, NumberRangeFi
                 NAME = @NAME,
                 CUSTOMER_FROM = @CUSTOMER_FROM,
                 CUSTOMER_TO = @CUSTOMER_TO,
+                CREATED_AT = @CREATED_AT,
+                CREATED_BY = @CREATED_BY,
                 LAST_MODIFIED_BY = @LAST_MODIFIED_BY,
                 LAST_MODIFIED = @LAST_MODIFIED
             WHERE

@@ -22,11 +22,15 @@ public class SalutationService : IModelService<Salutation, int?, SalutationFilte
             """
             INSERT INTO SALUTATIONS
             (
+                CREATED_AT,
+                CREATED_BY,
                 LAST_MODIFIED_BY,
                 LAST_MODIFIED
             )
             VALUES
             (
+                @CREATED_AT,
+                @CREATED_BY,
                 @LAST_MODIFIED_BY,
                 @LAST_MODIFIED
             ) RETURNING SALUTATION_ID;
@@ -177,6 +181,8 @@ public class SalutationService : IModelService<Salutation, int?, SalutationFilte
         string sql =
            """
             UPDATE SALUTATIONS SET 
+                CREATED_AT = @CREATED_AT,
+                CREATED_BY = @CREATED_BY,
                 LAST_MODIFIED_BY = @LAST_MODIFIED_BY,
                 LAST_MODIFIED = @LAST_MODIFIED
             WHERE
