@@ -76,7 +76,7 @@ public abstract class EditPageBase<TIdentifier, TModel, TService> : ActivePageBa
 
     protected async Task SaveAsync()
     {
-        if (_form is null || _form.EditContext is null || Input is null)
+        if (_form is null || User is null || _form.EditContext is null || Input is null)
         {
             return;
         }
@@ -89,8 +89,15 @@ public abstract class EditPageBase<TIdentifier, TModel, TService> : ActivePageBa
             {
                 await BeforeSaveAsync(dbController);
 
+                Input.LastModifiedBy = User.UserId;
+                Input.LastModified = DateTime.Now;
+
                 if (Modus is EditMode.Create)
                 {
+                    
+                    Input.CreatedAt = DateTime.Now;
+                    Input.CreatedBy = User.UserId;
+                    
                     await Service.CreateAsync(Input, dbController);
                 }
                 else

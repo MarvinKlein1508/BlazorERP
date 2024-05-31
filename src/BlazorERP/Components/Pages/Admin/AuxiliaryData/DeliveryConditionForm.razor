@@ -96,19 +96,7 @@
     protected override string GetListUrl() => "/Admin/DeliveryConditions";
     protected override string GetEntityRedirectUrl() => $"/Admin/DeliveryConditions/Edit?deliveryConditionId={Input!.DeliveryConditionId}";
 
-
-
     [Parameter, SupplyParameterFromQuery(Name = "deliveryConditionId")]
     public override int? Identifier { get; set; }
-
-
-
-    protected override Task BeforeSaveAsync(IDbController dbController)
-    {
-        Input.LastModifiedBy = User.UserId;
-        Input.LastModified = DateTime.Now;
-
-        return Task.CompletedTask;
-    }
 
 }

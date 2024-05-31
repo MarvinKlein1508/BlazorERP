@@ -107,15 +107,4 @@
     [Parameter, SupplyParameterFromQuery(Name = "cost_center_id")]
     public override int? Identifier { get; set; }
 
-
-
-
-    protected override Task BeforeSaveAsync(IDbController dbController)
-    {
-        Input.LastModifiedBy = User.UserId;
-        Input.LastModified = DateTime.Now;
-
-        return Task.CompletedTask;
-    }
-
 }

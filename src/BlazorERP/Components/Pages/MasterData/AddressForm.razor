@@ -158,16 +158,6 @@
     [Parameter, SupplyParameterFromQuery(Name = "addressId")]
     public override int? Identifier { get; set; }
 
-
-    protected override Task BeforeSaveAsync(IDbController dbController)
-    {
-        Input.LastModifiedBy = User.UserId;
-        Input.LastModified = DateTime.Now;
-
-        return Task.CompletedTask;
-    }
-
-
     protected override Task InitializeModelAsync(bool newEntry, IDbController dbController)
     {
         if (!newEntry)

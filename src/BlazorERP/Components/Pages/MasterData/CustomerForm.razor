@@ -410,29 +410,6 @@
         }
     }
 
-    protected override Task BeforeSaveAsync(IDbController dbController)
-    {
-        if (Input == null)
-        {
-            throw new InvalidOperationException("Input must not be null.");
-        }
-
-        if (User == null)
-        {
-            throw new InvalidOperationException("User must not be null.");
-        }
-
-        if (Modus is EditMode.Create)
-        {
-            Input.CreatedAt = DateTime.Now;
-        }
-
-        Input.LastModifiedBy = User.UserId;
-        Input.LastModified = DateTime.Now;
-
-        return Task.CompletedTask;
-    }
-
     private void OnEmailChanged(string email)
     {
         if (Input == null)
