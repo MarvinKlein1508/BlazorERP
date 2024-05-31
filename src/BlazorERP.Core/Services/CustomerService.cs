@@ -27,7 +27,6 @@ public class CustomerService : IModelService<Customer, string?, CustomerFilter>
                 COMPANY,
                 NAME1,
                 NAME2,
-                CREATION_DATE,
                 LANGUAGE_ID,
                 COUNTRY_ID,
                 STREET,
@@ -60,7 +59,6 @@ public class CustomerService : IModelService<Customer, string?, CustomerFilter>
                 @COMPANY,
                 @NAME1,
                 @NAME2,
-                @CREATION_DATE,
                 @LANGUAGE_ID,
                 @COUNTRY_ID,
                 @STREET,
@@ -119,8 +117,7 @@ public class CustomerService : IModelService<Customer, string?, CustomerFilter>
             FROM CUSTOMERS C 
             LEFT JOIN USERS UC ON (UC.USER_ID = C.CREATED_BY)
             LEFT JOIN USERS UL ON (UL.USER_ID = C.LAST_MODIFIED_BY)
-            WHERE 
-                CUSTOMER_NUMBER = @CUSTOMER_NUMBER";
+            WHERE CUSTOMER_NUMBER = @CUSTOMER_NUMBER
             """;
 
         var result = await dbController.GetFirstAsync<Customer>(sql, new
@@ -228,7 +225,6 @@ public class CustomerService : IModelService<Customer, string?, CustomerFilter>
                 COMPANY = @COMPANY,
                 NAME1 = @NAME1,
                 NAME2 = @NAME2,
-                CREATION_DATE = @CREATION_DATE,
                 LANGUAGE_ID = @LANGUAGE_ID,
                 COUNTRY_ID = @COUNTRY_ID,
                 STREET = @STREET,

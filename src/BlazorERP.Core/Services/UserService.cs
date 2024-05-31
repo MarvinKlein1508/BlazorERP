@@ -83,7 +83,7 @@ public class UserService : IModelService<User, int?, UserFilter>
             LEFT JOIN USERS UC ON (UC.USER_ID = U.CREATED_BY)
             LEFT JOIN USERS UL ON (UL.USER_ID = U.LAST_MODIFIED_BY)
             WHERE 
-                USER_ID = @USER_ID
+                U.USER_ID = @USER_ID
             """;
 
         return dbController.GetFirstAsync<User>(sql,
@@ -156,7 +156,7 @@ public class UserService : IModelService<User, int?, UserFilter>
             LEFT JOIN USERS UL ON (UL.USER_ID = U.LAST_MODIFIED_BY)
             WHERE 1 = 1
             {GetFilterWhere(filter)}
-            ORDER BY USER_ID DESC
+            ORDER BY U.USER_ID DESC
         """;
 
 
@@ -192,9 +192,9 @@ public class UserService : IModelService<User, int?, UserFilter>
         {
             sb.AppendLine(@" AND 
 (
-        UPPER(FIRSTNAME) LIKE @SEARCH_PHRASE
-    OR  UPPER(LASTNAME) LIKE @SEARCH_PHRASE
-    OR  NORMALIZED_USERNAME LIKE @SEARCH_PHRASE
+        UPPER(U.FIRSTNAME) LIKE @SEARCH_PHRASE
+    OR  UPPER(U.LASTNAME) LIKE @SEARCH_PHRASE
+    OR  U.NORMALIZED_USERNAME LIKE @SEARCH_PHRASE
 )");
         }
 
