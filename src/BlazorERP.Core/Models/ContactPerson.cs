@@ -5,7 +5,7 @@ namespace BlazorERP.Core.Models;
 public class ContactPerson : IDbModel<int?>
 {
     public int ContactPersonId { get; set; }
-    public string CustomerNumber { get; set; } = string.Empty;
+    public string Company { get; set; } = string.Empty;
     public int? SalutationId { get; set; }
     public Salutation? Salutation { get; set; }
     public string FirstName { get; set; } = string.Empty;
@@ -23,6 +23,7 @@ public class ContactPerson : IDbModel<int?>
 
     public int? GetIdentifier() => ContactPersonId > 0 ? ContactPersonId : null;
 
+    public string BearbeiterName { get; set; } = string.Empty;
     public string GetName()
     {
         return $"{FirstName} {LastName}".Trim();
@@ -30,6 +31,23 @@ public class ContactPerson : IDbModel<int?>
 
     public Dictionary<string, object?> GetParameters()
     {
-        throw new NotImplementedException();
+        return new Dictionary<string, object?>
+        {
+            { "CONTACT_PERSON_ID", ContactPersonId },
+            { "COMPANY", Company },
+            { "SALUTATION_ID", SalutationId },
+            { "FIRSTNAME", FirstName },
+            { "LASTNAME", LastName },
+            { "DEPARTMENT", Department },
+            { "LANGUAGE_ID", LanguageId },
+            { "PHONE_NUMBER", PhoneNumber },
+            { "MOBILE_NUMBER", MobileNumber },
+            { "MOBILE_NUMBER", MobileNumber },
+            { "FAX_NUMBER", FaxNumber },
+            { "EMAIL", Email },
+            { "NOTE", Note },
+            { "LAST_MODIFIED_BY", LastModifiedBy },
+            { "LAST_MODIFIED", LastModified },
+        };
     }
 }

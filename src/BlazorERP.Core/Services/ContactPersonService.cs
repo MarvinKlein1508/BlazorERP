@@ -1,6 +1,7 @@
 ﻿using BlazorERP.Core.Filters;
 using BlazorERP.Core.Interfaces;
 using BlazorERP.Core.Models;
+using Microsoft.AspNetCore.Components;
 using System.Text;
 
 namespace BlazorERP.Core.Services;
@@ -13,9 +14,47 @@ public class ContactPersonService : IModelService<ContactPerson, int?, ContactPe
     {
         _languageService = languageService;
     }
-    public Task CreateAsync(ContactPerson input, IDbController dbController, CancellationToken cancellationToken = default)
+    public async Task CreateAsync(ContactPerson input, IDbController dbController, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        cancellationToken.ThrowIfCancellationRequested();
+
+        string sql =
+            """
+            INSERT INTO CONTACT_PERSONS
+            (
+                COMPANY,
+                SALUTATION_ID,
+                FIRSTNAME,
+                LASTNAME,
+                DEPARTMENT,
+                LANGUAGE_ID,
+                PHONE_NUMBER,
+                MOBILE_NUMBER,
+                FAX_NUMBER,
+                EMAIL,
+                NOTE,
+                LAST_MODIFIED_BY,
+                LAST_MODIFIED
+            )
+            VALUES
+            (
+                @COMPANY,
+                @SALUTATION_ID,
+                @FIRSTNAME,
+                @LASTNAME,
+                @DEPARTMENT,
+                @LANGUAGE_ID,
+                @PHONE_NUMBER,
+                @MOBILE_NUMBER,
+                @FAX_NUMBER,
+                @EMAIL,
+                @NOTE,
+                @LAST_MODIFIED_BY,
+                @LAST_MODIFIED
+            ) RETURNING CONTACT_PERSON_ID;
+            """;
+
+        input.ContactPersonId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
     }
 
     public Task DeleteAsync(ContactPerson input, IDbController dbController, CancellationToken cancellationToken = default)
@@ -108,8 +147,30 @@ public class ContactPersonService : IModelService<ContactPerson, int?, ContactPe
         return result;
     }
 
-    public Task UpdateAsync(ContactPerson input, IDbController dbController, CancellationToken cancellationToken = default)
+    public async Task UpdateAsync(ContactPerson input, IDbController dbController, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        cancellationToken.ThrowIfCancellationRequested();
+
+        string sql =
+            """
+            UPDATE CONTACT_PERSONS SET
+                COMPANY = @COMPANY,
+                SALUTATION_ID = @SALUTATION_ID,
+                FIRSTNAME = @FIRSTNAME,
+                LASTNAME = @LASTNAME,
+                DEPARTMENT = @DEPARTMENT,
+                LANGUAGE_ID = @LANGUAGE_ID,
+                PHONE_NUMBER = @PHONE_NUMBER,
+                MOBILE_NUMBER = @MOBILE_NUMBER,
+                FAX_NUMBER = @FAX_NUMBER,
+                EMAIL = @EMAIL,
+                NOTE = @NOTE,
+                LAST_MODIFIED_BY = @LAST_MODIFIED_BY,
+                LAST_MODIFIED = @LAST_MODIFIED
+            WHERE
+                CONTACT_PERSON_ID = @CONTACT_PERSON_ID
+            """;
+
+        await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
     }
 }
