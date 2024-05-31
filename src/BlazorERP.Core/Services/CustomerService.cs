@@ -106,7 +106,18 @@ public class CustomerService : IModelService<Customer, string?, CustomerFilter>
             return null;
         }
 
-        string sql = "SELECT * FROM CUSTOMERS WHERE CUSTOMER_NUMBER = @CUSTOMER_NUMBER";
+        string sql =
+            """
+            SELECT 
+                C.*,
+                UC.DISPLAY_NAME AS CreatedByName,
+                UL.DISPLAY_NAME AS LastModifiedName
+            FROM CUSTOMERS C 
+            LEFT JOIN USERS UC ON (UC.USER_ID = C.CREATED_BY)
+            LEFT JOIN USERS UL ON (UL.USER_ID = C.LAST_MODIFIED_BY)
+            WHERE 
+                CUSTOMER_NUMBER = @CUSTOMER_NUMBER";
+            """;
 
         var result = await dbController.GetFirstAsync<Customer>(sql, new
         {
@@ -134,8 +145,12 @@ public class CustomerService : IModelService<Customer, string?, CustomerFilter>
         $"""
         SELECT 
             FIRST {filter.Limit} SKIP {(filter.PageNumber - 1) * filter.Limit}
-                * 
-            FROM CUSTOMERS 
+                C.*,
+                UC.DISPLAY_NAME AS CreatedByName,
+                UL.DISPLAY_NAME AS LastModifiedName
+            FROM CUSTOMERS C
+            LEFT JOIN USERS UC ON (UC.USER_ID = C.CREATED_BY)
+            LEFT JOIN USERS UL ON (UL.USER_ID = C.LAST_MODIFIED_BY)
             WHERE 1 = 1
             {GetFilterWhere(filter)}
             ORDER BY CUSTOMER_NUMBER DESC

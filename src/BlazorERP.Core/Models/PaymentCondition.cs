@@ -20,17 +20,15 @@ public class PaymentCondition : TranslationBase, IDbModel<int?>
     public bool AvailableForCustomer { get; set; }
     public bool AvailableForSupplier { get; set; }
 
+    public DateTime CreatedAt { get; set; }
+    public int? CreatedBy { get; set; }
     public int? LastModifiedBy { get; set; }
     public DateTime? LastModified { get; set; }
 
-
     public int? GetIdentifier() => PaymentConditionId > 0 ? PaymentConditionId : null;
 
-
-    
-
-
-    public string BearbeiterName { get; set; } = string.Empty;
+    public string CreatedByName { get; set; } = string.Empty;
+    public string LastModifiedName { get; set; } = string.Empty;
 
     public Dictionary<string, object?> GetParameters()
     {
@@ -49,6 +47,8 @@ public class PaymentCondition : TranslationBase, IDbModel<int?>
             { "IS_ACTIVE", IsActive },
             { "AVAILABLE_FOR_CUSTOMER", AvailableForCustomer },
             { "AVAILABLE_FOR_SUPPLIER", AvailableForSupplier },
+            { "CREATED_AT", CreatedAt },
+            { "CREATED_BY", CreatedBy },
             { "LAST_MODIFIED_BY", LastModifiedBy },
             { "LAST_MODIFIED", LastModified },
         };

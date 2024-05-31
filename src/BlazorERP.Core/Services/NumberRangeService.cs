@@ -51,9 +51,11 @@ public class NumberRangeService : IModelService<NumberRange, int?, NumberRangeFi
             """
             SELECT 
                 N.*,
-                U.DISPLAY_NAME AS BEARBEITER_NAME
+                UC.DISPLAY_NAME AS CreatedByName,
+                UL.DISPLAY_NAME AS LastModifiedName
             FROM NUMBER_RANGES N
-            LEFT JOIN USERS U ON (U.USER_ID = N.LAST_MODIFIED_BY)
+            LEFT JOIN USERS UC ON (UC.USER_ID = N.CREATED_BY)
+            LEFT JOIN USERS UL ON (UL.USER_ID = N.LAST_MODIFIED_BY)
             WHERE 
                 NUMBER_RANGE_ID = @NUMBER_RANGE_ID
             """;
@@ -72,9 +74,11 @@ public class NumberRangeService : IModelService<NumberRange, int?, NumberRangeFi
         SELECT 
             FIRST {filter.Limit} SKIP {(filter.PageNumber - 1) * filter.Limit}
                 N.*,
-                U.DISPLAY_NAME AS BEARBEITER_NAME
+                UC.DISPLAY_NAME AS CreatedByName,
+                UL.DISPLAY_NAME AS LastModifiedName
             FROM NUMBER_RANGES N
-            LEFT JOIN USERS U ON (U.USER_ID = N.LAST_MODIFIED_BY)
+            LEFT JOIN USERS UC ON (UC.USER_ID = N.CREATED_BY)
+            LEFT JOIN USERS UL ON (UL.USER_ID = N.LAST_MODIFIED_BY)
             WHERE 1 = 1
             {GetFilterWhere(filter)}
             ORDER BY NUMBER_RANGE_ID DESC

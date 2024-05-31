@@ -12,14 +12,17 @@ public class DeliveryCondition : TranslationBase, IDbModel<int?>
     public bool AvailableForSupplier { get; set; }
     public bool IsActive { get; set; }
 
-    public int? LastModififedBy { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public int? CreatedBy { get; set; }
+    public int? LastModifiedBy { get; set; }
     public DateTime? LastModified { get; set; }
 
 
     public int? GetIdentifier() => DeliveryConditionId > 0 ? DeliveryConditionId : null;
 
    
-    public string BearbeiterName { get; set; } = string.Empty;
+    public string CreatedByName { get; set; } = string.Empty;
+    public string LastModifiedName { get; set; } = string.Empty;
 
     public Dictionary<string, object?> GetParameters()
     {
@@ -31,7 +34,9 @@ public class DeliveryCondition : TranslationBase, IDbModel<int?>
             { "AVAILABLE_FOR_CUSTOMER", AvailableForCustomer },
             { "AVAILABLE_FOR_SUPPLIER", AvailableForSupplier },
             { "IS_ACTIVE", IsActive },
-            { "LAST_MODIFIED_BY", LastModififedBy },
+            { "CREATED_AT", CreatedAt },
+            { "CREATED_BY", CreatedBy },
+            { "LAST_MODIFIED_BY", LastModifiedBy },
             { "LAST_MODIFIED", LastModified },
         };
     }

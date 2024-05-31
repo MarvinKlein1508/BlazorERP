@@ -148,7 +148,7 @@
                         @if (Modus is EditMode.Edit)
                         {
                             <div class="col-12">
-                                <FluentTextField Value="@Input.CreationDate?.ToShortDateString()" Appearance="FluentInputAppearance.Filled" Label="Anlagedatum" ReadOnly />
+                                <FluentTextField Value="@Input.CreatedAt.ToShortDateString()" Appearance="FluentInputAppearance.Filled" Label="Anlagedatum" ReadOnly />
                             </div>
                             <div class="col-12">
                                 <div class="d-flex flex-column gap-2 mt-2">
@@ -331,7 +331,7 @@
 
                                         <FluentDatePicker Value="@address.LastModified" Label="Letzte Änderung" ReadOnly Appearance="FluentInputAppearance.Filled" />
 
-                                        <FluentTextField Value="@address.BearbeiterName" Label="Letzter Bearbeiter" ReadOnly Appearance="FluentInputAppearance.Filled" />
+                                        <FluentTextField Value="@address.LastModifiedName" Label="Letzter Bearbeiter" ReadOnly Appearance="FluentInputAppearance.Filled" />
 
                                     </div>
                                 </div>
@@ -424,7 +424,7 @@
 
         if (Modus is EditMode.Create)
         {
-            Input.CreationDate = DateTime.Now;
+            Input.CreatedAt = DateTime.Now;
         }
 
         Input.LastModifiedBy = User.UserId;

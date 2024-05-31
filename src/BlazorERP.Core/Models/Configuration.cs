@@ -15,15 +15,16 @@ public class Configuration : IDbModelWithName<int?>
     public int? CustomerLanguageId { get; set; }
     public decimal CustomerCreditLimit { get; set; }
     public bool CustomerNeutralShipping { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public int? CreatedBy { get; set; }
     public int? LastModifiedBy { get; set; }
     public DateTime? LastModified { get; set; }
 
     public int? GetIdentifier() => ConfigurationId > 0 ? ConfigurationId : null;
-
     public string GetName() => Name;
+    public string CreatedByName { get; set; } = string.Empty;
+    public string LastModifiedName { get; set; } = string.Empty;
 
-
-    public string BearbeiterName { get; set; } = string.Empty;
     public Dictionary<string, object?> GetParameters()
     {
         return new Dictionary<string, object?>
@@ -39,6 +40,8 @@ public class Configuration : IDbModelWithName<int?>
             { "CUSTOMER_LANGUAGE_ID", CustomerLanguageId },
             { "CUSTOMER_CREDIT_LIMIT", CustomerCreditLimit },
             { "CUSTOMER_NEUTRAL_SHIPPING", CustomerNeutralShipping },
+            { "CREATED_AT", CreatedAt },
+            { "CREATED_BY", CreatedBy },
             { "LAST_MODIFIED_BY", LastModifiedBy },
             { "LAST_MODIFIED", LastModified },
         };

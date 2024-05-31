@@ -59,7 +59,18 @@ public class DepartmentService : IModelService<Department, int?, DepartmentFilte
             return null;
         }
 
-        string sql = "SELECT * FROM DEPARTMENTS WHERE DEPARTMENT_ID = @DEPARTMENT_ID";
+        string sql =
+            """
+            SELECT 
+                D.*,
+                UC.DISPLAY_NAME AS CreatedByName,
+                UL.DISPLAY_NAME AS LastModifiedName
+            FROM DEPARTMENTS D
+            LEFT JOIN USERS UC ON (UC.USER_ID = D.CREATED_BY)
+            LEFT JOIN USERS UL ON (UL.USER_ID = D.LAST_MODIFIED_BY)
+            WHERE 
+                DEPARTMENT_ID = @DEPARTMENT_ID
+            """;
 
         var result = await dbController.GetFirstAsync<Department>(sql, new
         {
@@ -81,8 +92,12 @@ public class DepartmentService : IModelService<Department, int?, DepartmentFilte
         $"""
         SELECT 
             FIRST {filter.Limit} SKIP {(filter.PageNumber - 1) * filter.Limit}
-                * 
-            FROM DEPARTMENTS 
+                D.*,
+                UC.DISPLAY_NAME AS CreatedByName,
+                UL.DISPLAY_NAME AS LastModifiedName
+            FROM DEPARTMENTS D
+            LEFT JOIN USERS UC ON (UC.USER_ID = D.CREATED_BY)
+            LEFT JOIN USERS UL ON (UL.USER_ID = D.LAST_MODIFIED_BY)
             WHERE 1 = 1
             {GetFilterWhere(filter)}
             ORDER BY DEPARTMENT_ID DESC

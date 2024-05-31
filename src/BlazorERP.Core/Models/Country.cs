@@ -12,14 +12,17 @@ public class Country : TranslationBase, IDbModel<int?>
 
     public bool IsEU { get; set; }
     public bool IsActive { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public int? CreatedBy { get; set; }
     public int? LastModifiedBy { get; set; }
     public DateTime? LastModified { get; set; }
 
     public int? GetIdentifier() => CountryId > 0 ? CountryId : null;
 
 
+    public string CreatedByName { get; set; } = string.Empty;
+    public string LastModifiedName { get; set; } = string.Empty;
 
-    public string BearbeiterName { get; set; } = string.Empty;
     public Dictionary<string, object?> GetParameters()
     {
         return new Dictionary<string, object?>
@@ -30,6 +33,8 @@ public class Country : TranslationBase, IDbModel<int?>
             { "DIALING_CODE", DialingCode },
             { "IS_EU", IsEU },
             { "IS_ACTIVE", IsActive },
+            { "CREATED_AT", CreatedAt },
+            { "CREATED_BY", CreatedBy },
             { "LAST_MODIFIED_BY", LastModifiedBy },
             { "LAST_MODIFIED", LastModified },
         };

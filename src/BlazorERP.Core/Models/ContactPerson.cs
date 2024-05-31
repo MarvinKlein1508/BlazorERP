@@ -18,17 +18,18 @@ public class ContactPerson : IDbModel<int?>
     public string FaxNumber { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string Note { get; set; } = string.Empty;
+    public DateTime CreatedAt { get; set; }
+    public int? CreatedBy { get; set; }
     public int? LastModifiedBy { get; set; }
     public DateTime? LastModified { get; set; }
 
     public int? GetIdentifier() => ContactPersonId > 0 ? ContactPersonId : null;
-
-    public string BearbeiterName { get; set; } = string.Empty;
     public string GetName()
     {
         return $"{FirstName} {LastName}".Trim();
     }
-
+    public string CreatedByName { get; set; } = string.Empty;
+    public string LastModifiedName { get; set; } = string.Empty;
     public Dictionary<string, object?> GetParameters()
     {
         return new Dictionary<string, object?>
@@ -46,6 +47,8 @@ public class ContactPerson : IDbModel<int?>
             { "FAX_NUMBER", FaxNumber },
             { "EMAIL", Email },
             { "NOTE", Note },
+            { "CREATED_AT", CreatedAt },
+            { "CREATED_BY", CreatedBy },
             { "LAST_MODIFIED_BY", LastModifiedBy },
             { "LAST_MODIFIED", LastModified },
         };

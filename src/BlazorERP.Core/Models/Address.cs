@@ -22,6 +22,8 @@ public class Address : IDbModel<int?>
     public int? ContactPersonId { get; set; }
     public string VatIdentificationNumber { get; set; } = string.Empty;
     public string Note { get; set; } = string.Empty;
+    public DateTime CreatedAt { get; set; }
+    public int? CreatedBy { get; set; }
     public int? LastModifiedBy { get; set; }
     public DateTime? LastModified { get; set; }
 
@@ -41,7 +43,10 @@ public class Address : IDbModel<int?>
 
         return string.Empty;
     }
-    public string BearbeiterName { get; set; } = string.Empty;
+
+    public string CreatedByName { get; set; } = string.Empty;
+    public string LastModifiedName { get; set; } = string.Empty;
+
     public Dictionary<string, object?> GetParameters()
     {
         return new Dictionary<string, object?>
@@ -62,8 +67,10 @@ public class Address : IDbModel<int?>
             { "CONTACT_PERSON_ID", ContactPersonId },
             { "VAT_IDENTIFICATION_NUMBER", VatIdentificationNumber },
             { "NOTE", Note },
+            { "CREATED_AT", CreatedAt },
+            { "CREATED_BY", CreatedBy },
             { "LAST_MODIFIED_BY", LastModifiedBy },
-            { "LAST_MODIFIED", LastModified }
+            { "LAST_MODIFIED", LastModified },
         };
     }
 }

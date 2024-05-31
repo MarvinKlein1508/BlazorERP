@@ -58,9 +58,11 @@ public class CostCenterService : IModelService<CostCenter, int?, CostCenterFilte
             """
             SELECT 
                 C.*,
-                U.DISPLAY_NAME AS BEARBEITER_NAME
+                UC.DISPLAY_NAME AS CreatedByName,
+                UL.DISPLAY_NAME AS LastModifiedName
             FROM COST_CENTERS C
-            LEFT JOIN USERS U ON (U.USER_ID = C.LAST_MODIFIED_BY)
+            LEFT JOIN USERS UC ON (UC.USER_ID = C.CREATED_BY)
+            LEFT JOIN USERS UL ON (UL.USER_ID = C.LAST_MODIFIED_BY)
             WHERE 
                 COST_CENTER_ID = @COST_CENTER_ID
             """;
@@ -81,9 +83,11 @@ public class CostCenterService : IModelService<CostCenter, int?, CostCenterFilte
         SELECT 
             FIRST {filter.Limit} SKIP {(filter.PageNumber - 1) * filter.Limit}
                 C.*,
-                U.DISPLAY_NAME AS BEARBEITER_NAME
+                UC.DISPLAY_NAME AS CreatedByName,
+                Ul.DISPLAY_NAME AS LastModifiedName
             FROM COST_CENTERS C
-            LEFT JOIN USERS U ON (U.USER_ID = C.LAST_MODIFIED_BY)
+            LEFT JOIN USERS UC ON (UC.USER_ID = C.CREATED_BY)
+            LEFT JOIN USERS UL ON (UL.USER_ID = C.LAST_MODIFIED_BY)
             WHERE 1 = 1
             {GetFilterWhere(filter)}
             ORDER BY COST_CENTER_ID DESC

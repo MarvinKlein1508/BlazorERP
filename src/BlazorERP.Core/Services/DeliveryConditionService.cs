@@ -89,9 +89,11 @@ public class DeliveryConditionService : IModelService<DeliveryCondition, int?, D
             """
             SELECT 
                 DC.*,
-                U.DISPLAY_NAME AS BEARBEITER_NAME
+                UC.DISPLAY_NAME AS CreatedByName,
+                U.DISPLAY_NAME AS LastModifiedName
             FROM DELIVERY_CONDITIONS DC
-            LEFT JOIN USERS U ON (U.USER_ID = DC.LAST_MODIFIED_BY)
+            LEFT JOIN USERS UC ON (U.USER_ID = DC.CREATED_BY)
+            LEFT JOIN USERS UL ON (U.USER_ID = DC.LAST_MODIFIED_BY)
             WHERE 
                 DELIVERY_CONDITION_ID = @DELIVERY_CONDITION_ID
             """;
@@ -117,9 +119,11 @@ public class DeliveryConditionService : IModelService<DeliveryCondition, int?, D
         SELECT 
             FIRST {filter.Limit} SKIP {(filter.PageNumber - 1) * filter.Limit}
                 DC.*,
-                U.DISPLAY_NAME AS BEARBEITER_NAME 
+                UC.DISPLAY_NAME AS CreatedByName,
+                UL.DISPLAY_NAME AS LastModifiedName 
             FROM DELIVERY_CONDITIONS DC 
-            LEFT JOIN USERS U ON (U.USER_ID = DC.LAST_MODIFIED_BY)
+            LEFT JOIN USERS UC ON (U.USER_ID = DC.CREATED_BY)
+            LEFT JOIN USERS UL ON (U.USER_ID = DC.LAST_MODIFIED_BY)
             WHERE 1 = 1
             {GetFilterWhere(filter)}
             ORDER BY DELIVERY_CONDITION_ID DESC

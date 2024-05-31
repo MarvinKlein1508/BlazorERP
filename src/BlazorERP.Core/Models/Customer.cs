@@ -9,8 +9,6 @@ public class Customer : IDbModelWithName<string?>
     public string Company { get; set; } = string.Empty;
     public string Name1 { get; set; } = string.Empty;
     public string Name2 { get; set; } = string.Empty;
-
-    public DateTime? CreationDate { get; set; }
     public int? LanguageId { get; set; }
     public int? CountryId { get; set; }
     public Country? Country { get; set; }
@@ -34,6 +32,8 @@ public class Customer : IDbModelWithName<string?>
     public bool IsBlocked { get; set; }
     public bool NeutralShipping { get; set; }
     public string? CurrencyCode { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public int? CreatedBy { get; set; }
     public int? LastModifiedBy { get; set; }
     public DateTime? LastModified { get; set; }
 
@@ -41,6 +41,7 @@ public class Customer : IDbModelWithName<string?>
 
     public List<Address> Addresses { get; set; } = [];
     public List<ContactPerson> ContactPersons { get; set; } = [];
+
     public string GetName()
     {
         if(!string.IsNullOrWhiteSpace(Company))
@@ -56,6 +57,8 @@ public class Customer : IDbModelWithName<string?>
         return string.Empty;
     }
 
+    public string CreatedByName { get; set; } = string.Empty;
+    public string LastModifiedName { get; set; } = string.Empty;
     public Dictionary<string, object?> GetParameters()
     {
         return new Dictionary<string, object?>
@@ -64,7 +67,6 @@ public class Customer : IDbModelWithName<string?>
             { "COMPANY", Company },
             { "NAME1", Name1 },
             { "NAME2", Name2 },
-            { "CREATION_DATE", CreationDate },
             { "LANGUAGE_ID", LanguageId },
             { "COUNTRY_ID", CountryId },
             { "STREET", Street },
@@ -86,6 +88,8 @@ public class Customer : IDbModelWithName<string?>
             { "IS_BLOCKED", IsBlocked },
             { "NEUTRAL_SHIPPING", NeutralShipping },
             { "CURRENCY_CODE", CurrencyCode },
+            { "CREATED_AT", CreatedAt },
+            { "CREATED_BY", CreatedBy },
             { "LAST_MODIFIED_BY", LastModifiedBy },
             { "LAST_MODIFIED", LastModified },
         };

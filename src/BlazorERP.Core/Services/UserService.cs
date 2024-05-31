@@ -65,7 +65,18 @@ public class UserService : IModelService<User, int?, UserFilter>
             return Task.FromResult<User?>(null);
         }
 
-        string sql = "SELECT * FROM USERS WHERE USER_ID = @USER_ID";
+        string sql =
+            """
+            SELECT 
+                U.*,
+                UC.DISPLAY_NAME AS CreatedByName,
+                UL.DISPLAY_NAME AS LastModifiedName
+            FROM USERS U
+            LEFT JOIN USERS UC ON (UC.USER_ID = U.CREATED_BY)
+            LEFT JOIN USERS UL ON (UL.USER_ID = U.LAST_MODIFIED_BY)
+            WHERE 
+                USER_ID = @USER_ID
+            """;
 
         return dbController.GetFirstAsync<User>(sql,
         new
@@ -125,8 +136,12 @@ public class UserService : IModelService<User, int?, UserFilter>
         $"""
         SELECT 
             FIRST {filter.Limit} SKIP {(filter.PageNumber - 1) * filter.Limit}
-                * 
-            FROM USERS 
+                U.*,
+                UC.DISPLAY_NAME AS CreatedByName,
+                UL.DISPLAY_NAME AS LastModifiedName 
+            FROM USERS U
+            LEFT JOIN USERS UC ON (UC.USER_ID = U.CREATED_BY)
+            LEFT JOIN USERS UL ON (UL.USER_ID = U.LAST_MODIFIED_BY)
             WHERE 1 = 1
             {GetFilterWhere(filter)}
             ORDER BY USER_ID DESC

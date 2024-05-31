@@ -63,9 +63,11 @@ public class CurrencyService : IModelService<Currency, string?, CurrencyFilter>
             """
             SELECT 
                 C.*,
-                U.DISPLAY_NAME AS BEARBEITER_NAME
+                UC.DISPLAY_NAME AS CreatedByName,
+                UL.DISPLAY_NAME AS LastModifiedName
             FROM CURRENCIES C
-            LEFT JOIN USERS U ON (U.USER_ID = C.LAST_MODIFIED_BY)
+            LEFT JOIN USERS UC ON (UC.USER_ID = C.CREATED_BY)
+            LEFT JOIN USERS UL ON (UL.USER_ID = C.LAST_MODIFIED_BY)
             WHERE CODE = @CODE
             """;
 
@@ -83,9 +85,11 @@ public class CurrencyService : IModelService<Currency, string?, CurrencyFilter>
         SELECT 
             FIRST {filter.Limit} SKIP {(filter.PageNumber - 1) * filter.Limit}
                 C.*,
-                U.DISPLAY_NAME AS BEARBEITER_NAME
+                UC.DISPLAY_NAME AS CreatedByName,
+                UL.DISPLAY_NAME AS LastModifiedName
             FROM CURRENCIES C
-            LEFT JOIN USERS U ON (U.USER_ID = C.LAST_MODIFIED_BY)
+            LEFT JOIN USERS UC ON (U.USER_ID = C.CREATED_BY)
+            LEFT JOIN USERS UL ON (U.USER_ID = C.LAST_MODIFIED_BY)
             WHERE 1 = 1
             {GetFilterWhere(filter)}
             ORDER BY CODE DESC

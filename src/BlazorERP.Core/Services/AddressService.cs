@@ -86,9 +86,11 @@ public class AddressService : IModelService<Address, int?, AddressFilter>
             """
             SELECT 
                 A.*,
-                U.DISPLAY_NAME AS BEARBEITER_NAME
+                UC.DISPLAY_NAME AS CreatedByName,
+                UL.DISPLAY_NAME AS LastModifiedName
             FROM ADDRESSES A 
-            LEFT JOIN USERS U ON (U.USER_ID = A.LAST_MODIFIED_BY)
+            LEFT JOIN USERS UC ON (UC.USER_ID = A.CREATED_BY)
+            LEFT JOIN USERS UL ON (UL.USER_ID = A.LAST_MODIFIED_BY)
             WHERE 
                 ADDRESS_ID = @ADDRESS_ID
             """;
@@ -115,9 +117,11 @@ public class AddressService : IModelService<Address, int?, AddressFilter>
         SELECT 
             FIRST {filter.Limit} SKIP {(filter.PageNumber - 1) * filter.Limit}
                 A.*,
-                U.DISPLAY_NAME AS BEARBEITER_NAME
+                UC.DISPLAY_NAME AS CreatedByName,
+                UL.DISPLAY_NAME AS LastModifiedName
         FROM ADDRESSES A
-        LEFT JOIN USERS U ON (U.USER_ID = A.LAST_MODIFIED_BY)
+        LEFT JOIN USERS UC ON (UC.USER_ID = A.CREATED_BY)
+        LEFT JOIN USERS UL ON (UL.USER_ID = A.LAST_MODIFIED_BY)
         WHERE 1 = 1
             {GetFilterWhere(filter)}
         ORDER BY ADDRESS_ID DESC
@@ -237,7 +241,7 @@ public class AddressService : IModelService<Address, int?, AddressFilter>
             $"""
             SELECT 
                 A.*,
-                U.DISPLAY_NAME AS BearbeiterName
+                U.DISPLAY_NAME AS LastModifiedName
             FROM CUSTOMER_TO_ADDRESS CTA
             INNER JOIN ADDRESSES A ON (A.ADDRESS_ID = CTA.ADDRESS_ID)
             LEFT JOIN USERS U ON (U.USER_ID = A.LAST_MODIFIED_BY)

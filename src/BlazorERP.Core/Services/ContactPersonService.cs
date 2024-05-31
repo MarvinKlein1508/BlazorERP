@@ -80,9 +80,11 @@ public class ContactPersonService : IModelService<ContactPerson, int?, ContactPe
         SELECT 
             FIRST {filter.Limit} SKIP {(filter.PageNumber - 1) * filter.Limit}
                 CP.*,
-                U.DISPLAY_NAME AS BEARBEITER_NAME
+                UC.DISPLAY_NAME AS CreatedByName,
+                UL.DISPLAY_NAME AS LastModifiedName
         FROM CONTACT_PERSONS CP
-        LEFT JOIN USERS U ON (U.USER_ID = CP.LAST_MODIFIED_BY)
+        LEFT JOIN USERS UC ON (UC.USER_ID = CP.CREATED_BY)
+        LEFT JOIN USERS UL ON (UL.USER_ID = CP.LAST_MODIFIED_BY)
         WHERE 1 = 1
             {GetFilterWhere(filter)}
         ORDER BY CONTACT_PERSON_ID DESC

@@ -65,9 +65,11 @@ public class ConfigurationService : IModelService<Configuration, int?, Configura
             """
             SELECT 
                 C.*,
-                U.DISPLAY_NAME AS BEARBEITER_NAME
+                UC.DISPLAY_NAME AS CreatedByName,
+                UL.DISPLAY_NAME AS LastModifiedName
             FROM CONFIGURATION C
-            LEFT JOIN USERS U ON (U.USER_ID = C.LAST_MODIFIED_BY)
+            LEFT JOIN USERS UC ON (UC.USER_ID = C.CREATED_BY)
+            LEFT JOIN USERS UL ON (UL.USER_ID = C.LAST_MODIFIED_BY)
             WHERE 
                 CONFIGURATION_ID = @CONFIGURATION_ID
             """;
@@ -86,9 +88,11 @@ public class ConfigurationService : IModelService<Configuration, int?, Configura
         SELECT 
             FIRST {filter.Limit} SKIP {(filter.PageNumber - 1) * filter.Limit}
                 C.*,
-                U.DISPLAY_NAME AS BEARBEITER_NAME
+                UC.DISPLAY_NAME AS CreatedByName,
+                UL.DISPLAY_NAME AS LastModifiedName
             FROM CONFIGURATION C
-            LEFT JOIN USERS U ON (U.USER_ID = C.LAST_MODIFIED_BY)
+            LEFT JOIN USERS UC ON (UC.USER_ID = C.CREATED_BY)
+            LEFT JOIN USERS UL ON (UL.USER_ID = C.LAST_MODIFIED_BY)
             WHERE 1 = 1
             {GetFilterWhere(filter)}
             ORDER BY CONFIGURATION_ID DESC

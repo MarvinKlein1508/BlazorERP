@@ -43,9 +43,11 @@ public class LanguageService : ITranslationCode, IGetOperation<Language, int?>
             """
             SELECT 
                 L.*,
-                U.DISPLAY_NAME AS BEARBEITER_NAME
+                UC.DISPLAY_NAME AS CreatedByName,
+                UL.DISPLAY_NAME AS LastModifiedName
             FROM LANGUAGES L 
-            LEFT JOIN USERS U ON (U.USER_ID = L.LAST_MODIFIED_BY)
+            LEFT JOIN USERS UC ON (UC.USER_ID = L.CREATED_BY)
+            LEFT JOIN USERS UL ON (UL.USER_ID = L.LAST_MODIFIED_BY)
             WHERE LANGUAGE_ID = @LANGUAGE_ID
             """;
 
@@ -87,9 +89,11 @@ public class LanguageService : ITranslationCode, IGetOperation<Language, int?>
         $"""
         SELECT 
             L.*,
-            U.DISPLAY_NAME AS BEARBEITER_NAME
+            UC.DISPLAY_NAME AS CreatedByName,
+            UL.DISPLAY_NAME AS LastModifiedName
         FROM LANGUAGES L 
-        LEFT JOIN USERS U ON (U.USER_ID = L.LAST_MODIFIED_BY)
+        LEFT JOIN USERS UC ON (UC.USER_ID = L.CREATED_BY)
+        LEFT JOIN USERS UL ON (UL.USER_ID = L.LAST_MODIFIED_BY)
         WHERE 1 = 1 AND LANGUAGE_ID IN 
         (
             {parameterQuery}

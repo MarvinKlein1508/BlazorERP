@@ -17,15 +17,22 @@ public class User : IDbModelWithName<int?>
     public AccountType AccountType { get; set; } = AccountType.LocalAccount;
     public bool IsAdmin { get; set; }
     public bool IsActive { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public int? CreatedBy { get; set; }
+    public int? LastModifiedBy { get; set; }
+    public DateTime? LastModified { get; set; }
 
     public int? GetIdentifier() => UserId <= 0 ? null : UserId;
     public string GetName() => $"{Firstname} {Lastname}".Trim();
+
+
+    public string CreatedByName { get; set; } = string.Empty;
+    public string LastModifiedName { get; set; } = string.Empty;
 
     /// <summary>
     /// This property is only to compare passwords during administration processes.
     /// </summary>
     public string PasswordConfirm { get; set; } = string.Empty;
-
     public Dictionary<string, object?> GetParameters()
     {
         return new Dictionary<string, object?>
@@ -43,6 +50,10 @@ public class User : IDbModelWithName<int?>
             { "ACCOUNT_TYPE", AccountType.ToString() },
             { "IS_ACTIVE", IsActive },
             { "IS_ADMIN", IsAdmin },
+            { "CREATED_AT", CreatedAt },
+            { "CREATED_BY", CreatedBy },
+            { "LAST_MODIFIED_BY", LastModifiedBy },
+            { "LAST_MODIFIED", LastModified },
         };
     }
 

@@ -76,7 +76,18 @@ public class SalutationService : IModelService<Salutation, int?, SalutationFilte
             return null;
         }
 
-        string sql = "SELECT * FROM SALUTATIONS WHERE SALUTATION_ID = @SALUTATION_ID";
+        string sql =
+            """
+            SELECT 
+                S.*,
+                UC.DISPLAY_NAME AS CreatedByName,
+                UL.DISPLAY_NAME AS LastModifiedName
+            FROM SALUTATIONS S
+            LEFT JOIN USERS UC ON (UC.USER_ID = S.CREATED_BY)
+            LEFT JOIN USERS UL ON (UL.USER_ID = S.LAST_MODIFIED_BY)
+            WHERE 
+                SALUTATION_ID = @SALUTATION_ID
+            """;
 
         var result = await dbController.GetFirstAsync<Salutation>(sql, new
         {
@@ -98,8 +109,12 @@ public class SalutationService : IModelService<Salutation, int?, SalutationFilte
         $"""
         SELECT 
             FIRST {filter.Limit} SKIP {(filter.PageNumber - 1) * filter.Limit}
-                * 
-            FROM SALUTATIONS 
+                S.*,
+                UC.DISPLAY_NAME AS CreatedByName,
+                UL.DISPLAY_NAME AS LastModifiedName
+            FROM SALUTATIONS S
+            LEFT JOIN USERS UC ON (UC.USER_ID = S.CREATED_BY)
+            LEFT JOIN USERS UL ON (UL.USER_ID = S.LAST_MODIFIED_BY)
             WHERE 1 = 1
             {GetFilterWhere(filter)}
             ORDER BY SALUTATION_ID DESC
