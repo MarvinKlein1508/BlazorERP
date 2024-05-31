@@ -156,7 +156,8 @@ namespace BlazorERP.Components.Pages.Account
                                 Firstname = attributes["givenName"],
                                 Lastname = attributes["sn"],
                                 IsActive = true,
-                                AccountType = AccountType.ActiveDirectory
+                                AccountType = AccountType.ActiveDirectory,
+                                CreatedAt = DateTime.Now,
                             };
 
                             await _userService.CreateAsync(user, dbController);
