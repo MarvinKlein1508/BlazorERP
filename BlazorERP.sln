@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorERP.Components", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorERP.Core", "src\client\BlazorERP.Core\BlazorERP.Core.csproj", "{CFF438F8-EA15-49A1-BB7E-0C04D3C3D331}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorERP.Shared", "BlazorERP.Shared\BlazorERP.Shared.csproj", "{81B32081-5CD0-4888-BFA2-BE2E5F6D6FC6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorERP.Shared", "BlazorERP.Shared\BlazorERP.Shared.csproj", "{81B32081-5CD0-4888-BFA2-BE2E5F6D6FC6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
