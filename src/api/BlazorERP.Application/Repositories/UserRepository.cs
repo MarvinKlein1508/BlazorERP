@@ -43,6 +43,31 @@ public class UserRepository : IUserRepository
         return user;
     }
 
+    public async Task<User?> GetByUsernameAsync(string username, CancellationToken token = default)
+    {
+        using var connection = await _dbConnectionFactory.CreateConnectionAsync(token);
+
+        string sql =
+            """
+            SELECT 
+                *
+            FROM USERS
+            WHERE 
+                NORMALIZED_USERNAME = UPPER(@username)
+            """;
+
+        var command = new CommandDefinition(sql, new { username }, cancellationToken: token);
+
+        var user = await connection.QuerySingleOrDefaultAsync<User>(command);
+
+        if (user is null)
+        {
+            return null;
+        }
+
+        return user;
+    }
+
     public Task<bool> UpdateAsync(User user, CancellationToken token = default)
     {
         throw new NotImplementedException();

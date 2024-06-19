@@ -57,6 +57,12 @@ builder.Services.AddScoped<ContactPersonService>();
 builder.Services.AddOptions<LdapOptions>()
     .Bind(config.GetRequiredSection(LdapOptions.SectionName));
 
+builder.Services.AddHttpClient("ApiClient")
+    .ConfigureHttpClient(c =>
+    {
+        c.BaseAddress = new Uri(builder.Configuration["ApiServer"] ?? "");
+    });
+
 
 FbController.Initialize(config);
 await Storage.InitAsync(config);

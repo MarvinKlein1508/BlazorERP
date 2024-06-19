@@ -16,4 +16,9 @@ public class UserService : IUserService
     {
         return _userRepository.GetAsync(userId, token);
     }
+
+    public Task<User?> GetByUsernameAsync(string username, CancellationToken token = default)
+    {
+        return _userRepository.GetByUsernameAsync(username, token);
+    }
 }
