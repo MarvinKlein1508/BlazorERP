@@ -9,6 +9,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddApplication();
+builder.Services.ConfigureDapper();
 builder.Services.AddDatabase(config.GetConnectionString("Default")!);
 
 var app = builder.Build();

@@ -3,6 +3,7 @@ using BlazorERP.Application.Repositories;
 using BlazorERP.Application.Repositories.Interfaces;
 using BlazorERP.Application.Services;
 using BlazorERP.Application.Services.Interfaces;
+using Dapper;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,6 +23,12 @@ public static class ApplicationServiceCollectionExtensions
     {
         services.AddSingleton<IDbConnectionFactory>(_ => new FirebirdConnectionFactory(connectionString));
         
+        return services;
+    }
+
+    public static IServiceCollection ConfigureDapper(this IServiceCollection services)
+    {
+        DefaultTypeMap.MatchNamesWithUnderscores = true;
         return services;
     }
 }
