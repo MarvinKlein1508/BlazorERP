@@ -31,8 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Components\Pages\Admin\UserForm.razor">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-    </Content>
+    <Folder Include="Components\Pages\Account\" />
   </ItemGroup>
 </Project>
