@@ -1,4 +1,5 @@
 using BlazorERP.Application;
+using BlazorERP.Application.Database;
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 // Add services to the container.
@@ -26,5 +27,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+var dbInitializer = app.Services.GetRequiredService<DbInitializer>();
+await dbInitializer.InitializeAsync();
 
 app.Run();

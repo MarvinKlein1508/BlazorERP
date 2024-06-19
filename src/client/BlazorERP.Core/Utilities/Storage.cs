@@ -20,13 +20,13 @@ public static class Storage
         _configuration = configuration;
 
        using IDbController dbController = new FbController();
-        _storage.Add(typeof(Salutation), await SalutationService.GetAsync(dbController));
-        _storage.Add(typeof(DeliveryCondition), await DeliveryConditionService.GetAsync(dbController));
-        _storage.Add(typeof(PaymentCondition), await PaymentConditionService.GetAsync(dbController));
-        _storage.Add(typeof(Currency), await CurrencyService.GetAsync(dbController));
+        //_storage.Add(typeof(Salutation), await SalutationService.GetAsync(dbController));
+        //_storage.Add(typeof(DeliveryCondition), await DeliveryConditionService.GetAsync(dbController));
+        //_storage.Add(typeof(PaymentCondition), await PaymentConditionService.GetAsync(dbController));
+        //_storage.Add(typeof(Currency), await CurrencyService.GetAsync(dbController));
         _storage.Add(typeof(Language), await LanguageService.GetAsync(dbController));
         //_storage.Add(typeof(Kostenstelle), await KostenstelleService.GetAsync(dbController));
-        _storage.Add(typeof(Country), await CountryService.GetAsync(dbController));
+        //_storage.Add(typeof(Country), await CountryService.GetAsync(dbController));
 
 
         DEFAULT_LANGUAGE = 2;
