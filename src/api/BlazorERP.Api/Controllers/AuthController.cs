@@ -19,11 +19,13 @@ namespace BlazorERP.Api.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IUserService _userService;
-    private const string TokenSecret = "ForTheLoveOfGodStoreAndLoadThisSecurely"; // TODO: Load from appSettings
+    private readonly IConfiguration _configuration;
+    
     private static readonly TimeSpan TokenLifetime = TimeSpan.FromHours(8); // TODO: Load from appSettings
-    public AuthController(IUserService userService)
+    public AuthController(IUserService userService, IConfiguration configuration)
     {
         _userService = userService;
+        _configuration = configuration;
     }
 
     [HttpPost(ApiEndpoints.Auth.PerformLogin)]
@@ -62,14 +64,14 @@ public class AuthController : ControllerBase
             // Generate JWT-Token
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes(TokenSecret);
+            var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.Add(TokenLifetime),
-                Issuer = "https://id.company.com", // TODO: Load from appsettings
-                Audience = "https://movies.company.com", // TODO: Load from appsettings
+                Issuer = _configuration["Jwt:Issuer"], 
+                Audience = _configuration["Jwt:Audience"], 
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 

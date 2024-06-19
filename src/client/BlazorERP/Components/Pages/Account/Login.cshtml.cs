@@ -7,6 +7,7 @@ using BlazorERP.Core.Models;
 using BlazorERP.Core.Options;
 using BlazorERP.Core.Services;
 using BlazorERP.Core.Utilities;
+using BlazorERP.Shared.Enums;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -156,7 +157,7 @@ namespace BlazorERP.Components.Pages.Account
                                 Firstname = attributes["givenName"],
                                 Lastname = attributes["sn"],
                                 IsActive = true,
-                                AccountType = AccountType.ActiveDirectory,
+                                AccountType = Core.Enums.AccountType.ActiveDirectory,
                                 CreatedAt = DateTime.Now,
                             };
 

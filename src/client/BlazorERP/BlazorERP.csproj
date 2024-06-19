@@ -16,6 +16,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+	<PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
+	<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.6" />
 	<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.*-* " />
     <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.*-* " />
     <PackageReference Include="System.DirectoryServices.Protocols" Version="8.0.0" />
@@ -23,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\BlazorERP.Shared\BlazorERP.Shared.csproj" />
     <ProjectReference Include="..\BlazorERP.Components\BlazorERP.Components.csproj" />
     <ProjectReference Include="..\BlazorERP.Core\BlazorERP.Core.csproj" />
   </ItemGroup>
