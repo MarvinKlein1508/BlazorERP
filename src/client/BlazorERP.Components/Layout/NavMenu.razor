@@ -10,35 +10,12 @@
     <nav class="sitenav" aria-labelledby="main-menu" onclick="document.getElementById('navmenu-toggle').click();">
         <FluentNavMenu Id="main-menu" Collapsible="true" Width="250" Title="Navigation menu" @bind-Expanded="expanded">
             <FluentNavLink Href="/" Match="NavLinkMatch.All" Icon="@(new Icons.Regular.Size20.Home())" IconColor="Color.Accent">Home</FluentNavLink>
-            <FluentNavLink Href="counter" Icon="@(new Icons.Regular.Size20.NumberSymbolSquare())" IconColor="Color.Accent">Counter</FluentNavLink>
-            <FluentNavLink Href="weather" Icon="@(new Icons.Regular.Size20.WeatherPartlyCloudyDay())" IconColor="Color.Accent">Weather</FluentNavLink>
-            <FluentNavGroup Title="Stammdaten" Icon="@(new Icons.Regular.Size20.Archive())">
-                <ChildContent>
-                    <FluentNavLink Href="/Addresses" Icon="@(new Icons.Regular.Size20.Location())">Anschriften</FluentNavLink>
-                    <FluentNavLink Href="/ContactPersons" Icon="@(new Icons.Regular.Size20.ContactCard())">Ansprechpartner</FluentNavLink>
-                    <FluentNavLink Href="/Customers" Icon="@(new Icons.Regular.Size20.Person())">Kunden</FluentNavLink>
-                </ChildContent>
-            </FluentNavGroup>
+
             @if (_user.IsAdmin)
             {
                 <FluentNavGroup Title="Administration" Icon="@(new Icons.Regular.Size20.Settings())">
                     <ChildContent>
-                        <FluentNavLink Href="/Admin/Users" Icon="@(new Icons.Regular.Size20.PeopleList())">Benutzer</FluentNavLink>
-                        <FluentNavLink Href="/Admin/Gesperrt" Icon="@(new Icons.Regular.Size20.PresenceBlocked())">Gesperrte Seiten</FluentNavLink>
-
-                        <FluentNavGroup Title="Hilfsdaten" Icon="@(new Icons.Regular.Size20.Database())">
-                            <ChildContent>
-                                <FluentNavLink Href="/Admin/Salutations" Icon="@(new Icons.Regular.Size20.EmojiHand())">Anreden</FluentNavLink>
-                                <FluentNavLink Href="/Admin/Departments" Icon="@(new Icons.Regular.Size20.Group())">Abteilungen</FluentNavLink>
-                                <FluentNavLink Href="/Admin/CostCenters" Icon="@(new Icons.Regular.Size20.MoneyCalculator())">Kostenstellen</FluentNavLink>
-                                <FluentNavLink Href="/Admin/Countries" Icon="@(new Icons.Regular.Size20.Globe())">Länder</FluentNavLink>
-                                <FluentNavLink Href="/Admin/DeliveryConditions" Icon="@(new Icons.Regular.Size20.VehicleTruckProfile())">Lieferbedingungen</FluentNavLink>
-                                <FluentNavLink Href="/Admin/Currencies" Icon="@(new Icons.Regular.Size20.CurrencyDollarEuro())">Währungen</FluentNavLink>
-                                <FluentNavLink Href="/Admin/PaymentConditions" Icon="@(new Icons.Regular.Size20.Money())">Zahlungsbedingungen</FluentNavLink>
-                            </ChildContent>
-                        </FluentNavGroup>
-                        <FluentNavLink Href="/Admin/NumberRanges" Icon="@(new Icons.Regular.Size20.NumberRow())">Nummernkreise</FluentNavLink>
-                        <FluentNavLink Href="/Admin/Configuration" Icon="@(new Icons.Regular.Size20.ArchiveSettings())">Voreinstellungen</FluentNavLink>
+                        <FluentNavLink Href="/Admin/Users" Icon="@(new Icons.Regular.Size20.PeopleList())">Benutzer</FluentNavLink>    
                     </ChildContent>
                 </FluentNavGroup>
             }

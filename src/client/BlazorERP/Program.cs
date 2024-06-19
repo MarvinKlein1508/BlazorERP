@@ -36,22 +36,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
 
 builder.Services.AddScoped<UserService>();
-builder.Services.AddScoped<DepartmentService>();
-builder.Services.AddScoped<SalutationService>();
-builder.Services.AddScoped<TranslationService>();
-builder.Services.AddScoped<LanguageService>();
-builder.Services.AddScoped<CountryService>();
-builder.Services.AddScoped<CurrencyService>();
-builder.Services.AddScoped<CostCenterService>();
-builder.Services.AddScoped<PaymentConditionService>();
-builder.Services.AddScoped<DeliveryConditionService>();
-builder.Services.AddScoped<CustomerService>();
-builder.Services.AddScoped<ConfigurationService>();
-builder.Services.AddScoped<NumberRangeService>();
-builder.Services.AddScoped<AddressService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<CacheStorageAccessor>();
-builder.Services.AddScoped<ContactPersonService>();
+
 
 // Options
 builder.Services.AddOptions<LdapOptions>()
