@@ -3,6 +3,25 @@
 @attribute [ExcludeFromInteractiveRouting]
 <h3>Login</h3>
 
-@code {
+<EditForm Model="Input" OnValidSubmit="LoginAsync">
 
+    <FluentTextField @bind-Value="Input.Username" Label="Username" />
+    <FluentTextField @bind-Value="Input.Password" Label="Password" />
+
+</EditForm>
+
+@code {
+    public LoginModel Input { get; set; } = new();
+
+    private async Task LoginAsync()
+    {
+        
+    }
+
+    public class LoginModel
+    {
+        public string Username { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+        public bool RemeberMe { get; set; }
+    }
 }
