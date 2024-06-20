@@ -3,15 +3,16 @@
 @attribute [ExcludeFromInteractiveRouting]
 <h3>Login</h3>
 
-<EditForm Model="Input" OnValidSubmit="LoginAsync">
+<EditForm FormName="login" method="post" Model="Input" OnValidSubmit="LoginAsync">
 
-    <FluentTextField @bind-Value="Input.Username" Label="Username" />
-    <FluentTextField @bind-Value="Input.Password" Label="Password" />
+    <InputText @bind-Value="Input.Username"  />
+    <InputText @bind-Value="Input.Password"  />
 
+    <button type="submit">Login</button>
 </EditForm>
 
 @code {
-    public LoginModel Input { get; set; } = new();
+    [SupplyParameterFromForm] public LoginModel Input { get; set; } = new();
 
     private async Task LoginAsync()
     {
@@ -22,6 +23,6 @@
     {
         public string Username { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
-        public bool RemeberMe { get; set; }
+        public bool RememberMe { get; set; }
     }
 }
