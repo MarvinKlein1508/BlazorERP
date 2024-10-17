@@ -19,12 +19,12 @@ public class ActiveDirectoryManager
         _userManager = userManager;
     }
 
-    public async Task<ApplicationUser?> LoginAsync(string username, string password)
+    public async Task LoginAsync(string username, string password)
     {
 
         if (!_settings.IsEnabled)
         {
-            return null;
+            return;
         }
 
         try
@@ -94,6 +94,8 @@ public class ActiveDirectoryManager
 
 
             var user = await _userManager.GetByActiveDirectoryGuidAsync((Guid)guid);
+            var hasher = new PasswordHasher<ApplicationUser>();
+          
 
             if (user is null)
             {
@@ -110,6 +112,8 @@ public class ActiveDirectoryManager
                     NormalizedEmail = attributes["mail"].ToUpper()
                 };
 
+                user.PasswordHash = hasher.HashPassword(user, password);
+
                 await _userManager.CreateAsync(user);
             }
             else
@@ -119,17 +123,17 @@ public class ActiveDirectoryManager
                 user.NormalizedUserName = username.ToUpper();
                 user.Email = attributes["mail"];
                 user.NormalizedEmail = user.Email.ToUpper();
+                user.PasswordHash = hasher.HashPassword(user, password);
 
                 await _userManager.UpdateAsync(user);
             }
 
-            return user;
+          
         }
         catch (LdapException ex)
         {
            
         }
         
-        return null;
     }
 }
