@@ -1,6 +1,7 @@
 using BlazorERP.Components;
 using BlazorERP.Components.Account;
-using BlazorERP.Data;
+using BlazorERP.Core.Data;
+using BlazorERP.Core.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;

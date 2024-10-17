@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BlazorERP.Components\BlazorERP.Components.csproj" />
+    <ProjectReference Include="..\BlazorERP.Core\BlazorERP.Core.csproj" />
   </ItemGroup>
 
 </Project>
