@@ -2,12 +2,14 @@ using BlazorERP.Components;
 using BlazorERP.Components.Account;
 using BlazorERP.Core.Data;
 using BlazorERP.Core.Models;
+using BlazorERP.Core.Options;
+using BlazorERP.Core.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
-
+var config = builder.Configuration;
 // Add services to the container.
 builder.Services.AddRazorComponents();
 
@@ -23,6 +25,8 @@ builder.Services.AddAuthentication(options =>
     .AddIdentityCookies();
 builder.Services.AddAuthorization();
 
+builder.Services.AddScoped<ActiveDirectoryManager>();
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -37,6 +41,9 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
     .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+
+builder.Services.AddOptions<ActiveDirectorySettings>()
+    .Bind(config.GetRequiredSection(ActiveDirectorySettings.SectionName));
 
 var app = builder.Build();
 
