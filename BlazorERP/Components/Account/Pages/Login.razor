@@ -17,7 +17,6 @@
 
 <PageTitle>Log in</PageTitle>
 
-<h1>Log in</h1>
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-6 offset-lg-3 col-12">
@@ -25,6 +24,7 @@
                 <StatusMessage Message="@errorMessage" />
                 <EditForm Model="Input" method="post" OnValidSubmit="LoginUser" FormName="login">
                     <DataAnnotationsValidator />
+                    <h1>Log in</h1>
                     <h2>Use a local account to log in.</h2>
                     <hr />
                     <ValidationSummary class="text-danger" role="alert" />

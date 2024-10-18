@@ -27,6 +27,11 @@
                 <label for="Input.PhoneNumber" class="form-label">Phone number</label>
                 <ValidationMessage For="() => Input.PhoneNumber" class="text-danger" />
             </div>
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="Input.Email" id="Input.Email" class="form-control" placeholder="Please enter your e-mail address" />
+                <label for="Input.Email" class="form-label">E-Mail address</label>
+                <ValidationMessage For="() => Input.Email" class="text-danger" />
+            </div>
             <button type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
         </EditForm>
     </div>
@@ -36,7 +41,7 @@
     private ApplicationUser user = default!;
     private string? username;
     private string? phoneNumber;
-
+    private string? email;
     [CascadingParameter]
     private HttpContext HttpContext { get; set; } = default!;
 
@@ -48,8 +53,10 @@
         user = await UserAccessor.GetRequiredUserAsync(HttpContext);
         username = await UserManager.GetUserNameAsync(user);
         phoneNumber = await UserManager.GetPhoneNumberAsync(user);
+        email = await UserManager.GetEmailAsync(user);
 
         Input.PhoneNumber ??= phoneNumber;
+        Input.Email ??= email;
     }
 
     private async Task OnValidSubmitAsync()
@@ -63,6 +70,15 @@
             }
         }
 
+        if(Input.Email != email)
+        {
+            var setEmailResult = await UserManager.SetEmailAsync(user, Input.Email);
+            if (!setEmailResult.Succeeded)
+            {
+                RedirectManager.RedirectToCurrentPageWithStatus("Error: Failed to set e-mail address.", HttpContext);
+            }
+        }
+
         await SignInManager.RefreshSignInAsync(user);
         RedirectManager.RedirectToCurrentPageWithStatus("Your profile has been updated", HttpContext);
     }
@@ -72,5 +88,9 @@
         [Phone]
         [Display(Name = "Phone number")]
         public string? PhoneNumber { get; set; }
+
+        [EmailAddress]
+        [Display(Name = "E-Mail address")]
+        public string? Email { get; set; }
     }
 }
