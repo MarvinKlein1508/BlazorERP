@@ -12,7 +12,8 @@ using System;
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 // Add services to the container.
-builder.Services.AddRazorComponents();
+builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents();
 builder.Services.AddFluentUIComponents();
 
 builder.Services.AddCascadingAuthenticationState();
@@ -72,7 +73,8 @@ app.UseHttpsRedirection();
 app.UseAntiforgery();
 
 app.MapStaticAssets();
-app.MapRazorComponents<App>();
+app.MapRazorComponents<App>()
+    .AddInteractiveServerRenderMode();
 
 // Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();
