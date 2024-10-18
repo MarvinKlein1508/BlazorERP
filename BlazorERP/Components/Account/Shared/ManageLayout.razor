@@ -3,26 +3,20 @@
 
 <h1>Manage your account</h1>
 
-<div>
+<div class="manage">
     <h2>Change your account settings</h2>
     <hr />
-    <div class="row">
-        <div class="col-md-3">
-            <ul class="nav nav-pills flex-column">
-                <li class="nav-item">
-                    <NavLink class="nav-link" href="Account/Manage" Match="NavLinkMatch.All">Profile</NavLink>
-                </li>
-                <li class="nav-item">
-                    <NavLink class="nav-link" href="Account/Manage/ChangePassword">Password</NavLink>
-                </li>
+    <FluentGrid>
+        <FluentGridItem sm="3">
+            <FluentNavMenu Collapse="false">
+                <FluentNavLink Href="Account/Manage" Match="NavLinkMatch.All">Profile</FluentNavLink>
+                <FluentNavLink Href="Account/Manage/ChangePassword">Password</FluentNavLink>
+                <FluentNavLink Href="Account/Manage/TwoFactorAuthentication">Two-factor authentication</FluentNavLink>
+            </FluentNavMenu>
+        </FluentGridItem>
 
-                <li class="nav-item">
-                    <NavLink class="nav-link" href="Account/Manage/TwoFactorAuthentication">Two-factor authentication</NavLink>
-                </li>
-            </ul>
-        </div>
-        <div class="col-md-9">
+        <FluentGridItem sm="9">
             @Body
-        </div>
-    </div>
+        </FluentGridItem>
+    </FluentGrid>
 </div>

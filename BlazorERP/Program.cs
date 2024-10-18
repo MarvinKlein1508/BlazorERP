@@ -6,12 +6,14 @@ using BlazorERP.Core.Options;
 using BlazorERP.Core.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.FluentUI.AspNetCore.Components;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 // Add services to the container.
 builder.Services.AddRazorComponents();
+builder.Services.AddFluentUIComponents();
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
