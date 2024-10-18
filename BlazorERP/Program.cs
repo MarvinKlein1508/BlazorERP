@@ -40,7 +40,6 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
     .AddSignInManager()
     .AddDefaultTokenProviders();
 
-builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
 builder.Services.AddOptions<ActiveDirectorySettings>()
     .Bind(config.GetRequiredSection(ActiveDirectorySettings.SectionName));
