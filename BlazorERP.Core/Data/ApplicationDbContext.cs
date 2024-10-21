@@ -66,6 +66,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             Email = string.Empty,
             NormalizedEmail = string.Empty,
             PhoneNumber = string.Empty,
+            IsActive = true,
         };
 
         var hasher = new PasswordHasher<ApplicationUser>();

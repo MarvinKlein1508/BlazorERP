@@ -33,7 +33,7 @@
                 <FluentValidationMessage For="() => Input.Password" class="text-danger" />
                 <FluentCheckbox Name="Input.RememberMe" @bind-Value="Input.RememberMe" Label="Remember me" />
                 <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%">Log in</FluentButton>
-                
+
             </FluentStack>
         </EditForm>
     </FluentGridItem>
@@ -63,10 +63,19 @@
     public async Task LoginUser()
     {
 
+        var user = await SignInManager.UserManager.FindByNameAsync(Input.Username);
+        if (user is not null && !user.IsActive)
+        {
+            errorMessage = "The user account is deactivated.";
+            return;
+        }
+
         if (activeDirectoryManager.IsEnabled)
         {
             await activeDirectoryManager.LoginAsync(Input.Username, Input.Password);
         }
+
+       
 
         // This doesn't count login failures towards account lockout
         // To enable password failures to trigger account lockout, set lockoutOnFailure: true
