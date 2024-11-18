@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using System.Text.Json;
-using BlazorERP.Components.Account.Pages;
-using BlazorERP.Components.Account.Pages.Manage;
+using BlazorERP.Pages.Account.Pages;
+using BlazorERP.Pages.Account.Pages.Manage;
 using BlazorERP.Core.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 
-namespace Microsoft.AspNetCore.Routing;
+namespace BlazorERP.Pages.Account;
 
 internal static class IdentityComponentsEndpointRouteBuilderExtensions
 {
@@ -21,14 +21,14 @@ internal static class IdentityComponentsEndpointRouteBuilderExtensions
 
         var accountGroup = endpoints.MapGroup("/Account");
 
-       accountGroup.MapPost("/Logout", async (
-            ClaimsPrincipal user,
-            [FromServices] SignInManager<ApplicationUser> signInManager,
-            [FromForm] string returnUrl) =>
-        {
-            await signInManager.SignOutAsync();
-            return TypedResults.LocalRedirect($"~/{returnUrl}");
-        });
+        accountGroup.MapPost("/Logout", async (
+             ClaimsPrincipal user,
+             [FromServices] SignInManager<ApplicationUser> signInManager,
+             [FromForm] string returnUrl) =>
+         {
+             await signInManager.SignOutAsync();
+             return TypedResults.LocalRedirect($"~/{returnUrl}");
+         });
 
         var manageGroup = accountGroup.MapGroup("/Manage").RequireAuthorization();
 

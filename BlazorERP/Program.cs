@@ -1,5 +1,5 @@
 using BlazorERP.Components;
-using BlazorERP.Components.Account;
+using BlazorERP.Pages.Account;
 using BlazorERP.Core.Data;
 using BlazorERP.Core.Models;
 using BlazorERP.Core.Options;

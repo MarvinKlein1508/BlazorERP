@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorERP.Components.Account;
+namespace BlazorERP.Pages.Account;
 
 internal sealed class IdentityRedirectManager(NavigationManager navigationManager)
 {

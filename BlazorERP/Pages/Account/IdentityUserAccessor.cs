@@ -1,7 +1,7 @@
 using BlazorERP.Core.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace BlazorERP.Components.Account;
+namespace BlazorERP.Pages.Account;
 
 internal sealed class IdentityUserAccessor(UserManager<ApplicationUser> userManager, IdentityRedirectManager redirectManager)
 {
