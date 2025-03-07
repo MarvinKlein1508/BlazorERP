@@ -52,12 +52,13 @@ public class Worker : BackgroundService
 
         if (!await dbCreator.ExistsAsync(cancellationToken))
         {
-            await dbCreator.CreateAsync(cancellationToken);
+            await dbContext.Database.EnsureCreatedAsync();
+            //await dbCreator.CreateAsync(cancellationToken);
         }
     }
 
     private static async Task RunMigrationAsync(DbContext dbContext, CancellationToken cancellationToken)
     {
-        await dbContext.Database.MigrateAsync(cancellationToken);
+        //await dbContext.Database.MigrateAsync(cancellationToken);
     }
 }

@@ -7,7 +7,7 @@ public static class PostgresExtensions
   
     public static (IResourceBuilder<PostgresDatabaseResource> db, IResourceBuilder<ProjectResource> migrationSvc) AddPostgresServices(this IDistributedApplicationBuilder builder, bool testOnly = false)
     {
-        var dbServer = builder.AddPostgres("database")
+        var dbServer = builder.AddPostgres("database", port: 50000)
             .WithImageTag(Constants.Postgres.Versions.POSTGRES);
 
         if (!testOnly)

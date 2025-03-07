@@ -16,4 +16,9 @@ public class AppDbContext : DbContext
     {
         
     }
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        builder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+    }
 }
