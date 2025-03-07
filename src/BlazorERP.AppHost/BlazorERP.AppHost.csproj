@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Sdk Name="Aspire.AppHost.Sdk" Version="9.0.0" />
 
@@ -13,6 +13,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BlazorERP.ApiService\BlazorERP.ApiService.csproj" />
+    <ProjectReference Include="..\BlazorERP.Core\BlazorERP.Core.csproj" IsAspireProjectResource="false" />
+    <ProjectReference Include="..\BlazorERP.Migrations\BlazorERP.Migrations.csproj" />
     <ProjectReference Include="..\BlazorERP.Web\BlazorERP.Web.csproj" />
   </ItemGroup>
 

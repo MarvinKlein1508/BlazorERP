@@ -1,36 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BlazorERP.Core;
 
 namespace BlazorERP.AppHost;
 
 public static class PostgresExtensions
 {
-    public static class VERSIONS
-    {
-        public const string POSTGRES = "17.2";
-        public const string PGADMIN = "latest";
-    }
-
-    public static class CONSTANTS
-    {
-        public const string DBNAME = "BlazorERP";
-    }
-
-    public static void AddPostgresServices(this IDistributedApplicationBuilder builder, bool testOnly = false)
+  
+    public static (IResourceBuilder<PostgresDatabaseResource> db, IResourceBuilder<ProjectResource> migrationSvc) AddPostgresServices(this IDistributedApplicationBuilder builder, bool testOnly = false)
     {
         var dbServer = builder.AddPostgres("database")
-            .WithImageTag(VERSIONS.POSTGRES);
+            .WithImageTag(Constants.Postgres.Versions.POSTGRES);
 
         if (!testOnly)
         {
             dbServer = dbServer.WithLifetime(ContainerLifetime.Persistent)
-                .WithDataVolume($"{CONSTANTS.DBNAME}-data", false)
+                .WithDataVolume($"{Constants.Postgres.DBNAME}-data", false)
                 .WithPgAdmin(config =>
                 {
-                    config.WithImageTag(VERSIONS.PGADMIN);
+                    config.WithImageTag(Constants.Postgres.Versions.PGADMIN);
                     config.WithLifetime(ContainerLifetime.Persistent);
                 });
         }
@@ -40,10 +26,12 @@ public static class PostgresExtensions
                 .WithLifetime(ContainerLifetime.Session);
         }
 
-        var outDb = dbServer.AddDatabase(CONSTANTS.DBNAME);
+        var outDb = dbServer.AddDatabase(Constants.Postgres.DBNAME);
 
-        //var migrationSvc = builder.AddProject<Projects.SharpSite_Data_Postgres_Migration>($"{SharpSite.Data.Postgres.Constants.DBNAME}migrationsvc")
-        //    .WithReference(outDb)
-        //    .WaitFor(dbServer);
+        var migrationSvc = builder.AddProject<Projects.BlazorERP_Migrations>($"{Constants.Postgres.DBNAME}migrationsvc")
+            .WithReference(outDb)
+            .WaitFor(dbServer);
+
+        return (outDb, migrationSvc);
     }
 }

@@ -1,3 +1,4 @@
+using BlazorERP.Core;
 using BlazorERP.Web;
 using BlazorERP.Web.Components;
 
@@ -5,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add service defaults & Aspire client integrations.
 builder.AddServiceDefaults();
+builder.RegisterServices();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
