@@ -1,4 +1,8 @@
+using BlazorERP.AppHost;
+
 var builder = DistributedApplication.CreateBuilder(args);
+
+builder.AddPostgresServices();
 
 var apiService = builder.AddProject<Projects.BlazorERP_ApiService>("apiservice");
 
