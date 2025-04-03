@@ -1,0 +1,17 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/Solution Items/" Id="8ec462fd-d22e-90a8-e5ce-7e832ba40c5d">
+    <File Path=".editorconfig" />
+    <File Path="Directory.Packages.props" />
+  </Folder>
+  
+  <Folder Name="/src/">
+    <Project Path="src/BlazorERP.Components/BlazorERP.Components.csproj" />
+    <Project Path="src/BlazorERP.Core/BlazorERP.Core.csproj" />
+    <Project Path="src/BlazorERP/BlazorERP.csproj" />
+  </Folder>
+</Solution>
