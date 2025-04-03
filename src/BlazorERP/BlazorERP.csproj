@@ -7,11 +7,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\login.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\assets\css\login.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MudBlazor" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BlazorERP.Components\BlazorERP.Components.csproj" />
     <ProjectReference Include="..\BlazorERP.Core\BlazorERP.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\assets\fonts\" />
   </ItemGroup>
 </Project>

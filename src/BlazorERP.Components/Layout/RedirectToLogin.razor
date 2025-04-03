@@ -1,0 +1,9 @@
+﻿@inject NavigationManager NavigationManager
+
+@code {
+    protected override void OnInitialized()
+    {
+        string url = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "/");
+        NavigationManager.NavigateTo($"Account/Login?returnUrl={Uri.EscapeDataString(url)}", forceLoad: true);
+    }
+}
