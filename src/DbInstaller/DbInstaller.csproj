@@ -11,6 +11,7 @@
 		<PackageReference Include="dbup-postgresql" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" />
+		<PackageReference Include="Microsoft.Extensions.Identity.Core" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -21,5 +22,9 @@
 
 	<ItemGroup>
 		<EmbeddedResource Include="Scripts/**/*.sql" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\BlazorERP.Core\BlazorERP.Core.csproj" />
 	</ItemGroup>
 </Project>

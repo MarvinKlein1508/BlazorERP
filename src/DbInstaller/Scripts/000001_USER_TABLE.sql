@@ -13,3 +13,5 @@ CREATE TABLE users
     CONSTRAINT pk_users PRIMARY KEY (user_id),
     CONSTRAINT uq_users_account_type UNIQUE (username, account_type)
 );
+
+INSERT INTO users (user_id, username, first_name, password, salt, is_active, account_type) VALUES (1, 'admin', 'Administrator', 'AQAAAAIAAYagAAAAEIfctTCf+6YIelDIQ0niS7nJGnwd1wfSBNkJR30I90o7oO/wJc8Db3unBO1y9xg7Og==', 'jOuXx+GZvNaloIQBUXU7Dur+RdKOBLOHmEpNborcUZw=', true, 0);

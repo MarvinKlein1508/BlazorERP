@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 
+
 var configuration = new ConfigurationBuilder()
             .SetBasePath(AppContext.BaseDirectory)
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -10,20 +11,20 @@ var configuration = new ConfigurationBuilder()
 string connectionString = configuration.GetConnectionString("Default") ?? throw new NullReferenceException();
 
 // FOR DEVELOPMENT WE DELETE THE DATABASE EVERYTIME FIRST
-//string adminConnectionString = configuration.GetConnectionString("Admin") ?? throw new NullReferenceException();
-//try
-//{
-//    using var connection = new NpgsqlConnection(adminConnectionString);
-//    await connection.OpenAsync();
-//    using var command = connection.CreateCommand();
-//    command.CommandText = "DROP DATABASE IF EXISTS \"BlazorERP\"";
-//    await command.ExecuteNonQueryAsync();
-//}
-//catch (Exception)
-//{
+string adminConnectionString = configuration.GetConnectionString("Admin") ?? throw new NullReferenceException();
+try
+{
+    using var connection = new NpgsqlConnection(adminConnectionString);
+    await connection.OpenAsync();
+    using var command = connection.CreateCommand();
+    command.CommandText = "DROP DATABASE IF EXISTS \"BlazorERP\"";
+    await command.ExecuteNonQueryAsync();
+}
+catch (Exception)
+{
 
 
-//}
+}
 
 
 EnsureDatabase.For.PostgresqlDatabase(connectionString);
