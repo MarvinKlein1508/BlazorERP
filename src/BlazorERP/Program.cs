@@ -1,6 +1,7 @@
 ﻿using BlazorERP.Components;
-using BlazorERP.Core.Modules.CoreData;
 using BlazorERP.Core.Extensions;
+using BlazorERP.Core.Modules.CoreData;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using MudBlazor.Services;
 
@@ -42,5 +43,18 @@ app.UseAntiforgery();
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+
+var accountGroup = app.MapGroup("/Account");
+
+accountGroup.MapGet("/Logout", async (HttpContext context) =>
+{
+    //if (context.User.Identity is not null)
+    //{
+    //    Log.Information("Logout: {username}", context.User.Identity.Name);
+    //}
+
+    await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+    return Results.LocalRedirect("/Account/Login");
+});
 
 app.Run();
