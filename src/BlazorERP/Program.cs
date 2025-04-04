@@ -1,4 +1,5 @@
 ﻿using BlazorERP.Components;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,11 @@ builder.Services.AddMudServices();
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+               .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
 
 var app = builder.Build();
 

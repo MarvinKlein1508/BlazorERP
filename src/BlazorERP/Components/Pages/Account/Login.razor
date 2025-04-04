@@ -63,17 +63,15 @@
 <div class="login">
     <h2>BlazorERP</h2>
     
-    <form class="form">
+    <EditForm Model="Input" OnValidSubmit="HandleLoginAsync" FormName="login-form" class="form">
         <div class="textbox">
-            <input required type="text" />
+            <InputText @bind-Value="Input.Username" required />
             <label>Username</label>
         </div>
         <div class="textbox">
-            <input required type="password" />
+            <InputText @bind-Value="Input.Password" type="password" required />
             <label>Password</label>
         </div>
         <button type="submit">Login</button>
-    </form>
+    </EditForm>
 </div>
-
-
