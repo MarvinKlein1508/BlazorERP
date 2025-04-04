@@ -63,6 +63,13 @@
 <div class="login">
     <h2>BlazorERP</h2>
     
+    @if (!string.IsNullOrWhiteSpace(_errorMessage))
+    {
+        <div class="auth-error">
+            @_errorMessage
+        </div>
+    }
+
     <EditForm Model="Input" OnValidSubmit="HandleLoginAsync" FormName="login-form" class="form">
         <div class="textbox">
             <InputText @bind-Value="Input.Username" required />

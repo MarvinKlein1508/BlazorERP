@@ -5,6 +5,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <PackageVersion Include="Dapper" Version="2.1.66" />
     <PackageVersion Include="dbup-postgresql" Version="6.0.3" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.Authorization" Version="9.0.3" />
     <PackageVersion Include="Microsoft.Extensions.Configuration" Version="9.0.3" />
@@ -12,5 +13,6 @@
     <PackageVersion Include="Microsoft.Extensions.Identity.Core" Version="9.0.3" />
     <PackageVersion Include="MudBlazor" Version="8.5.1" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="9.0.3" />
+    <PackageVersion Include="Npgsql" Version="9.0.3" />
   </ItemGroup>
 </Project>

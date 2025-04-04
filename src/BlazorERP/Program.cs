@@ -1,8 +1,11 @@
 ﻿using BlazorERP.Components;
+using BlazorERP.Core.Modules.CoreData;
+using BlazorERP.Core.Extensions;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+var config = builder.Configuration;
 
 // Add MudBlazor services
 builder.Services.AddMudServices();
@@ -15,6 +18,11 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
+
+builder.Services.AddSingleton<UserService>();
+
+string connectionString = config.GetConnectionString("Default") ?? throw new NullReferenceException("No default connection string provided");
+builder.Services.AddDatabase(connectionString);
 
 var app = builder.Build();
 
