@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Identity;
-using System.Data;
 using System.Security.Claims;
 using System.Web;
+using Localizer = BlazorERP.Languages.Login;
 
 namespace BlazorERP.Components.Pages.Account;
 public partial class Login
@@ -33,7 +33,6 @@ public partial class Login
 
     private async Task HandleLoginAsync()
     {
-        await Task.Delay(1);
         using var connection = await DbFactory.CreateConnectionAsync();
 
         var user = await UserService.GetAsync(Input.Username, AccountType.LocalAccount, connection);
@@ -74,7 +73,7 @@ public partial class Login
 
             if (HttpContextAccessor.HttpContext is null)
             {
-                _errorMessage = "HttpContext ist null";
+                _errorMessage = Localizer.ERROR_HTTPCONTEXT_IS_NULL;
                 return;
             }
 
@@ -84,7 +83,7 @@ public partial class Login
         }
         else
         {
-            _errorMessage = "Wrong username or password.";
+            _errorMessage = Localizer.ERROR_INVALID_LOGIN;
         }
     }
 

@@ -26,4 +26,24 @@
   <ItemGroup>
     <Folder Include="wwwroot\assets\fonts\" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Languages\Components\Pages\Account\Login.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Login.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Languages\Components\Pages\Account\Login.de.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <CustomToolNamespace>BlazorERP.Languages</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Languages\Components\Pages\Account\Login.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Login.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>BlazorERP.Languages</CustomToolNamespace>
+    </EmbeddedResource>
+  </ItemGroup>
 </Project>

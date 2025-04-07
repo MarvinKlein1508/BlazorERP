@@ -2,7 +2,7 @@
 @attribute [ExcludeFromInteractiveRouting]
 @layout EmptyLayout
 @attribute [AllowAnonymous]
-@inject IStringLocalizer<Login> localizer
+@using Localizer = BlazorERP.Languages.Login
 
 
 <SectionContent SectionName="import-css">
@@ -74,13 +74,13 @@
     <EditForm Model="Input" OnValidSubmit="HandleLoginAsync" FormName="login-form" class="form">
         <div class="textbox">
             <InputText @bind-Value="Input.Username" required />
-            <label>@localizer["USERNAME"]</label>
+            <label>@Localizer.USERNAME</label>
         </div>
         <div class="textbox">
             <InputText @bind-Value="Input.Password" type="password" required />
-            <label>@localizer["PASSWORD"]</label>
+            <label>@Localizer.PASSWORD</label>
         </div>
-        <button type="submit">@localizer["LOGIN"]</button>
+        <button type="submit">@Localizer.LOGIN</button>
     </EditForm>
 
 

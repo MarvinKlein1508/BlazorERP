@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ERROR_HTTPCONTEXT_IS_NULL" xml:space="preserve">
+    <value>HttpContext ist null</value>
+  </data>
+  <data name="ERROR_INVALID_LOGIN" xml:space="preserve">
+    <value>Ungültiger Username oder Passwort.</value>
+  </data>
   <data name="LOGIN" xml:space="preserve">
     <value>Login</value>
   </data>
