@@ -2,6 +2,7 @@
 @attribute [ExcludeFromInteractiveRouting]
 @layout EmptyLayout
 @attribute [AllowAnonymous]
+@inject IStringLocalizer<Login> localizer
 
 
 <SectionContent SectionName="import-css">
@@ -62,7 +63,7 @@
 </div>
 <div class="login">
     <h2>BlazorERP</h2>
-    
+
     @if (!string.IsNullOrWhiteSpace(_errorMessage))
     {
         <div class="auth-error">
@@ -73,12 +74,17 @@
     <EditForm Model="Input" OnValidSubmit="HandleLoginAsync" FormName="login-form" class="form">
         <div class="textbox">
             <InputText @bind-Value="Input.Username" required />
-            <label>Username</label>
+            <label>@localizer["USERNAME"]</label>
         </div>
         <div class="textbox">
             <InputText @bind-Value="Input.Password" type="password" required />
-            <label>Password</label>
+            <label>@localizer["PASSWORD"]</label>
         </div>
-        <button type="submit">Login</button>
+        <button type="submit">@localizer["LOGIN"]</button>
     </EditForm>
+
+
+
 </div>
+
+<CultureSelector @rendermode="InteractiveServer" />

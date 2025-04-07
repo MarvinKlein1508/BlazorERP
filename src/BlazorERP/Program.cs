@@ -1,4 +1,5 @@
 ﻿using BlazorERP.Components;
+using BlazorERP.Core;
 using BlazorERP.Core.Extensions;
 using BlazorERP.Core.Modules.CoreData;
 using Microsoft.AspNetCore.Authentication;
@@ -8,6 +9,8 @@ using MudBlazor.Services;
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 
+builder.Services.AddControllers();
+
 // Add MudBlazor services
 builder.Services.AddMudServices();
 
@@ -16,6 +19,11 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddLocalization(options =>
+{
+    options.ResourcesPath = "Languages";
+});
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
@@ -56,5 +64,14 @@ accountGroup.MapGet("/Logout", async (HttpContext context) =>
     await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
     return Results.LocalRedirect("/Account/Login");
 });
+
+app.MapControllers();
+
+var localizationOptions = new RequestLocalizationOptions()
+    .SetDefaultCulture(Constants.SupportedCultures[0].Name)
+    .AddSupportedCultures(Constants.SupportedCulturesCodes)
+    .AddSupportedUICultures(Constants.SupportedCulturesCodes);
+
+app.UseRequestLocalization(localizationOptions);
 
 app.Run();

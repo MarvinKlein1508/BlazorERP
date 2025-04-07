@@ -166,3 +166,28 @@ input {
     font-size: 15px;
     color: var(--color-muted);
 }
+
+.culture-select {
+    display: inline-block;
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+}
+
+    .culture-select select {
+        height: 56px;
+        font-family: inherit;
+        font-size: 1.15rem;
+        padding: 16px;
+        background: rgba(162, 135, 189, 0.25);
+        outline: none;
+        color: inherit;
+        box-shadow: 0 0 0 2px transparent;
+        border: 0;
+        border-radius: 8px;
+    }
+
+        .culture-select select option {
+            background: rgba(162, 135, 189, 0.25);
+            color: #000;
+        }
