@@ -1,5 +1,5 @@
 ﻿@inherits LayoutComponentBase
-
+@using Localizer = BlazorERP.Components.Languages.MainLayout
 <AuthorizeView>
     <NotAuthorized>
         <RedirectToLogin />
@@ -17,9 +17,7 @@
                 <MudIconButton Icon="@(DarkLightModeButtonIcon)" Color="Color.Inherit" OnClick="@DarkModeToggle" />
                 <MudMenu Icon="@Icons.Material.Filled.MoreVert"
                          AriaLabel="Open user menu">
-                    <MudMenuItem Label="Profile" />
-                    <MudMenuItem Label="My accounts" />
-                    <MudMenuItem Href="/Account/Logout" Label="Logout" />
+                    <MudMenuItem Href="/Account/Logout" Label="@Localizer.LOGOUT" />
                 </MudMenu>
             </MudAppBar>
             <MudDrawer id="nav-drawer" @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">

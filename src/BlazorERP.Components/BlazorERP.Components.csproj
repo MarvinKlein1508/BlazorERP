@@ -20,4 +20,24 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\BlazorERP.Core\BlazorERP.Core.csproj" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Languages\Layout\MainLayout.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>MainLayout.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Languages\Layout\MainLayout.de.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <CustomToolNamespace>BlazorERP.Components.Languages</CustomToolNamespace>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Languages\Layout\MainLayout.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>MainLayout.Designer.cs</LastGenOutput>
+	    <CustomToolNamespace>BlazorERP.Components.Languages</CustomToolNamespace>
+	  </EmbeddedResource>
+	</ItemGroup>
 </Project>
