@@ -6,6 +6,20 @@
 	</PropertyGroup>
 	<ItemGroup>
 	  <PackageReference Include="Dapper" />
+	  <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" />
 	  <PackageReference Include="Npgsql" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Compile Update="Ressources\Modules\CoreData\User\AccountType.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>AccountType.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Update="Ressources\Modules\CoreData\User\AccountType.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>AccountType.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
 	</ItemGroup>
 </Project>

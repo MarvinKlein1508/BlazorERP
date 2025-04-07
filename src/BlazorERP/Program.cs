@@ -2,6 +2,7 @@
 using BlazorERP.Core;
 using BlazorERP.Core.Extensions;
 using BlazorERP.Core.Modules.CoreData;
+using BlazorERP.Core.Utilities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using MudBlazor.Services;
@@ -18,6 +19,12 @@ builder.Services.AddMudServices();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+builder.Services.AddServerSideBlazor()
+             .AddCircuitOptions(options =>
+             {
+                 options.DetailedErrors = true;
+             });
+
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddLocalization(options =>
@@ -29,6 +36,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
 
 builder.Services.AddSingleton<UserService>();
+builder.Services.AddScoped<AuthService>();
 
 string connectionString = config.GetConnectionString("Default") ?? throw new NullReferenceException("No default connection string provided");
 builder.Services.AddDatabase(connectionString);

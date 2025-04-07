@@ -1,0 +1,9 @@
+﻿@page "/Account/Profile"
+@inherits ErpPageBase
+
+<h3>Profile</h3>
+@CurrentUser?.Username
+@CurrentUser?.AccountType.GetDisplayName()
+@code {
+
+}
