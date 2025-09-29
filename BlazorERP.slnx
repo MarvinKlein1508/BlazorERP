@@ -5,6 +5,7 @@
     <File Path="Directory.Packages.props" />
   </Folder>
   <Folder Name="/src/">
+    <Project Path="src/BlazorERP.Components/BlazorERP.Components.csproj" Id="b2d95447-27dc-4a14-a533-70b340446fc2" />
     <Project Path="src/BlazorERP/BlazorERP.csproj" />
   </Folder>
 </Solution>
