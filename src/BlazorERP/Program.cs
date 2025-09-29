@@ -1,4 +1,5 @@
 using BlazorERP.Components;
+using BlazorERP.Components.Infrastructure;
 using Microsoft.FluentUI.AspNetCore.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddFluentUIComponents();
+builder.Services.AddBlazorERPServices();
 
 var app = builder.Build();
 

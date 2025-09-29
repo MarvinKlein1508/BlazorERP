@@ -10,28 +10,4 @@ public partial class MainNavMenu
 
     [Parameter]
     public FluentLayoutHamburger? Hamburger { get; set; }
-
-    protected override void OnInitialized()
-    {
-        NavItems = new List<NavItem>
-        {
-            new NavItem("Home", "", "", "", []),
-            new NavItem("Counter", "/counter", "", "", []),
-            new NavItem("Weather", "/weather", "", "", []),
-        };
-    }
-
-    public IEnumerable<NavItem> NavItems { get; private set; } = [];
-
-    public record NavItem(string Title, string Route, string Icon, string Order, IEnumerable<NavItem> Items);
-
-    private async Task ItemClickAsync(NavItem item)
-    {
-        NavigationManager.NavigateTo(item.Route);
-
-        if (Hamburger is not null)
-        {
-            await Hamburger.HideAsync();
-        }
-    }
 }

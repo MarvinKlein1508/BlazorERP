@@ -1,12 +1,10 @@
 ﻿@inject NavigationManager Navigation
-
-<div>
-    <FluentTreeView>
-        @foreach (var item in NavItems)
-        {
-			<NavLink href="@item.Route">
-				@item.Title
-			</NavLink>
-        }
-    </FluentTreeView>
-</div>
+@inject MainNavProvider NavProvider
+<nav id="main-nav">
+	@foreach (var item in NavProvider.NavMenuItems)
+	{
+		<NavLink href="@item.Href" class="nav-item">
+			@item.Title
+		</NavLink>
+	}
+</nav>
