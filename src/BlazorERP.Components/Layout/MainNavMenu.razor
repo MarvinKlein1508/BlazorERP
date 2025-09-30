@@ -3,7 +3,7 @@
 <nav id="main-nav">
 	@foreach (var item in NavProvider.NavMenuItems)
 	{
-		<a href="@item.Href" class="nav-item">
+		<a href="@item.Href" class="@GetNavItemClass(item)">
 			@item.Title
 		</a>
 	}

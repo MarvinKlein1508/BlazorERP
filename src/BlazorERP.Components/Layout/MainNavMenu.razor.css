@@ -10,6 +10,11 @@
     padding-inline: 10px;
 }
 
+    .nav-item.active {
+        background-color: var(--colorSubtleBackgroundSelected);
+        color: var(--colorNeutralForeground2Selected);
+    }
+
     .nav-item:hover {
         background-color: var(--colorSubtleBackgroundHover);
     }
