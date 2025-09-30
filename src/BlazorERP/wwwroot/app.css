@@ -1,5 +1,8 @@
-/* Blazor Styles */
+#main-content {
+    padding: 10px;
+}
 
+/* Blazor Styles */
 #blazor-error-ui {
     color-scheme: light only;
     background: lightyellow;

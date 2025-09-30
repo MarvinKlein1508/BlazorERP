@@ -16,7 +16,7 @@
 		<MainNavMenu Hamburger="@_hamburger" />
 	</FluentLayoutItem>
 
-	<FluentLayoutItem Area="@LayoutArea.Content">
+	<FluentLayoutItem Area="@LayoutArea.Content" Id="main-content">
 		<FluentErrorBoundary DisplayErrorDetails="ErrorBoundaryDetails.ErrorMessage" OnCloseRedirectUrl="/">
 			@Body
 		</FluentErrorBoundary>
