@@ -5,8 +5,13 @@
     <File Path="Directory.Packages.props" />
     <File Path="nuget.config" />
   </Folder>
-  <Folder Name="/src/">
-    <Project Path="src/BlazorERP.Components/BlazorERP.Components.csproj" Id="b2d95447-27dc-4a14-a533-70b340446fc2" />
-    <Project Path="src/BlazorERP/BlazorERP.csproj" />
+  
+  <Folder Name="/src/api/">
+    <Project Path="src/api/BlazorERP.Api/BlazorERP.Api.csproj" />
+  </Folder>
+  
+  <Folder Name="/src/web/">
+	<Project Path="src/web/BlazorERP.Components/BlazorERP.Components.csproj" />
+    <Project Path="src/web/BlazorERP.Web/BlazorERP.Web.csproj" />
   </Folder>
 </Solution>
